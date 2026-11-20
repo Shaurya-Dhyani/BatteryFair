@@ -1,5 +1,5 @@
 /**
- * Battery Fair — Shared Application Logic & Internationalization
+ * Battery Fair - Shared Application Logic & Internationalization
  * ----------------------------------------------------------------
  * Handles: navbar scroll behaviour, hamburger menu,
  * language dropdown, active-link highlighting, and multi-language
@@ -31,7 +31,7 @@ const BatteryI18n = (() => {
       // Index Page
       'index.hero_badge': 'Serving Dealers Across India',
       'index.hero_title': 'India\'s First<br><span class="highlight-word">Fair</span> Battery Marketplace',
-      'index.hero_subtitle': 'Compare prices from local dealers, store your warranty cards digitally, and get honest value for your old battery&nbsp;&mdash;&nbsp;all in one place.',
+      'index.hero_subtitle': 'Compare prices from local dealers, store your warranty cards digitally, and get honest value for your old battery - all in one place.',
       'index.btn_customer': 'I\'m a Customer',
       'index.btn_dealer': 'I\'m a Dealer',
       'index.stat_dealers': 'Dealers listed',
@@ -92,7 +92,7 @@ const BatteryI18n = (() => {
       // Index Page
       'index.hero_badge': 'पूरे भारत में डीलरों की सेवा',
       'index.hero_title': 'भारत का पहला<br><span class="highlight-word">उचित</span> बैटरी मार्केटप्लेस',
-      'index.hero_subtitle': 'स्थानीय डीलरों से कीमतों की तुलना करें, अपने वारंटी कार्ड डिजिटल रूप से सहेजें, और अपनी पुरानी बैटरी का उचित मूल्य पाएं — सब एक ही स्थान पर।',
+      'index.hero_subtitle': 'स्थानीय डीलरों से कीमतों की तुलना करें, अपने वारंटी कार्ड डिजिटल रूप से सहेजें, और अपनी पुरानी बैटरी का उचित मूल्य पाएं - सब एक ही स्थान पर।',
       'index.btn_customer': 'मैं एक ग्राहक हूँ',
       'index.btn_dealer': 'मैं एक डीलर हूँ',
       'index.stat_dealers': 'सूचीबद्ध डीलर',
@@ -153,7 +153,7 @@ const BatteryI18n = (() => {
       // Index Page
       'index.hero_badge': 'ಭಾರತದಾದ್ಯಂತ ಡೀಲರ್‌ಗಳಿಗೆ ಸೇವೆ',
       'index.hero_title': 'ಭಾರತದ ಮೊದಲ<br><span class="highlight-word">ನ್ಯಾಯಯುತ</span> ಬ್ಯಾಟರಿ ಮಾರುಕಟ್ಟೆ',
-      'index.hero_subtitle': 'ಸ್ಥಳೀಯ ಡೀಲರ್‌ಗಳಿಂದ ಬೆಲೆಗಳನ್ನು ಹೋಲಿಕೆ ಮಾಡಿ, ವಾರಂಟಿ ಕಾರ್ಡ್‌ಗಳನ್ನು ಡಿಜಿಟಲ್ ರೂಪದಲ್ಲಿ ಉಳಿಸಿ ಮತ್ತು ಹಳೆಯ ಬ್ಯಾಟರಿಗೆ ನ್ಯಾಯಯುತ ಬೆಲೆ ಪಡೆಯಿರಿ — ಎಲ್ಲವೂ ಒಂದೇ ಕಡೆ.',
+      'index.hero_subtitle': 'ಸ್ಥಳೀಯ ಡೀಲರ್‌ಗಳಿಂದ ಬೆಲೆಗಳನ್ನು ಹೋಲಿಕೆ ಮಾಡಿ, ವಾರಂಟಿ ಕಾರ್ಡ್‌ಗಳನ್ನು ಡಿಜಿಟಲ್ ರೂಪದಲ್ಲಿ ಉಳಿಸಿ ಮತ್ತು ಹಳೆಯ ಬ್ಯಾಟರಿಗೆ ನ್ಯಾಯಯುತ ಬೆಲೆ ಪಡೆಯಿರಿ - ಎಲ್ಲವೂ ಒಂದೇ ಕಡೆ.',
       'index.btn_customer': 'ನಾನು ಗ್ರಾಹಕ',
       'index.btn_dealer': 'ನಾನು ಡೀಲರ್',
       'index.stat_dealers': 'ನೋಂದಾಯಿತ ಡೀಲರ್‌ಗಳು',
@@ -435,5 +435,132 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', updateShadow, { passive: true });
     updateShadow();
   }
+
+  /* ==============================
+     Central WhatsApp & Contact Links Setup
+     ============================== */
+  const initDemoWhatsAppLinks = () => {
+    const waNumber = window.DEMO_WHATSAPP_NUMBER || (typeof BatteryData !== 'undefined' && BatteryData.DEMO_WHATSAPP_NUMBER) || '917905382677';
+    const waDisplay = window.DEMO_PHONE_DISPLAY || (typeof BatteryData !== 'undefined' && BatteryData.DEMO_PHONE_DISPLAY) || '+91 79053 82677';
+
+    // Footer contact link
+    document.querySelectorAll('.footer-wa-contact').forEach(el => {
+      el.href = `https://wa.me/${waNumber}?text=${encodeURIComponent('Hi Battery Fair support, I have an inquiry.')}`;
+      el.textContent = `WhatsApp Support (${waDisplay})`;
+    });
+
+    // Care reminders and claims
+    document.querySelectorAll('.wa-claim-link').forEach(el => {
+      el.href = `https://wa.me/${waNumber}?text=${encodeURIComponent('Hi, I need assistance with my battery warranty claim and expiry reminders.')}`;
+    });
+
+    // Live price alert subscription
+    document.querySelectorAll('.wa-alert-link').forEach(el => {
+      el.href = `https://wa.me/${waNumber}?text=${encodeURIComponent('Hi Battery Fair, please subscribe me to live battery price alerts for my area.')}`;
+    });
+
+    // Scrap valuation quotes
+    document.querySelectorAll('.wa-scrap-quote').forEach(el => {
+      el.href = `https://wa.me/${waNumber}?text=${encodeURIComponent('Hi Battery Fair, I checked my used battery scrap value and want to sell / exchange it.')}`;
+    });
+  };
+
+  initDemoWhatsAppLinks();
+
+  /* ============================================================
+     Fast, Lightweight Scroll-Triggered Reveal Animations
+     ============================================================ */
+  const initScrollReveals = () => {
+    // Respect user motion preference: never animate if reduced-motion is requested
+    const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      return;
+    }
+
+    // Check IntersectionObserver support
+    if (!('IntersectionObserver' in window)) {
+      return;
+    }
+
+    // Signal that animations are active only when observer is ready
+    document.documentElement.classList.add('reveal-ready');
+
+    // Auto-discover candidate cards and sections that should reveal on scroll
+    const autoSelectors = [
+      '.section-header',
+      '.problem-card',
+      '.steps-grid .step',
+      '.waitlist-card',
+      '.coming-feature',
+      '.cta-banner',
+      '.calc-form-card',
+      '.calc-result-card',
+      '.rates-table-card',
+      '.login-card',
+      '.reg-card',
+      '.preview-card',
+      '.customers-card',
+      '.search-bar',
+      '.filter-bar'
+    ];
+
+    autoSelectors.forEach(selector => {
+      document.querySelectorAll(selector).forEach(el => {
+        if (!el.classList.contains('reveal-on-scroll')) {
+          el.classList.add('reveal-on-scroll');
+        }
+      });
+    });
+
+    const revealElements = document.querySelectorAll('.reveal-on-scroll');
+    if (!revealElements.length) {
+      return;
+    }
+
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-revealed');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, {
+      root: null,
+      rootMargin: '0px 0px -36px 0px',
+      threshold: 0.05
+    });
+
+    // Check initial viewport position: reveal above-the-fold elements immediately
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    revealElements.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < viewportHeight && rect.bottom > 0) {
+        el.classList.add('is-revealed');
+      } else {
+        observer.observe(el);
+      }
+    });
+
+    // Failsafe: reveal all remaining elements when jumping via anchors or on timeout
+    const forceRevealAll = () => {
+      document.querySelectorAll('.reveal-on-scroll:not(.is-revealed)').forEach(el => {
+        el.classList.add('is-revealed');
+      });
+    };
+
+    window.addEventListener('hashchange', forceRevealAll);
+    window.addEventListener('popstate', forceRevealAll);
+    document.addEventListener('click', (e) => {
+      const anchor = e.target.closest('a[href*="#"]');
+      if (anchor) {
+        setTimeout(forceRevealAll, 60);
+      }
+    });
+
+    // Safety timeout: ensure no element stays hidden even if user does not scroll
+    setTimeout(forceRevealAll, 1200);
+  };
+
+  initScrollReveals();
 
 });

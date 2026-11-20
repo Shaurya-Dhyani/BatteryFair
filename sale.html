@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dealer Portal — Battery Fair</title>
+  <title>Dealer Portal - Battery Fair</title>
   <meta name="description" content="Dealer portal to register customer battery sales, generate instant digital warranty cards with QR codes, and share via WhatsApp across India.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -136,7 +136,7 @@
   </div>
 
   <!-- ============================================================
-       HERO BANNER — Dealer Portal
+       HERO BANNER: Dealer Portal
        ============================================================ -->
   <section class="finder-hero">
     <div class="container">
@@ -197,9 +197,9 @@
 
           <form id="dealer-login-form" novalidate>
             <div class="form-group" id="login-phone-group" style="text-align: left;">
-              <label for="login-phone">Phone Number</label>
+              <label for="login-phone">WhatsApp / Phone Number</label>
               <input class="form-input" type="tel" id="login-phone"
-                     placeholder="Enter 10-digit phone number" maxlength="10" autocomplete="tel">
+                     placeholder="e.g. 7905382677" value="7905382677" maxlength="10" autocomplete="tel">
               <div class="form-error" id="login-phone-error">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -258,8 +258,8 @@
                 </div>
 
                 <div class="form-group" id="fg-customer-phone">
-                  <label for="customer-phone">Customer Phone <span class="text-accent">*</span></label>
-                  <input class="form-input" type="tel" id="customer-phone" name="customerPhone" placeholder="Enter 10-digit mobile number" maxlength="10">
+                  <label for="customer-phone">Customer WhatsApp Number <span class="text-accent">*</span></label>
+                  <input class="form-input" type="tel" id="customer-phone" name="customerPhone" placeholder="e.g. 7905382677" value="7905382677" maxlength="10">
                   <div class="form-error" id="err-customer-phone" style="color: #dc2626; font-size: 12px; margin-top: 4px; display: none;">Customer phone is required</div>
                 </div>
               </div>
@@ -507,6 +507,7 @@
             <li><a href="finder.html">Find Battery</a></li>
             <li><a href="sale.html">Sell / Exchange</a></li>
             <li><a href="calculator.html">Calculator</a></li>
+            <li><a href="index.html#waitlist">Early Access Waitlist</a></li>
           </ul>
         </div>
         <div>
@@ -521,11 +522,17 @@
         <div>
           <h4 class="footer__heading">Contact</h4>
           <ul class="footer__list">
-            <li><a href="#">Help Centre</a></li>
-            <li><a href="#">Dealer Login</a></li>
-            <li><a href="#">About Us</a></li>
+            <li><a href="#" class="footer-wa-contact" target="_blank" rel="noopener">WhatsApp Support (+91 79053 82677)</a></li>
+            <li><a href="sale.html">Dealer Portal</a></li>
+            <li><a href="finder.html">Find Dealers</a></li>
+            <li><a href="index.html#waitlist">Join Waitlist</a></li>
           </ul>
         </div>
+      </div>
+      <!-- Workshop 3 Validation Notice and Team Attribution -->
+      <div class="footer__validation">
+        <p class="footer__refund-notice">Launching soon. Any money paid is fully refundable.</p>
+        <p class="footer__attribution">Built by The Scale Squad (SSAHE - 22), upGrad School of Technology, Tumkur | Contact: 7905382677</p>
       </div>
       <div class="footer__bottom">
         <span class="footer__copy">&copy; 2026 Battery Fair. All rights reserved.</span>
@@ -548,6 +555,11 @@
   (() => {
     const { DEALERS } = BatteryData;
 
+    /* ---------- Central Demo WhatsApp & Phone Configuration ---------- */
+    const DEMO_WHATSAPP_NUMBER = window.DEMO_WHATSAPP_NUMBER || (BatteryData && BatteryData.DEMO_WHATSAPP_NUMBER) || '917905382677';
+    const DEMO_PHONE_RAW        = window.DEMO_PHONE_RAW || (BatteryData && BatteryData.DEMO_PHONE_RAW) || '7905382677';
+    const DEMO_PHONE_DISPLAY    = window.DEMO_PHONE_DISPLAY || (BatteryData && BatteryData.DEMO_PHONE_DISPLAY) || '+91 79053 82677';
+
     /* ---------- Storage Keys ---------- */
     const STORAGE_DEALER_PHONE_KEY = 'dealerPhone';
     const STORAGE_DEALER_PHONE_ALT = 'dealer_phone';
@@ -562,12 +574,28 @@
     function getStoredSales() {
       try {
         const stored = localStorage.getItem(STORAGE_SALES_KEY);
-        if (!stored) return [];
-        const parsed = JSON.parse(stored);
-        return Array.isArray(parsed) ? parsed : [parsed];
-      } catch (e) {
-        return [];
-      }
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        }
+      } catch (e) {}
+
+      // Default seed demo customer with DEMO_PHONE_RAW
+      return [{
+        id: 'BF-WAR-2026-7905',
+        customerName: 'Rahul Sharma',
+        customerPhone: DEMO_PHONE_RAW,
+        batteryBrand: 'Amaron',
+        model: 'Current 150Ah',
+        serialNumber: 'AMR2026BF79',
+        dealerName: 'Sri Balaji Power Solutions',
+        dealerCity: 'Bengaluru',
+        dealerPhone: DEMO_WHATSAPP_NUMBER,
+        purchaseDate: '2026-09-19',
+        warrantyMonths: 24,
+        expiryDate: '2028-09-19',
+        createdAt: '2026-09-19T10:00:00.000Z'
+      }];
     }
 
     function formatDate(dateStr) {
@@ -699,8 +727,8 @@
           id: 'dealer-1',
           name: 'Sri Balaji Power Solutions',
           city: 'Bengaluru',
-          area: 'SS Puram',
-          phone: '917905382677'
+          area: 'Jayanagar',
+          phone: DEMO_WHATSAPP_NUMBER
         };
       }
 
@@ -713,11 +741,11 @@
 
       // Direct phone match if unique
       const phoneMatch = DEALERS.find(d => {
-        const dp = (d.phone || '').replace(/\D/g, '');
+        const dp = (d.phone || '').toString().replace(/\D/g, '');
         return dp && (dp === cleaned || dp === '91' + cleaned || ('91' + dp) === cleaned || dp.endsWith(cleaned));
       });
 
-      // If user typed any arbitrary 10-digit number, deterministically map to one of the 16 real dealers in DEALERS
+      // If user typed any arbitrary 10-digit number, deterministically map to one of the real dealers in DEALERS
       if (cleaned.length >= 4) {
         const sum = cleaned.split('').reduce((acc, ch) => acc + (parseInt(ch, 10) || 0), 0);
         return DEALERS[sum % DEALERS.length] || phoneMatch || DEALERS[0];
@@ -728,16 +756,16 @@
 
     /* ---------- Populate Quick Dealers ---------- */
     function initQuickDealers() {
-      quickDealersWrap.innerHTML = DEALERS.slice(0, 4).map(d =>
-        `<button type="button" class="quick-dealer-btn" data-dealer-id="${d.id}" data-phone="${(d.phone || '').replace(/^91/, '')}">
+      quickDealersWrap.innerHTML = DEALERS.slice(0, 4).map((d) =>
+        `<button type="button" class="quick-dealer-btn" data-dealer-id="${d.id}" data-phone="${DEMO_PHONE_RAW}">
           ${d.name} (${d.city})
         </button>`
       ).join('');
 
       quickDealersWrap.querySelectorAll('.quick-dealer-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-          loginPhoneInput.value = btn.dataset.phone;
-          handleDealerLogin(btn.dataset.phone, btn.dataset.dealerId);
+          loginPhoneInput.value = DEMO_PHONE_RAW;
+          handleDealerLogin(DEMO_PHONE_RAW, btn.dataset.dealerId);
         });
       });
     }
@@ -766,10 +794,9 @@
     }
 
     function handleDealerLogin(phone, dealerId = null) {
-      const cleaned = phone ? phone.toString().replace(/\D/g, '') : '';
+      let cleaned = phone ? phone.toString().replace(/\D/g, '') : '';
       if (cleaned.length !== 10 && cleaned.length !== 12) {
-        loginPhoneGroup.classList.add('has-error');
-        return;
+        cleaned = DEMO_PHONE_RAW;
       }
       loginPhoneGroup.classList.remove('has-error');
 
@@ -781,12 +808,12 @@
         area: picked.area,
         city: picked.city,
         pincode: picked.pincode,
-        phone: cleaned.length === 10 ? ('91' + cleaned) : (cleaned || picked.phone)
+        phone: DEMO_WHATSAPP_NUMBER
       };
 
       // Store dealer profile & phone in localStorage
-      localStorage.setItem(STORAGE_DEALER_PHONE_KEY, cleaned.slice(-10));
-      localStorage.setItem(STORAGE_DEALER_PHONE_ALT, cleaned.slice(-10));
+      localStorage.setItem(STORAGE_DEALER_PHONE_KEY, DEMO_PHONE_RAW);
+      localStorage.setItem(STORAGE_DEALER_PHONE_ALT, DEMO_PHONE_RAW);
       localStorage.setItem(STORAGE_DEALER_KEY, JSON.stringify(currentDealer));
 
       showDashboard();
@@ -799,7 +826,7 @@
 
       if (currentDealer) {
         sessionDealerName.textContent = currentDealer.name;
-        sessionDealerMeta.textContent = `${currentDealer.area ? currentDealer.area + ', ' : ''}${currentDealer.city} · +91 ${currentDealer.phone.replace(/^91/, '')}`;
+        sessionDealerMeta.textContent = `${currentDealer.area ? currentDealer.area + ', ' : ''}${currentDealer.city} · ${DEMO_PHONE_DISPLAY}`;
       }
 
       renderCustomersTable();
@@ -989,29 +1016,29 @@
         : 'Bengaluru';
       const dealerPhone = (currentDealer && currentDealer.phone)
         ? currentDealer.phone
-        : (localStorage.getItem(STORAGE_DEALER_PHONE_KEY) || localStorage.getItem(STORAGE_DEALER_PHONE_ALT) || '917905382677');
+        : (localStorage.getItem(STORAGE_DEALER_PHONE_KEY) || localStorage.getItem(STORAGE_DEALER_PHONE_ALT) || DEMO_WHATSAPP_NUMBER);
 
       const saleRecord = {
         id: warrantyId,
         customerName: nameVal,
-        customerPhone: phoneClean,
+        customerPhone: phoneClean || DEMO_PHONE_RAW,
         batteryBrand: brandVal,
         model: modelVal,
         serialNumber: serialVal,
         dealerName: dealerName,
         dealerCity: dealerCity,
-        dealerPhone: dealerPhone,
+        dealerPhone: dealerPhone || DEMO_WHATSAPP_NUMBER,
         purchaseDate: dateVal,
         warrantyMonths: parseInt(monthsVal, 10),
         expiryDate: expiryDate,
         // Aliases for compatibility
         customer_name: nameVal,
-        customer_phone: phoneClean,
+        customer_phone: phoneClean || DEMO_PHONE_RAW,
         battery_brand: brandVal,
         serial_number: serialVal,
         dealer_name: dealerName,
         dealer_city: dealerCity,
-        dealer_phone: dealerPhone,
+        dealer_phone: dealerPhone || DEMO_WHATSAPP_NUMBER,
         purchase_date: dateVal,
         warranty_months: parseInt(monthsVal, 10),
         createdAt: new Date().toISOString()
@@ -1054,7 +1081,7 @@
       const months = sale.warrantyMonths || sale.warranty_months || 0;
       const dealerName = sale.dealerName || sale.dealer_name || (currentDealer ? currentDealer.name : 'Sri Balaji Power Solutions');
       const dealerCity = sale.dealerCity || sale.dealer_city || (currentDealer ? currentDealer.city : 'Bengaluru');
-      const dealerPhone = sale.dealerPhone || sale.dealer_phone || (currentDealer ? currentDealer.phone : (localStorage.getItem(STORAGE_DEALER_PHONE_KEY) || '917905382677'));
+      const dealerPhone = sale.dealerPhone || sale.dealer_phone || (currentDealer ? currentDealer.phone : (localStorage.getItem(STORAGE_DEALER_PHONE_KEY) || DEMO_WHATSAPP_NUMBER));
 
       const expiryDate = sale.expiryDate || calculateExpiry(purchaseDate, months);
       const daysLeft = calculateDaysLeft(expiryDate);
@@ -1072,7 +1099,7 @@
       if (cardRegisteredDealer) {
         cardRegisteredDealer.textContent = `${dealerName}, ${dealerCity}`;
       }
-      cardDealerPhone.textContent = `+91 ${dealerPhone.replace(/^91/, '')}`;
+      cardDealerPhone.textContent = DEMO_PHONE_DISPLAY;
       cardPurchaseDate.textContent = formatDate(purchaseDate);
       cardExpiryDate.textContent = formatDate(expiryDate);
 
@@ -1115,7 +1142,7 @@
       }
 
       // Pre-filled WhatsApp message
-      const waMsg = `*Battery Fair — Digital Warranty Certificate* 🛡️\n\n` +
+      const waMsg = `*Battery Fair: Digital Warranty Certificate* 🛡️\n\n` +
         `Dear *${custName}*, your battery warranty is active!\n\n` +
         `📋 *Certificate ID:* ${sale.id || cardIdText.textContent}\n` +
         `🔋 *Battery:* ${brand} ${model}\n` +
@@ -1123,10 +1150,12 @@
         `🏪 *Registered Dealer:* ${dealerName}, ${dealerCity}\n` +
         `📅 *Purchase Date:* ${formatDate(purchaseDate)}\n` +
         `⏳ *Warranty Expiry:* ${formatDate(expiryDate)} (${isActive ? 'Active · ' + daysLeft + ' days left' : 'Expired'})\n` +
-        `📞 *Dealer Phone:* +91 ${dealerPhone.replace(/^91/, '')}\n\n` +
+        `📞 *Dealer Phone:* ${DEMO_PHONE_DISPLAY}\n\n` +
         `✅ *Paperless Warranty!* Show this message or scan the QR code (SN: ${serial}) at any partner dealer across India for immediate claims.`;
 
-      btnShareWhatsapp.href = `https://wa.me/91${custPhone}?text=${encodeURIComponent(waMsg)}`;
+      const targetCustDigits = custPhone ? custPhone.replace(/\D/g, '') : DEMO_PHONE_RAW;
+      const targetWaCust = targetCustDigits.startsWith('91') ? targetCustDigits : ('91' + targetCustDigits);
+      btnShareWhatsapp.href = `https://wa.me/${targetWaCust || DEMO_WHATSAPP_NUMBER}?text=${encodeURIComponent(waMsg)}`;
 
       // Scroll to card smoothly on mobile
       if (window.innerWidth < 992) {
@@ -1162,13 +1191,13 @@
 
       customersTableBody.innerHTML = list.map(w => {
         const custName = w.customerName || w.customer_name;
-        const custPhone = w.customerPhone || w.customer_phone;
+        const custPhone = w.customerPhone || w.customer_phone || DEMO_PHONE_RAW;
         const brand = w.batteryBrand || w.battery_brand;
         const model = w.model;
         const serial = w.serialNumber || w.serial_number;
         const purchaseDate = w.purchaseDate || w.purchase_date;
         const months = w.warrantyMonths || w.warranty_months;
-        const dealerPhone = w.dealerPhone || w.dealer_phone || (currentDealer ? currentDealer.phone : '9845012345');
+        const dealerPhone = w.dealerPhone || w.dealer_phone || (currentDealer ? currentDealer.phone : DEMO_WHATSAPP_NUMBER);
         const expiryDate = w.expiryDate || calculateExpiry(purchaseDate, months);
         const daysLeft = calculateDaysLeft(expiryDate);
         const isActive = daysLeft > 0;
@@ -1176,8 +1205,14 @@
           ? `<span class="badge badge--green">Active (${daysLeft}d left)</span>`
           : `<span class="badge badge--amber">Expired</span>`;
 
-        const waMsg = `*Battery Fair — Digital Warranty Certificate*\n` +
-          `Customer: ${custName}\nBattery: ${brand} ${model}\nSerial: ${serial}\nDealer Phone: +91 ${dealerPhone}\nExpiry: ${formatDate(expiryDate)}`;
+        const waMsg = `*Battery Fair: Digital Warranty Certificate*\n` +
+          `Customer: ${custName}\nBattery: ${brand} ${model}\nSerial: ${serial}\nDealer Phone: ${DEMO_PHONE_DISPLAY}\nExpiry: ${formatDate(expiryDate)}`;
+
+        const targetCustDigits = custPhone ? custPhone.replace(/\D/g, '') : DEMO_PHONE_RAW;
+        const targetWaCust = targetCustDigits.startsWith('91') ? targetCustDigits : ('91' + targetCustDigits);
+        const custDisplay = targetCustDigits.endsWith(DEMO_PHONE_RAW) ? DEMO_PHONE_DISPLAY : `+91 ${targetCustDigits}`;
+        const dealerDigits = (dealerPhone || DEMO_PHONE_RAW).replace(/\D/g, '').replace(/^91/, '');
+        const dealerDisplay = dealerDigits === DEMO_PHONE_RAW ? DEMO_PHONE_DISPLAY : `+91 ${dealerDigits}`;
 
         return `
           <tr>
@@ -1186,13 +1221,13 @@
                 <span class="cell-customer-name">${custName}</span>
               </div>
             </td>
-            <td>+91 ${custPhone}</td>
+            <td>${custDisplay}</td>
             <td>
               <strong>${brand}</strong>
             </td>
             <td>${model}</td>
             <td><code style="font-size: 12px; background: var(--color-bg); padding: 2px 6px; border-radius: 4px;">${serial}</code></td>
-            <td>+91 ${dealerPhone}</td>
+            <td>${dealerDisplay}</td>
             <td>${formatDate(purchaseDate)}</td>
             <td><strong style="color: ${isActive ? 'var(--color-primary)' : 'var(--color-accent)'}">${formatDate(expiryDate)}</strong></td>
             <td>${statusHtml}</td>
@@ -1202,7 +1237,7 @@
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                   View
                 </button>
-                <a href="https://wa.me/91${custPhone}?text=${encodeURIComponent(waMsg)}" target="_blank" rel="noopener" class="btn-icon-table btn-icon-table--wa" title="Share on WhatsApp">
+                <a href="https://wa.me/${targetWaCust || DEMO_WHATSAPP_NUMBER}?text=${encodeURIComponent(waMsg)}" target="_blank" rel="noopener" class="btn-icon-table btn-icon-table--wa" title="Share on WhatsApp">
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
                   WhatsApp
                 </a>
@@ -1242,6 +1277,17 @@
     /* ---------- Initialize Everything ---------- */
     initQuickDealers();
     checkExistingLogin();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('demo') === '1' || urlParams.get('preview') === '1') {
+      const sales = getStoredSales();
+      if (!currentDealer) {
+        handleDealerLogin(DEMO_PHONE_RAW);
+      }
+      if (sales && sales.length > 0) {
+        displayWarrantyCard(sales[0]);
+      }
+    }
 
   })();
   </script>
