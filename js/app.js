@@ -500,6 +500,7 @@ document.addEventListener('DOMContentLoaded', () => {
       '.reg-card',
       '.preview-card',
       '.customers-card',
+      '.customers-section',
       '.search-bar',
       '.filter-bar'
     ];
