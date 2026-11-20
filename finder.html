@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find Battery — Battery Fair</title>
+  <meta name="description" content="Search and compare batteries by vehicle, brand, and price across India.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Hidden SVG defs for half-star gradient -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <linearGradient id="half-star-grad">
+        <stop offset="50%" stop-color="#F59E0B"/>
+        <stop offset="50%" stop-color="#E2E8F0"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <!-- ==================== NAVBAR ==================== -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container navbar__inner">
+      <a href="index.html" class="navbar__logo" aria-label="Battery Fair home">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1" y="6" width="18" height="12" rx="2" ry="2"/>
+          <line x1="23" y1="13" x2="23" y2="11"/>
+          <line x1="11" y1="9" x2="11" y2="15"/>
+          <line x1="8" y1="12" x2="14" y2="12"/>
+        </svg>
+        <span>Battery Fair</span>
+      </a>
+      <div class="navbar__links">
+        <a href="index.html"      class="navbar__link" data-page="index.html" data-i18n="nav.home">Home</a>
+        <a href="finder.html"     class="navbar__link" data-page="finder.html" data-i18n="nav.find">Find Battery</a>
+        <a href="sale.html"       class="navbar__link" data-page="sale.html" data-i18n="nav.sale">Sell / Exchange</a>
+        <a href="calculator.html" class="navbar__link" data-page="calculator.html" data-i18n="nav.calculator">Calculator</a>
+      </div>
+      <div class="lang-dropdown">
+        <button class="lang-dropdown__toggle" id="lang-toggle" aria-haspopup="true" aria-expanded="false">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10
+                     15.3 15.3 0 0 1-4-10A15.3 15.3 0 0 1 12 2z"/>
+          </svg>
+          <span class="lang-dropdown__label">English</span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
+        <div class="lang-dropdown__menu" id="lang-menu" role="menu">
+          <button class="lang-dropdown__item lang-dropdown__item--active" data-lang="en" role="menuitem">English</button>
+          <button class="lang-dropdown__item" data-lang="kn" role="menuitem">ಕನ್ನಡ</button>
+          <button class="lang-dropdown__item" data-lang="hi" role="menuitem">हिन्दी</button>
+        </div>
+      </div>
+      <button class="navbar__hamburger" id="hamburger"
+              aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ==================== MOBILE MENU ==================== -->
+  <div class="mobile-menu" id="mobile-menu" role="navigation" aria-label="Mobile navigation">
+    <span class="mobile-menu__label" data-i18n="nav.navigate">Navigate</span>
+    <a href="index.html"      class="mobile-menu__link" data-page="index.html" data-i18n="nav.home">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </a>
+    <a href="finder.html"     class="mobile-menu__link" data-page="finder.html" data-i18n="nav.find">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Find Battery
+    </a>
+    <a href="sale.html"       class="mobile-menu__link" data-page="sale.html" data-i18n="nav.sale">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+      Sell / Exchange
+    </a>
+    <a href="calculator.html" class="mobile-menu__link" data-page="calculator.html" data-i18n="nav.calculator">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><line x1="8" y1="10" x2="8" y2="10.01"/><line x1="12" y1="10" x2="12" y2="10.01"/><line x1="16" y1="10" x2="16" y2="10.01"/><line x1="8" y1="14" x2="8" y2="14.01"/><line x1="12" y1="14" x2="12" y2="14.01"/><line x1="8" y1="18" x2="8" y2="18.01"/><line x1="12" y1="18" x2="12" y2="18.01"/></svg>
+      Calculator
+    </a>
+    <div class="mobile-menu__divider"></div>
+    <span class="mobile-menu__label" data-i18n="nav.language">Language</span>
+    <a href="#" class="mobile-menu__link mobile-menu__link--active" data-lang="en" onclick="return false;">English</a>
+    <a href="#" class="mobile-menu__link" data-lang="kn" onclick="return false;">ಕನ್ನಡ</a>
+    <a href="#" class="mobile-menu__link" data-lang="hi" onclick="return false;">हिन्दी</a>
+  </div>
+
+
+  <!-- ============================================================
+       FINDER HERO — Search
+       ============================================================ -->
+  <section class="finder-hero">
+    <div class="container">
+      <h1 data-i18n="finder.hero_title">Find a Battery Dealer Near You</h1>
+      <p data-i18n="finder.hero_subtitle">Search by city, area or pincode across India</p>
+
+      <div class="search-bar">
+        <div class="search-bar__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </div>
+        <input class="search-bar__input" id="search-input" type="text"
+               placeholder='Try "Bengaluru", "Pune" or "560001"' data-i18n-placeholder="finder.search_placeholder" autocomplete="off">
+        <button class="btn btn-primary search-bar__btn btn-sm" id="search-btn" data-i18n="finder.btn_search">Search</button>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       FILTER BAR
+       ============================================================ -->
+  <div class="filter-bar">
+    <div class="container">
+
+      <!-- City dropdown -->
+      <div class="filter-bar__group">
+        <label for="city-select" class="filter-bar__label">City</label>
+        <select class="form-select" id="city-select" style="max-width: 240px; height: 42px; padding: var(--space-2) var(--space-4); font-size: var(--font-size-sm); font-weight: 500; cursor: pointer;">
+          <option value="All India" selected>All India</option>
+          <optgroup label="Andhra Pradesh">
+            <option value="Visakhapatnam">Visakhapatnam</option>
+          </optgroup>
+          <optgroup label="Bihar">
+            <option value="Patna">Patna</option>
+          </optgroup>
+          <optgroup label="Chandigarh">
+            <option value="Chandigarh">Chandigarh</option>
+          </optgroup>
+          <optgroup label="Delhi">
+            <option value="Delhi">Delhi</option>
+          </optgroup>
+          <optgroup label="Gujarat">
+            <option value="Ahmedabad">Ahmedabad</option>
+          </optgroup>
+          <optgroup label="Karnataka">
+            <option value="Bengaluru">Bengaluru</option>
+            <option value="Hubballi">Hubballi</option>
+            <option value="Mysuru">Mysuru</option>
+            <option value="Tumkur">Tumkur</option>
+          </optgroup>
+          <optgroup label="Kerala">
+            <option value="Kochi">Kochi</option>
+          </optgroup>
+          <optgroup label="Madhya Pradesh">
+            <option value="Bhopal">Bhopal</option>
+            <option value="Indore">Indore</option>
+          </optgroup>
+          <optgroup label="Maharashtra">
+            <option value="Mumbai">Mumbai</option>
+            <option value="Nagpur">Nagpur</option>
+            <option value="Pune">Pune</option>
+          </optgroup>
+          <optgroup label="Rajasthan">
+            <option value="Jaipur">Jaipur</option>
+          </optgroup>
+          <optgroup label="Tamil Nadu">
+            <option value="Chennai">Chennai</option>
+            <option value="Coimbatore">Coimbatore</option>
+          </optgroup>
+          <optgroup label="Telangana">
+            <option value="Hyderabad">Hyderabad</option>
+          </optgroup>
+          <optgroup label="Uttar Pradesh">
+            <option value="Kanpur">Kanpur</option>
+            <option value="Lucknow">Lucknow</option>
+            <option value="Varanasi">Varanasi</option>
+          </optgroup>
+          <optgroup label="West Bengal">
+            <option value="Kolkata">Kolkata</option>
+          </optgroup>
+        </select>
+      </div>
+
+      <!-- Battery Type chips -->
+      <div class="filter-bar__group">
+        <span class="filter-bar__label" data-i18n="finder.label_type">Battery Type</span>
+        <div class="filter-chips" id="type-chips">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Brand chips -->
+      <div class="filter-bar__group">
+        <span class="filter-bar__label" data-i18n="finder.label_brand">Brand</span>
+        <div class="filter-chips" id="brand-chips">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       RESULTS
+       ============================================================ -->
+  <main>
+    <div class="container">
+
+      <!-- Results count bar -->
+      <div class="results-bar">
+        <div class="results-bar__count" id="results-count">
+          Showing <span>16</span> dealers in All India
+        </div>
+        <button class="results-bar__clear" id="clear-filters" style="display:none;" data-i18n="finder.btn_clear">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+          Clear all filters
+        </button>
+      </div>
+
+      <!-- Dealer card grid -->
+      <div class="dealer-grid" id="dealer-grid">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- Show more dealers button -->
+      <div class="load-more-wrap" id="load-more-wrap" style="text-align: center; margin-top: var(--space-8); margin-bottom: var(--space-12); display: none;">
+        <button class="btn btn-secondary btn-lg load-more-btn" id="load-more-btn" style="min-width: 220px; font-weight: 600;">
+          Show more dealers
+        </button>
+      </div>
+
+    </div>
+  </main>
+
+
+  <!-- ============================================================
+       BOOK FITTING MODAL
+       ============================================================ -->
+  <div class="modal-overlay" id="booking-modal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-labelledby="modal-title">
+
+      <div class="modal__header">
+        <h3 id="modal-title" data-i18n="finder.modal_title">Book a Fitting</h3>
+        <button class="modal__close" id="modal-close" aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Form -->
+      <div class="modal__body" id="modal-form-body">
+        <div class="modal__dealer-name" id="modal-dealer-name">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l1-4h16l1 4"/><path d="M3 9v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V9"/>
+            <path d="M9 21V9"/><path d="M15 21V9"/><path d="M3 9h18"/>
+          </svg>
+          <span id="modal-dealer-label"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="book-name">Your name</label>
+          <input class="form-input" type="text" id="book-name" placeholder="e.g. Ramesh Kumar">
+        </div>
+        <div class="form-group">
+          <label for="book-phone">Mobile number</label>
+          <input class="form-input" type="tel" id="book-phone" placeholder="10-digit mobile number" maxlength="10">
+        </div>
+        <div class="form-group">
+          <label for="book-vehicle">Vehicle / usage type</label>
+          <select class="form-select" id="book-vehicle">
+            <option value="" disabled selected>Select type</option>
+            <option value="two-wheeler">Two-Wheeler</option>
+            <option value="car">Car / SUV</option>
+            <option value="commercial">Commercial Vehicle</option>
+            <option value="inverter">Inverter / UPS</option>
+            <option value="solar">Solar</option>
+            <option value="tractor">Tractor / Agri</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="book-date">Preferred date</label>
+          <input class="form-input" type="date" id="book-date">
+        </div>
+      </div>
+
+      <div class="modal__footer" id="modal-form-footer">
+        <button class="btn btn-primary btn-lg" id="book-submit" data-i18n="finder.btn_confirm_booking">
+          <!-- CalendarCheck icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+            <polyline points="9 16 11 18 15 14"/>
+          </svg>
+          Confirm Booking
+        </button>
+      </div>
+
+      <!-- Success state -->
+      <div class="modal__success" id="modal-success">
+        <div class="modal__success-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 11 12 14 22 4"/>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+          </svg>
+        </div>
+        <h3 data-i18n="finder.modal_success_title">Booking Confirmed!</h3>
+        <p id="modal-success-msg">The dealer will call you shortly to confirm the fitting appointment.</p>
+        <button class="btn btn-primary" id="modal-done">Done</button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <div class="footer__brand-name">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="18" height="12" rx="2" ry="2"/><line x1="23" y1="13" x2="23" y2="11"/><line x1="11" y1="9" x2="11" y2="15"/><line x1="8" y1="12" x2="14" y2="12"/></svg>
+            Battery Fair
+          </div>
+          <p class="footer__brand-desc">India's trusted battery marketplace. Compare prices, find dealers and get the best battery for your vehicle or home.</p>
+        </div>
+        <div>
+          <h4 class="footer__heading">Quick Links</h4>
+          <ul class="footer__list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="finder.html">Find Battery</a></li>
+            <li><a href="sale.html">Sell / Exchange</a></li>
+            <li><a href="calculator.html">Calculator</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer__heading">Categories</h4>
+          <ul class="footer__list">
+            <li><a href="#">Two-Wheeler</a></li>
+            <li><a href="#">Car / SUV</a></li>
+            <li><a href="#">Inverter / UPS</a></li>
+            <li><a href="#">Solar</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer__heading">Contact</h4>
+          <ul class="footer__list">
+            <li><a href="#">Help Centre</a></li>
+            <li><a href="#">Dealer Login</a></li>
+            <li><a href="#">About Us</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span class="footer__copy">&copy; 2026 Battery Fair. All rights reserved.</span>
+        <span class="footer__location">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Serving dealers across India
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+
+  <!-- ============================================================
+       Finder Page Logic
+       ============================================================ -->
+  <script>
+  'use strict';
+  (() => {
+    // Update translations dictionary if BatteryI18n is loaded so setLanguage doesn't revert them
+    if (window.BatteryI18n && BatteryI18n.TRANSLATIONS && BatteryI18n.TRANSLATIONS.en) {
+      BatteryI18n.TRANSLATIONS.en['finder.hero_subtitle'] = 'Search by city, area or pincode across India';
+      BatteryI18n.TRANSLATIONS.en['finder.search_placeholder'] = 'Try "Bengaluru", "Pune" or "560001"';
+    }
+
+    const { CATEGORIES, BRANDS, DEALERS } = BatteryData;
+
+    /* ---------- State ---------- */
+    let searchQuery    = '';
+    let selectedCity   = 'All India';
+    let activeTypes    = new Set();
+    let activeBrands   = new Set();
+    let visibleCount   = 9;
+
+    /* ---------- DOM refs ---------- */
+    const searchInput   = document.getElementById('search-input');
+    const searchBtn     = document.getElementById('search-btn');
+    const citySelect    = document.getElementById('city-select');
+    const typeChipsEl   = document.getElementById('type-chips');
+    const brandChipsEl  = document.getElementById('brand-chips');
+    const gridEl        = document.getElementById('dealer-grid');
+    const countEl       = document.getElementById('results-count');
+    const clearBtn      = document.getElementById('clear-filters');
+    const loadMoreWrap  = document.getElementById('load-more-wrap');
+    const loadMoreBtn   = document.getElementById('load-more-btn');
+
+    /* ---------- State Lookup for Cities ---------- */
+    const CITY_STATE = {
+      'Bengaluru': 'Karnataka',
+      'Tumkur': 'Karnataka',
+      'Mysuru': 'Karnataka',
+      'Hubballi': 'Karnataka',
+      'Chennai': 'Tamil Nadu',
+      'Coimbatore': 'Tamil Nadu',
+      'Hyderabad': 'Telangana',
+      'Delhi': 'Delhi',
+      'Mumbai': 'Maharashtra',
+      'Pune': 'Maharashtra',
+      'Nagpur': 'Maharashtra',
+      'Lucknow': 'Uttar Pradesh',
+      'Kanpur': 'Uttar Pradesh',
+      'Varanasi': 'Uttar Pradesh',
+      'Kolkata': 'West Bengal',
+      'Ahmedabad': 'Gujarat',
+      'Jaipur': 'Rajasthan',
+      'Chandigarh': 'Chandigarh',
+      'Kochi': 'Kerala',
+      'Indore': 'Madhya Pradesh',
+      'Bhopal': 'Madhya Pradesh',
+      'Patna': 'Bihar',
+      'Visakhapatnam': 'Andhra Pradesh'
+    };
+
+    /* ---------- Populate City Dropdown (Grouped by State) ---------- */
+    function populateCityDropdown() {
+      if (!citySelect) return;
+      const stateMap = {};
+      DEALERS.forEach(d => {
+        if (!d.city) return;
+        const state = d.state || CITY_STATE[d.city] || 'Other';
+        if (!stateMap[state]) stateMap[state] = new Set();
+        stateMap[state].add(d.city);
+      });
+
+      const sortedStates = Object.keys(stateMap).sort((a, b) => a.localeCompare(b));
+
+      let html = `<option value="All India"${selectedCity === 'All India' ? ' selected' : ''}>All India</option>`;
+      sortedStates.forEach(state => {
+        const sortedCities = Array.from(stateMap[state]).sort((a, b) => a.localeCompare(b));
+        html += `<optgroup label="${state}">`;
+        sortedCities.forEach(c => {
+          html += `<option value="${c}"${selectedCity === c ? ' selected' : ''}>${c}</option>`;
+        });
+        html += `</optgroup>`;
+      });
+
+      citySelect.innerHTML = html;
+    }
+
+    /* ---------- Render filter chips ---------- */
+    function renderChips() {
+      // Type chips
+      typeChipsEl.innerHTML = CATEGORIES.map(c =>
+        `<button class="chip${activeTypes.has(c.id) ? ' active' : ''}"
+                 data-type="${c.id}">${c.label}</button>`
+      ).join('');
+
+      // Brand chips
+      brandChipsEl.innerHTML = BRANDS.map(b =>
+        `<button class="chip${activeBrands.has(b) ? ' active' : ''}"
+                 data-brand="${b}">${b}</button>`
+      ).join('');
+    }
+
+    /* ---------- Filter dealers ---------- */
+    function getFilteredDealers() {
+      const q = searchQuery.trim().toLowerCase();
+      const filtered = DEALERS.filter(d => {
+        // City filter
+        if (selectedCity && selectedCity !== 'All India') {
+          if (!d.city || d.city.toLowerCase() !== selectedCity.toLowerCase()) return false;
+        }
+        // Search match
+        if (q) {
+          const haystack = `${d.name} ${d.area} ${d.city} ${d.pincode}`.toLowerCase();
+          if (!haystack.includes(q)) return false;
+        }
+        // Type match
+        if (activeTypes.size > 0) {
+          if (!d.categories || !d.categories.some(c => activeTypes.has(c))) return false;
+        }
+        // Brand match
+        if (activeBrands.size > 0) {
+          if (!d.brands || !d.brands.some(b => activeBrands.has(b))) return false;
+        }
+        return true;
+      });
+
+      // (3) Sort results by rating, highest first
+      filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+      return filtered;
+    }
+
+    /* ---------- Star SVG helper ---------- */
+    function starSVG(cls) {
+      return `<svg class="${cls}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                   stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+              </svg>`;
+    }
+
+    function renderStars(rating) {
+      let html = '';
+      for (let i = 1; i <= 5; i++) {
+        if (rating >= i)            html += starSVG('star-filled');
+        else if (rating >= i - 0.5) html += starSVG('star-half');
+        else                        html += starSVG('star-empty');
+      }
+      return html;
+    }
+
+    /* ---------- Format currency ---------- */
+    function fmt(n) {
+      return n.toLocaleString('en-IN');
+    }
+
+    /* ---------- Render dealer cards ---------- */
+    function renderGrid() {
+      const dealers = getFilteredDealers();
+      const hasFilters = searchQuery || activeTypes.size || activeBrands.size || (selectedCity && selectedCity !== 'All India');
+      const cityLabel = (selectedCity && selectedCity !== 'All India') ? selectedCity : 'All India';
+      const lang = window.BatteryI18n ? BatteryI18n.getLanguage() : 'en';
+      const bookFittingText = (window.BatteryI18n && BatteryI18n.TRANSLATIONS[lang] && BatteryI18n.TRANSLATIONS[lang]['finder.btn_book_fitting']) || 'Book Fitting';
+
+      // (4) Keep the "Showing X dealers" count based on the total matches, not just the visible ones
+      countEl.innerHTML = `Showing <span>${dealers.length}</span> dealer${dealers.length === 1 ? '' : 's'} in ${cityLabel}`;
+      clearBtn.style.display = hasFilters ? 'inline-flex' : 'none';
+
+      if (dealers.length === 0) {
+        if (loadMoreWrap) loadMoreWrap.style.display = 'none';
+        gridEl.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state__icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                <line x1="8" y1="8" x2="14" y2="14"/>
+                <line x1="14" y1="8" x2="8" y2="14"/>
+              </svg>
+            </div>
+            <h3>No dealers found</h3>
+            <p>Try a different search term or adjust your filters to see more results.</p>
+            <button class="btn btn-secondary" onclick="clearAllFilters()">Clear All Filters</button>
+          </div>`;
+        return;
+      }
+
+      // (1) Show the dealers visibleCount at a time (next 9 on show more)
+      const visibleDealers = dealers.slice(0, visibleCount);
+
+      gridEl.innerHTML = visibleDealers.map(d => `
+        <div class="dealer-card">
+          <div class="dealer-card__header">
+            <div>
+              <div class="dealer-card__name">${d.name}</div>
+              <div class="dealer-card__area">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+                ${d.area}, ${d.city} — ${d.pincode}
+              </div>
+            </div>
+            <span class="badge--stock">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              In stock
+            </span>
+          </div>
+
+          <div class="dealer-card__body">
+            <!-- Rating -->
+            <div class="rating">
+              <div class="rating__stars">${renderStars(d.rating)}</div>
+              <span class="rating__value">${d.rating}</span>
+              <span class="rating__reviews">(${d.reviewCount})</span>
+            </div>
+
+            <div class="dealer-card__info">
+              <!-- Brands -->
+              <div class="dealer-card__info-row">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+                  <line x1="7" y1="7" x2="7.01" y2="7"/>
+                </svg>
+                <div class="dealer-card__brands">
+                  ${d.brands.map(b => `<span class="brand-pill">${b}</span>`).join('')}
+                </div>
+              </div>
+
+              <!-- Price range -->
+              <div class="dealer-card__info-row">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 3h12"/>
+                  <path d="M6 8h12"/>
+                  <path d="M6 13l8.5 8"/>
+                  <path d="M6 13h3a4 4 0 0 0 0-8"/>
+                </svg>
+                <span><strong>₹${fmt(d.priceRange.min)}</strong> — <strong>₹${fmt(d.priceRange.max)}</strong></span>
+              </div>
+
+              <!-- Experience -->
+              <div class="dealer-card__info-row">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                  <line x1="16" y1="2" x2="16" y2="6"/>
+                  <line x1="8" y1="2" x2="8" y2="6"/>
+                  <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                <span>${d.yearsOpen} years in business${d.freeInstall ? ' · <strong style="color:var(--color-primary)">Free install</strong>' : ''}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="dealer-card__actions">
+            <a href="https://wa.me/91${d.phone}?text=${encodeURIComponent('Hi, I found you on Battery Fair. I need a battery — can you help?')}"
+               target="_blank" rel="noopener" class="btn btn-whatsapp">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.555 4.126 1.528 5.86L.06 23.487a.5.5 0 0 0 .613.613l5.627-1.468A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.94 9.94 0 0 1-5.332-1.543l-.382-.228-3.332.869.886-3.236-.25-.396A9.94 9.94 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+              </svg>
+              WhatsApp
+            </a>
+            <button class="btn btn-primary" onclick="openBooking('${d.id}')" data-i18n="finder.btn_book_fitting">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+              ${bookFittingText}
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      // Toggle "Show more dealers" button
+      if (loadMoreWrap) {
+        if (visibleCount < dealers.length) {
+          loadMoreWrap.style.display = 'block';
+        } else {
+          loadMoreWrap.style.display = 'none';
+        }
+      }
+    }
+
+
+    /* ---------- Events: Show more dealers button ---------- */
+    if (loadMoreBtn) {
+      loadMoreBtn.addEventListener('click', () => {
+        visibleCount += 9;
+        renderGrid();
+      });
+    }
+
+    /* ---------- Events: city dropdown ---------- */
+    if (citySelect) {
+      citySelect.addEventListener('change', () => {
+        selectedCity = citySelect.value;
+        visibleCount = 9;
+        renderGrid();
+      });
+    }
+
+    /* ---------- Events: search ---------- */
+    searchInput.addEventListener('input', () => {
+      searchQuery = searchInput.value;
+      visibleCount = 9;
+      renderGrid();
+    });
+
+    if (searchBtn) {
+      searchBtn.addEventListener('click', () => {
+        searchQuery = searchInput.value;
+        visibleCount = 9;
+        renderGrid();
+      });
+    }
+
+    /* ---------- Events: type chips ---------- */
+    typeChipsEl.addEventListener('click', e => {
+      const chip = e.target.closest('.chip');
+      if (!chip) return;
+      const t = chip.dataset.type;
+      activeTypes.has(t) ? activeTypes.delete(t) : activeTypes.add(t);
+      visibleCount = 9;
+      renderChips();
+      renderGrid();
+    });
+
+    /* ---------- Events: brand chips ---------- */
+    brandChipsEl.addEventListener('click', e => {
+      const chip = e.target.closest('.chip');
+      if (!chip) return;
+      const b = chip.dataset.brand;
+      activeBrands.has(b) ? activeBrands.delete(b) : activeBrands.add(b);
+      visibleCount = 9;
+      renderChips();
+      renderGrid();
+    });
+
+    /* ---------- Clear all ---------- */
+    window.clearAllFilters = function() {
+      searchQuery = '';
+      searchInput.value = '';
+      selectedCity = 'All India';
+      if (citySelect) citySelect.value = 'All India';
+      activeTypes.clear();
+      activeBrands.clear();
+      visibleCount = 9;
+      renderChips();
+      renderGrid();
+    };
+    clearBtn.addEventListener('click', clearAllFilters);
+
+
+    /* ---------- Booking modal ---------- */
+    const modalOverlay  = document.getElementById('booking-modal');
+    const modalClose    = document.getElementById('modal-close');
+    const modalLabel    = document.getElementById('modal-dealer-label');
+    const modalFormBody = document.getElementById('modal-form-body');
+    const modalFormFoot = document.getElementById('modal-form-footer');
+    const modalSuccess  = document.getElementById('modal-success');
+    const modalDone     = document.getElementById('modal-done');
+    const bookSubmit    = document.getElementById('book-submit');
+    let   currentDealer = null;
+
+    window.openBooking = function(dealerId) {
+      currentDealer = DEALERS.find(d => d.id === dealerId);
+      if (!currentDealer) return;
+
+      modalLabel.textContent = currentDealer.name + ' — ' + currentDealer.area + (currentDealer.city ? ', ' + currentDealer.city : '');
+
+      // Reset form
+      document.getElementById('book-name').value  = '';
+      document.getElementById('book-phone').value = '';
+      document.getElementById('book-vehicle').selectedIndex = 0;
+      document.getElementById('book-date').value  = '';
+      modalFormBody.style.display = '';
+      modalFormFoot.style.display = '';
+      modalSuccess.classList.remove('show');
+      const resetMsg = document.getElementById('modal-success-msg') || modalSuccess.querySelector('p');
+      if (resetMsg) {
+        resetMsg.textContent = 'The dealer will call you shortly to confirm the fitting appointment.';
+      }
+
+      // Set min date to today
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('book-date').setAttribute('min', today);
+
+      modalOverlay.classList.add('open');
+      modalOverlay.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    };
+
+    function closeModal() {
+      modalOverlay.classList.remove('open');
+      modalOverlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    modalClose.addEventListener('click', closeModal);
+    modalDone.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', e => {
+      if (e.target === modalOverlay) closeModal();
+    });
+
+    bookSubmit.addEventListener('click', () => {
+      const name  = document.getElementById('book-name').value.trim();
+      const phone = document.getElementById('book-phone').value.trim();
+      const date  = document.getElementById('book-date').value;
+      if (!name || !phone || phone.length < 10) {
+        alert('Please enter your name and a valid 10-digit phone number.');
+        return;
+      }
+      // Update success message with dealer name, customer mobile number, and chosen date
+      const dealerName = currentDealer ? currentDealer.name : 'The dealer';
+      const successMsg = document.getElementById('modal-success-msg') || modalSuccess.querySelector('p');
+      if (successMsg) {
+        const dateStr = date ? ` on ${date}` : '';
+        successMsg.textContent = `${dealerName} will call you shortly at ${phone} to confirm the fitting appointment${dateStr}.`;
+      }
+      // Show success
+      modalFormBody.style.display = 'none';
+      modalFormFoot.style.display = 'none';
+      modalSuccess.classList.add('show');
+    });
+
+
+    /* ---------- Init ---------- */
+    populateCityDropdown();
+    renderChips();
+    renderGrid();
+
+    window.addEventListener('batteryfair:languagechange', () => {
+      renderGrid();
+    });
+
+  })();
+  </script>
+
+</body>
+</html>

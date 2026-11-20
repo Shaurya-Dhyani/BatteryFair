@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Old Battery Price Calculator — Battery Fair</title>
+  <meta name="description" content="Calculate the scrap and exchange value of your old battery across India. Get instant fair price estimates based on weekly dealer rates.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ============================================================
+       Calculator Specific Styles
+       ============================================================ */
+    .calc-section {
+      padding: var(--space-8) 0 var(--space-16);
+    }
+
+    .calc-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-8);
+      align-items: start;
+    }
+
+    @media (min-width: 992px) {
+      .calc-grid {
+        grid-template-columns: 1.15fr 0.85fr;
+      }
+    }
+
+    /* Form Card */
+    .calc-form-card {
+      background: var(--color-white);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6) var(--space-8);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--color-border);
+    }
+
+    @media (max-width: 640px) {
+      .calc-form-card {
+        padding: var(--space-5) var(--space-4);
+      }
+    }
+
+    .calc-card-header {
+      margin-bottom: var(--space-6);
+      padding-bottom: var(--space-4);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .calc-card-title {
+      font-size: var(--font-size-2xl);
+      color: var(--color-dark);
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .calc-card-title svg {
+      width: 26px;
+      height: 26px;
+      color: var(--color-primary);
+    }
+
+    .calc-card-subtitle {
+      font-size: var(--font-size-sm);
+      color: var(--color-text-muted);
+      margin-top: var(--space-1);
+    }
+
+    .form-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: var(--space-2);
+      flex-wrap: wrap;
+      gap: var(--space-1);
+    }
+
+    .form-label-title {
+      font-size: var(--font-size-sm);
+      font-weight: 700;
+      color: var(--color-dark);
+    }
+
+    .form-label-hint {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+    }
+
+    /* Battery Type Selector Cards */
+    .type-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-3);
+      margin-bottom: var(--space-2);
+    }
+
+    @media (max-width: 600px) {
+      .type-cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .type-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: var(--space-4) var(--space-3);
+      background: var(--color-white);
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all var(--transition-base);
+      user-select: none;
+      position: relative;
+    }
+
+    .type-card:hover {
+      border-color: var(--color-primary);
+      background: #F0FDF4;
+      transform: translateY(-2px);
+    }
+
+    .type-card.active {
+      border-color: var(--color-primary);
+      background: #F0FDF4;
+      box-shadow: 0 0 0 1px var(--color-primary);
+    }
+
+    .type-card__icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--color-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-dark);
+      margin-bottom: var(--space-2);
+      transition: all var(--transition-fast);
+    }
+
+    .type-card.active .type-card__icon {
+      background: var(--color-primary);
+      color: var(--color-white);
+    }
+
+    .type-card__icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .type-card__title {
+      font-size: var(--font-size-sm);
+      font-weight: 700;
+      color: var(--color-dark);
+      margin-bottom: 2px;
+    }
+
+    .type-card__rate {
+      font-size: var(--font-size-xs);
+      font-weight: 700;
+      color: var(--color-primary);
+      background: var(--color-primary-light);
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      margin-top: 4px;
+    }
+
+    /* Capacity input with unit & quick presets */
+    .input-unit-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-unit-wrap .form-input {
+      padding-right: 56px;
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      color: var(--color-dark);
+    }
+
+    .input-unit-tag {
+      position: absolute;
+      right: 14px;
+      font-size: var(--font-size-sm);
+      font-weight: 700;
+      color: var(--color-text-muted);
+      pointer-events: none;
+    }
+
+    .preset-chips-wrap {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+      margin-top: var(--space-2);
+    }
+
+    .preset-chips-label {
+      font-size: var(--font-size-xs);
+      font-weight: 600;
+      color: var(--color-text-muted);
+    }
+
+    .preset-chip-btn {
+      font-size: var(--font-size-xs);
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--color-border);
+      background: var(--color-bg);
+      color: var(--color-text);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .preset-chip-btn:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+      background: var(--color-primary-light);
+    }
+
+    .preset-chip-btn.active {
+      border-color: var(--color-primary);
+      background: var(--color-primary);
+      color: var(--color-white);
+    }
+
+    /* Age Slider and Stepper */
+    .age-control-box {
+      display: flex;
+      gap: var(--space-4);
+      align-items: center;
+    }
+
+    .age-slider-wrap {
+      flex: 1;
+    }
+
+    .form-range {
+      width: 100%;
+      height: 8px;
+      border-radius: var(--radius-full);
+      background: var(--color-border);
+      outline: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+    }
+
+    .form-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      border: 3px solid var(--color-white);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      transition: transform var(--transition-fast);
+    }
+
+    .form-range::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+
+    .age-number-wrap {
+      width: 110px;
+      flex-shrink: 0;
+    }
+
+    .age-number-wrap .form-input {
+      font-size: var(--font-size-base);
+      font-weight: 600;
+      text-align: center;
+      padding-right: 36px;
+    }
+
+    .age-scale-ticks {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--color-text-muted);
+    }
+
+    /* Condition Selector Cards */
+    .condition-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-3);
+    }
+
+    @media (max-width: 640px) {
+      .condition-cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .condition-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding: var(--space-4);
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-white);
+      cursor: pointer;
+      text-align: left;
+      transition: all var(--transition-base);
+      user-select: none;
+    }
+
+    .condition-card:hover {
+      border-color: var(--color-primary);
+      background: #F0FDF4;
+      transform: translateY(-2px);
+    }
+
+    .condition-card.active {
+      border-color: var(--color-primary);
+      background: #F0FDF4;
+      box-shadow: 0 0 0 1px var(--color-primary);
+    }
+
+    .condition-card__top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-1);
+    }
+
+    .condition-card__name {
+      font-size: var(--font-size-sm);
+      font-weight: 700;
+      color: var(--color-dark);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .condition-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .condition-dot--good { background: #16A34A; }
+    .condition-dot--avg  { background: #F59E0B; }
+    .condition-dot--dead { background: #DC2626; }
+
+    .condition-card__tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      background: var(--color-bg);
+      color: var(--color-text-muted);
+    }
+
+    .condition-card.active .condition-card__tag {
+      background: var(--color-primary-light);
+      color: var(--color-primary-hover);
+    }
+
+    .condition-card__desc {
+      font-size: 12px;
+      color: var(--color-text-muted);
+      line-height: 1.4;
+      margin-top: 4px;
+    }
+
+    /* ==================== Result Column & Large Card ==================== */
+    .calc-result-sticky {
+      position: sticky;
+      top: calc(var(--navbar-height) + var(--space-4));
+    }
+
+    .calc-result-card {
+      background: var(--color-white);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 16px 40px rgba(11, 31, 58, 0.14);
+      border: 2px solid rgba(22, 163, 74, 0.25);
+      overflow: hidden;
+      transition: transform var(--transition-base), box-shadow var(--transition-base);
+    }
+
+    .calc-result-card:hover {
+      box-shadow: 0 20px 48px rgba(11, 31, 58, 0.18);
+    }
+
+    .calc-result-header {
+      background: linear-gradient(135deg, #0B1F3A 0%, #162E4E 50%, #16A34A 100%);
+      color: var(--color-white);
+      padding: var(--space-6) var(--space-6) var(--space-8);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .calc-result-header::after {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 160px;
+      height: 160px;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.25) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .calc-result-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #FEF08A;
+      background: rgba(255, 255, 255, 0.12);
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      margin-bottom: var(--space-3);
+    }
+
+    .calc-result-badge svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .calc-result-label {
+      font-size: var(--font-size-sm);
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 500;
+      margin-bottom: var(--space-1);
+    }
+
+    .calc-result-range {
+      font-size: clamp(2rem, 4.5vw, 2.75rem);
+      font-weight: 800;
+      line-height: 1.1;
+      color: var(--color-white);
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-2);
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .calc-result-midpoint {
+      font-size: var(--font-size-sm);
+      color: rgba(255, 255, 255, 0.85);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .calc-result-midpoint strong {
+      color: #86EFAC;
+      font-weight: 700;
+      font-size: var(--font-size-base);
+    }
+
+    .calc-result-body {
+      padding: var(--space-6);
+    }
+
+    /* Breakdown Box */
+    .calc-breakdown {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-4);
+      margin-bottom: var(--space-5);
+    }
+
+    .calc-breakdown__heading {
+      font-size: var(--font-size-xs);
+      font-weight: 700;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: var(--space-3);
+    }
+
+    .calc-breakdown__row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: var(--font-size-sm);
+      padding: 6px 0;
+      border-bottom: 1px dashed var(--color-border);
+    }
+
+    .calc-breakdown__row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+      padding-top: var(--space-2);
+    }
+
+    .calc-breakdown__label {
+      color: var(--color-text-muted);
+    }
+
+    .calc-breakdown__val {
+      font-weight: 600;
+      color: var(--color-dark);
+      text-align: right;
+    }
+
+    .calc-breakdown__row--total .calc-breakdown__label {
+      font-weight: 700;
+      color: var(--color-dark);
+    }
+
+    .calc-breakdown__row--total .calc-breakdown__val {
+      font-weight: 800;
+      color: var(--color-primary);
+      font-size: var(--font-size-base);
+    }
+
+    /* Specific Note required by prompt */
+    .calc-note-box {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-3);
+      background: #FFFBEB;
+      border: 1.5px solid #FCD34D;
+      border-radius: var(--radius-md);
+      padding: var(--space-3) var(--space-4);
+      margin-bottom: var(--space-6);
+    }
+
+    .calc-note-box svg {
+      width: 20px;
+      height: 20px;
+      color: #D97706;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .calc-note-text {
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      color: #92400E;
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    /* Find dealer button */
+    .btn-find-dealer {
+      width: 100%;
+      box-shadow: 0 4px 16px rgba(22, 163, 74, 0.35);
+    }
+
+    .btn-find-dealer:hover {
+      box-shadow: 0 6px 20px rgba(22, 163, 74, 0.45);
+    }
+
+    /* Reference Cards & Tables */
+    .calc-info-section {
+      margin-top: var(--space-12);
+    }
+
+    .rates-table-card {
+      background: var(--color-white);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      border: 1px solid var(--color-border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .rates-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: var(--space-4);
+    }
+
+    .rates-table th,
+    .rates-table td {
+      padding: var(--space-3) var(--space-4);
+      text-align: left;
+      border-bottom: 1px solid var(--color-border);
+      font-size: var(--font-size-sm);
+    }
+
+    .rates-table th {
+      font-weight: 700;
+      color: var(--color-dark);
+      background: var(--color-bg);
+    }
+
+    .rates-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .rates-table td:nth-child(2),
+    .rates-table td:nth-child(3) {
+      font-weight: 600;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== NAVBAR ==================== -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container navbar__inner">
+      <a href="index.html" class="navbar__logo" aria-label="Battery Fair home">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1" y="6" width="18" height="12" rx="2" ry="2"/>
+          <line x1="23" y1="13" x2="23" y2="11"/>
+          <line x1="11" y1="9" x2="11" y2="15"/>
+          <line x1="8" y1="12" x2="14" y2="12"/>
+        </svg>
+        <span>Battery Fair</span>
+      </a>
+      <div class="navbar__links">
+        <a href="index.html"      class="navbar__link" data-page="index.html" data-i18n="nav.home">Home</a>
+        <a href="finder.html"     class="navbar__link" data-page="finder.html" data-i18n="nav.find">Find Battery</a>
+        <a href="sale.html"       class="navbar__link" data-page="sale.html" data-i18n="nav.sale">Sell / Exchange</a>
+        <a href="calculator.html" class="navbar__link" data-page="calculator.html" data-i18n="nav.calculator">Calculator</a>
+      </div>
+      <div class="lang-dropdown">
+        <button class="lang-dropdown__toggle" id="lang-toggle" aria-haspopup="true" aria-expanded="false">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10
+                     15.3 15.3 0 0 1-4-10A15.3 15.3 0 0 1 12 2z"/>
+          </svg>
+          <span class="lang-dropdown__label">English</span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
+        <div class="lang-dropdown__menu" id="lang-menu" role="menu">
+          <button class="lang-dropdown__item lang-dropdown__item--active" data-lang="en" role="menuitem">English</button>
+          <button class="lang-dropdown__item" data-lang="kn" role="menuitem">ಕನ್ನಡ</button>
+          <button class="lang-dropdown__item" data-lang="hi" role="menuitem">हिन्दी</button>
+        </div>
+      </div>
+      <button class="navbar__hamburger" id="hamburger"
+              aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ==================== MOBILE MENU ==================== -->
+  <div class="mobile-menu" id="mobile-menu" role="navigation" aria-label="Mobile navigation">
+    <span class="mobile-menu__label" data-i18n="nav.navigate">Navigate</span>
+    <a href="index.html"      class="mobile-menu__link" data-page="index.html" data-i18n="nav.home">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </a>
+    <a href="finder.html"     class="mobile-menu__link" data-page="finder.html" data-i18n="nav.find">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Find Battery
+    </a>
+    <a href="sale.html"       class="mobile-menu__link" data-page="sale.html" data-i18n="nav.sale">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+      Sell / Exchange
+    </a>
+    <a href="calculator.html" class="mobile-menu__link" data-page="calculator.html" data-i18n="nav.calculator">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><line x1="8" y1="10" x2="8" y2="10.01"/><line x1="12" y1="10" x2="12" y2="10.01"/><line x1="16" y1="10" x2="16" y2="10.01"/><line x1="8" y1="14" x2="8" y2="14.01"/><line x1="12" y1="14" x2="12" y2="14.01"/><line x1="8" y1="18" x2="8" y2="18.01"/><line x1="12" y1="18" x2="12" y2="18.01"/></svg>
+      Calculator
+    </a>
+    <div class="mobile-menu__divider"></div>
+    <span class="mobile-menu__label" data-i18n="nav.language">Language</span>
+    <a href="#" class="mobile-menu__link mobile-menu__link--active" data-lang="en" onclick="return false;">English</a>
+    <a href="#" class="mobile-menu__link" data-lang="kn" onclick="return false;">ಕನ್ನಡ</a>
+    <a href="#" class="mobile-menu__link" data-lang="hi" onclick="return false;">हिन्दी</a>
+  </div>
+
+  <!-- ============================================================
+       HERO BANNER
+       ============================================================ -->
+  <section class="finder-hero">
+    <div class="container">
+      <h1 data-i18n="calc.hero_title">Old Battery Price Calculator</h1>
+      <p data-i18n="calc.hero_subtitle">Estimate fair scrap &amp; exchange value for your used battery based on current dealer rates across India.</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CALCULATOR MAIN
+       ============================================================ -->
+  <main class="main-content" style="padding-top: 0;">
+    <section class="calc-section">
+      <div class="container">
+
+        <div class="calc-grid">
+
+          <!-- ----------------------------------------------------
+               LEFT: Form Inputs Card
+               ---------------------------------------------------- -->
+          <div class="calc-form-card">
+            <div class="calc-card-header">
+              <h2 class="calc-card-title" data-i18n="calc.details_title">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="4" y="2" width="16" height="20" rx="2"/>
+                  <line x1="8" y1="6" x2="16" y2="6"/>
+                  <line x1="16" y1="14" x2="16" y2="18"/>
+                  <line x1="8" y1="10" x2="8" y2="10.01"/>
+                  <line x1="12" y1="10" x2="12" y2="10.01"/>
+                  <line x1="16" y1="10" x2="16" y2="10.01"/>
+                  <line x1="8" y1="14" x2="8" y2="14.01"/>
+                  <line x1="12" y1="14" x2="12" y2="14.01"/>
+                  <line x1="8" y1="18" x2="8" y2="18.01"/>
+                  <line x1="12" y1="18" x2="12" y2="18.01"/>
+                </svg>
+                Battery Details
+              </h2>
+              <p class="calc-card-subtitle" data-i18n="calc.details_subtitle">Select your old battery specifications to calculate its estimated market value.</p>
+            </div>
+
+            <!-- Form -->
+            <form id="calc-form" onsubmit="return false;">
+
+              <!-- 1. Battery Type -->
+              <div class="form-group">
+                <div class="form-label-row">
+                  <label class="form-label-title" for="battery-type">Battery Type</label>
+                  <span class="form-label-hint">Determines base lead recovery rate per Ah</span>
+                </div>
+
+                <div class="type-cards-grid" role="radiogroup" aria-label="Battery Type">
+                  <!-- Two-Wheeler -->
+                  <button type="button" class="type-card" data-type="two-wheeler" role="radio" aria-checked="false">
+                    <div class="type-card__icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="5.5" cy="17.5" r="3.5"/>
+                        <circle cx="18.5" cy="17.5" r="3.5"/>
+                        <path d="M15 6a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-3 11.5V14l-3-3 4-3 2 3h4"/>
+                      </svg>
+                    </div>
+                    <span class="type-card__title">Two-Wheeler</span>
+                    <span class="type-card__rate">₹40 / Ah</span>
+                  </button>
+
+                  <!-- Car / SUV -->
+                  <button type="button" class="type-card" data-type="car" role="radio" aria-checked="false">
+                    <div class="type-card__icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2.1 11 2 11.5 2 12v4c0 .6.4 1 1 1h2"/>
+                        <circle cx="7" cy="17" r="2"/>
+                        <path d="M9 17h6"/>
+                        <circle cx="17" cy="17" r="2"/>
+                      </svg>
+                    </div>
+                    <span class="type-card__title">Car / SUV</span>
+                    <span class="type-card__rate">₹50 / Ah</span>
+                  </button>
+
+                  <!-- Inverter / UPS -->
+                  <button type="button" class="type-card active" data-type="inverter" role="radio" aria-checked="true">
+                    <div class="type-card__icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                      </svg>
+                    </div>
+                    <span class="type-card__title">Inverter / UPS</span>
+                    <span class="type-card__rate">₹60 / Ah</span>
+                  </button>
+                </div>
+
+                <!-- Hidden / accessible select fallback -->
+                <select id="battery-type" class="sr-only" aria-label="Select Battery Type">
+                  <option value="two-wheeler">Two-Wheeler</option>
+                  <option value="car">Car / SUV</option>
+                  <option value="inverter" selected>Inverter / UPS</option>
+                </select>
+              </div>
+
+              <!-- 2. Capacity in Ah -->
+              <div class="form-group">
+                <div class="form-label-row">
+                  <label class="form-label-title" for="battery-capacity">Capacity (in Ah)</label>
+                  <span class="form-label-hint" id="capacity-guide-text">Standard Inverter: 100 – 220 Ah</span>
+                </div>
+
+                <div class="input-unit-wrap">
+                  <input type="number" class="form-input" id="battery-capacity" min="1" max="500" value="150" placeholder="e.g. 150">
+                  <span class="input-unit-tag">Ah</span>
+                </div>
+
+                <div class="preset-chips-wrap">
+                  <span class="preset-chips-label">Popular capacities:</span>
+                  <div id="capacity-presets-container" style="display:inline-flex; gap:6px; flex-wrap:wrap;">
+                    <!-- Rendered by JS -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- 3. Age in years -->
+              <div class="form-group">
+                <div class="form-label-row">
+                  <label class="form-label-title" for="battery-age">Battery Age (in years)</label>
+                  <span class="form-label-hint" id="age-depreciation-label">-8% per year (min 30% of base)</span>
+                </div>
+
+                <div class="age-control-box">
+                  <div class="age-slider-wrap">
+                    <input type="range" class="form-range" id="battery-age-slider" min="0" max="15" step="0.5" value="3" aria-label="Battery age slider">
+                  </div>
+                  <div class="input-unit-wrap age-number-wrap">
+                    <input type="number" class="form-input" id="battery-age" min="0" max="30" step="0.5" value="3" placeholder="3">
+                    <span class="input-unit-tag">Yrs</span>
+                  </div>
+                </div>
+
+                <div class="age-scale-ticks">
+                  <span>0 yr (Brand new)</span>
+                  <span>3 yrs</span>
+                  <span>6 yrs</span>
+                  <span>9+ yrs (Max 70% off)</span>
+                </div>
+              </div>
+
+              <!-- 4. Condition -->
+              <div class="form-group" style="margin-bottom: var(--space-2);">
+                <div class="form-label-row">
+                  <label class="form-label-title">Condition</label>
+                  <span class="form-label-hint">Physical &amp; operational state</span>
+                </div>
+
+                <div class="condition-cards-grid" role="radiogroup" aria-label="Battery Condition">
+                  <!-- Good -->
+                  <button type="button" class="condition-card" data-condition="good" role="radio" aria-checked="false">
+                    <div class="condition-card__top">
+                      <span class="condition-card__name">
+                        <span class="condition-dot condition-dot--good"></span>
+                        Good
+                      </span>
+                      <span class="condition-card__tag">1.0×</span>
+                    </div>
+                    <p class="condition-card__desc">Holds charge, minor cosmetic wear, intact terminals.</p>
+                  </button>
+
+                  <!-- Average -->
+                  <button type="button" class="condition-card active" data-condition="average" role="radio" aria-checked="true">
+                    <div class="condition-card__top">
+                      <span class="condition-card__name">
+                        <span class="condition-dot condition-dot--avg"></span>
+                        Average
+                      </span>
+                      <span class="condition-card__tag">0.7×</span>
+                    </div>
+                    <p class="condition-card__desc">Weak backup, frequent charging, or slow engine crank.</p>
+                  </button>
+
+                  <!-- Dead -->
+                  <button type="button" class="condition-card" data-condition="dead" role="radio" aria-checked="false">
+                    <div class="condition-card__top">
+                      <span class="condition-card__name">
+                        <span class="condition-dot condition-dot--dead"></span>
+                        Dead
+                      </span>
+                      <span class="condition-card__tag">0.4×</span>
+                    </div>
+                    <p class="condition-card__desc">Won't hold charge, swollen casing, or pure scrap lead.</p>
+                  </button>
+                </div>
+
+                <select id="battery-condition" class="sr-only" aria-label="Select Condition">
+                  <option value="good">Good</option>
+                  <option value="average" selected>Average</option>
+                  <option value="dead">Dead</option>
+                </select>
+              </div>
+
+            </form>
+          </div>
+
+
+          <!-- ----------------------------------------------------
+               RIGHT: Large Result Card
+               ---------------------------------------------------- -->
+          <div class="calc-result-sticky">
+            <div class="calc-result-card">
+
+              <!-- Header with Price Range -->
+              <div class="calc-result-header">
+                <div class="calc-result-badge">
+                  <span style="font-weight: 800; font-size: 13px; line-height: 1;">₹</span>
+                  Instant Valuation
+                </div>
+
+                <div class="calc-result-label">Estimated Price Range:</div>
+                <div class="calc-result-range" id="calc-range-output">₹4,309 – ₹5,267</div>
+
+                <div class="calc-result-midpoint">
+                  <span>Estimated average value:</span>
+                  <strong id="calc-midpoint-output">₹4,788</strong>
+                </div>
+              </div>
+
+              <!-- Body with Breakdown, Note and Action -->
+              <div class="calc-result-body">
+
+                <!-- Detailed Breakdown Box -->
+                <div class="calc-breakdown">
+                  <div class="calc-breakdown__heading" data-i18n="calc.breakdown_title">Valuation Breakdown</div>
+
+                  <div class="calc-breakdown__row">
+                    <span class="calc-breakdown__label">Battery Type &amp; Rate</span>
+                    <span class="calc-breakdown__val" id="row-base-rate">Inverter / UPS (₹60 / Ah)</span>
+                  </div>
+
+                  <div class="calc-breakdown__row">
+                    <span class="calc-breakdown__label">Capacity</span>
+                    <span class="calc-breakdown__val" id="row-capacity">150 Ah</span>
+                  </div>
+
+                  <div class="calc-breakdown__row">
+                    <span class="calc-breakdown__label">Base Value (Ah × Rate)</span>
+                    <span class="calc-breakdown__val" id="row-base-val">₹9,000</span>
+                  </div>
+
+                  <div class="calc-breakdown__row">
+                    <span class="calc-breakdown__label">Age Depreciation</span>
+                    <span class="calc-breakdown__val" id="row-age-factor">3 yrs (-24%) → ₹6,840</span>
+                  </div>
+
+                  <div class="calc-breakdown__row">
+                    <span class="calc-breakdown__label">Condition Multiplier</span>
+                    <span class="calc-breakdown__val" id="row-cond-mult">Average (0.7×)</span>
+                  </div>
+
+                  <div class="calc-breakdown__row calc-breakdown__row--total">
+                    <span class="calc-breakdown__label">Estimated Range (90% – 110%)</span>
+                    <span class="calc-breakdown__val" id="row-total-range">₹4,309 – ₹5,267</span>
+                  </div>
+                </div>
+
+                <!-- Prominent Note Required by Prompt -->
+                <div class="calc-note-box">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                  </svg>
+                  <p class="calc-note-text" data-i18n="calc.note_text">Rates are updated weekly by dealers and recyclers.</p>
+                </div>
+
+                <!-- Prominent CTA Button Required by Prompt -->
+                <a href="finder.html" class="btn btn-primary btn-lg btn-find-dealer" id="find-dealer-btn" data-i18n="calc.btn_find_dealer">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"/>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  </svg>
+                  Find a dealer to sell
+                </a>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ----------------------------------------------------
+             REFERENCE SECTION: Benchmark Rates & Guide
+             ---------------------------------------------------- -->
+        <div class="calc-info-section">
+          <div class="rates-table-card">
+            <h3 data-i18n="calc.rates_table_title">Weekly Lead Scrap Benchmark Rates in India</h3>
+            <p style="margin-top: 4px; margin-bottom: var(--space-4);">
+              Base scrap rates are evaluated by certified recyclers and battery shops according to current pure lead recovery prices per Ampere-hour (Ah).
+            </p>
+
+            <table class="rates-table">
+              <thead>
+                <tr>
+                  <th>Battery Category</th>
+                  <th>Base Rate per Ah</th>
+                  <th>Typical Capacity Range</th>
+                  <th>Average Scrap Value (Dead)</th>
+                  <th>Exchange Value (Good/Avg)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <strong>Inverter / UPS</strong>
+                    <div style="font-size: 12px; color: var(--color-text-muted);">Tall Tubular &amp; Flat Plate</div>
+                  </td>
+                  <td style="color: var(--color-primary);">₹60 / Ah</td>
+                  <td>100 Ah – 220 Ah</td>
+                  <td>₹2,400 – ₹5,280</td>
+                  <td>₹4,200 – ₹9,200</td>
+                </tr>
+                <tr>
+                  <td>
+                    <strong>Car / SUV</strong>
+                    <div style="font-size: 12px; color: var(--color-text-muted);">Starter Batteries (SLI)</div>
+                  </td>
+                  <td style="color: var(--color-primary);">₹50 / Ah</td>
+                  <td>35 Ah – 80 Ah</td>
+                  <td>₹700 – ₹1,600</td>
+                  <td>₹1,225 – ₹2,800</td>
+                </tr>
+                <tr>
+                  <td>
+                    <strong>Two-Wheeler</strong>
+                    <div style="font-size: 12px; color: var(--color-text-muted);">Motorcycle &amp; Scooter (VRLA/Dry)</div>
+                  </td>
+                  <td style="color: var(--color-primary);">₹40 / Ah</td>
+                  <td>2.5 Ah – 9 Ah</td>
+                  <td>₹40 – ₹144</td>
+                  <td>₹70 – ₹252</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <div class="footer__brand-name">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="18" height="12" rx="2" ry="2"/><line x1="23" y1="13" x2="23" y2="11"/><line x1="11" y1="9" x2="11" y2="15"/><line x1="8" y1="12" x2="14" y2="12"/></svg>
+            Battery Fair
+          </div>
+          <p class="footer__brand-desc">India's trusted battery marketplace. Compare prices, find dealers and get the best battery for your vehicle or home.</p>
+        </div>
+        <div>
+          <h4 class="footer__heading">Quick Links</h4>
+          <ul class="footer__list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="finder.html">Find Battery</a></li>
+            <li><a href="sale.html">Sell / Exchange</a></li>
+            <li><a href="calculator.html">Calculator</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer__heading">Categories</h4>
+          <ul class="footer__list">
+            <li><a href="#">Two-Wheeler</a></li>
+            <li><a href="#">Car / SUV</a></li>
+            <li><a href="#">Inverter / UPS</a></li>
+            <li><a href="#">Solar</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer__heading">Contact</h4>
+          <ul class="footer__list">
+            <li><a href="#">Help Centre</a></li>
+            <li><a href="#">Dealer Login</a></li>
+            <li><a href="#">About Us</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span class="footer__copy">&copy; 2026 Battery Fair. All rights reserved.</span>
+        <span class="footer__location">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Serving dealers across India
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+
+  <!-- ============================================================
+       Calculator Logic
+       ============================================================ -->
+  <script>
+  'use strict';
+  (() => {
+    /* ---------- Rate Constants & Presets ---------- */
+    const BASE_RATES = {
+      'inverter': 60,     // ₹60 per Ah for Inverter
+      'car': 50,          // ₹50 per Ah for Car
+      'two-wheeler': 40   // ₹40 per Ah for Two-Wheeler
+    };
+
+    const CONDITION_MULTIPLIERS = {
+      'good': 1.0,
+      'average': 0.7,
+      'dead': 0.4
+    };
+
+    const TYPE_LABELS = {
+      'inverter': 'Inverter / UPS',
+      'car': 'Car / SUV',
+      'two-wheeler': 'Two-Wheeler'
+    };
+
+    const CONDITION_LABELS = {
+      'good': 'Good (1.0×)',
+      'average': 'Average (0.7×)',
+      'dead': 'Dead (0.4×)'
+    };
+
+    const POPULAR_CAPACITIES = {
+      'inverter': [100, 150, 180, 200, 220],
+      'car': [35, 45, 55, 65, 80],
+      'two-wheeler': [2.5, 4, 5, 7, 9]
+    };
+
+    const CAPACITY_GUIDES = {
+      'inverter': 'Standard Inverter: 100 – 220 Ah',
+      'car': 'Standard Car / SUV: 35 – 80 Ah',
+      'two-wheeler': 'Standard Two-Wheeler: 2.5 – 9 Ah'
+    };
+
+    /* ---------- State ---------- */
+    let currentType      = 'inverter';
+    let currentCondition = 'average';
+
+    /* ---------- DOM Elements ---------- */
+    const typeCards      = document.querySelectorAll('.type-card');
+    const typeSelect     = document.getElementById('battery-type');
+    const capacityInput  = document.getElementById('battery-capacity');
+    const presetsBox     = document.getElementById('capacity-presets-container');
+    const capacityGuide  = document.getElementById('capacity-guide-text');
+    const ageSlider      = document.getElementById('battery-age-slider');
+    const ageInput       = document.getElementById('battery-age');
+    const conditionCards = document.querySelectorAll('.condition-card');
+    const conditionSelect= document.getElementById('battery-condition');
+
+    // Outputs
+    const rangeOutput    = document.getElementById('calc-range-output');
+    const midpointOutput = document.getElementById('calc-midpoint-output');
+    const rowBaseRate    = document.getElementById('row-base-rate');
+    const rowCapacity    = document.getElementById('row-capacity');
+    const rowBaseVal     = document.getElementById('row-base-val');
+    const rowAgeFactor   = document.getElementById('row-age-factor');
+    const rowCondMult    = document.getElementById('row-cond-mult');
+    const rowTotalRange  = document.getElementById('row-total-range');
+
+    /* ---------- Number Formatting Helper ---------- */
+    function fmtINR(val) {
+      return '₹' + Math.round(val).toLocaleString('en-IN');
+    }
+
+    /* ---------- Calculation Engine ---------- */
+    function calculate() {
+      const type = currentType;
+      const baseRate = BASE_RATES[type] || 50;
+      const capacity = Math.max(0, parseFloat(capacityInput.value) || 0);
+      const age = Math.max(0, parseFloat(ageInput.value) || 0);
+      const condMultiplier = CONDITION_MULTIPLIERS[currentCondition] || 0.7;
+
+      // Formula:
+      // Base value = capacity * baseRate
+      const baseValue = capacity * baseRate;
+
+      // minus 8% per year of age (never below 30% of base)
+      const depreciationPct = age * 0.08;
+      const ageFactor = Math.max(0.30, 1.0 - depreciationPct);
+      const depreciatedBase = baseValue * ageFactor;
+
+      // times condition multiplier (good 1.0, average 0.7, dead 0.4)
+      const estimate = depreciatedBase * condMultiplier;
+
+      // range: 90% to 110% of estimate
+      const minVal = Math.round(estimate * 0.90);
+      const maxVal = Math.round(estimate * 1.10);
+      const midVal = Math.round(estimate);
+
+      // Render Outputs
+      if (capacity <= 0) {
+        rangeOutput.textContent = '₹0 – ₹0';
+        midpointOutput.textContent = '₹0';
+        rowBaseVal.textContent = '₹0';
+        rowAgeFactor.textContent = '—';
+        rowTotalRange.textContent = '₹0 – ₹0';
+      } else {
+        rangeOutput.textContent = `${fmtINR(minVal)} – ${fmtINR(maxVal)}`;
+        midpointOutput.textContent = fmtINR(midVal);
+
+        rowBaseRate.textContent = `${TYPE_LABELS[type]} (₹${baseRate} / Ah)`;
+        rowCapacity.textContent = `${capacity} Ah`;
+        rowBaseVal.textContent = fmtINR(baseValue);
+
+        const agePctText = Math.round(depreciationPct * 100);
+        const isFloored = (1.0 - depreciationPct) < 0.30;
+        const floorNotice = isFloored ? ' (Capped at 30% floor)' : '';
+        rowAgeFactor.textContent = `${age} yr${age !== 1 ? 's' : ''} (-${Math.min(70, agePctText)}%) → ${fmtINR(depreciatedBase)}${floorNotice}`;
+
+        rowCondMult.textContent = CONDITION_LABELS[currentCondition];
+        rowTotalRange.textContent = `${fmtINR(minVal)} – ${fmtINR(maxVal)}`;
+      }
+    }
+
+    /* ---------- Render Capacity Preset Chips ---------- */
+    function renderCapacityPresets() {
+      const presets = POPULAR_CAPACITIES[currentType] || [];
+      const currentVal = parseFloat(capacityInput.value);
+
+      presetsBox.innerHTML = presets.map(val => `
+        <button type="button" class="preset-chip-btn ${val === currentVal ? 'active' : ''}" data-ah="${val}">
+          ${val} Ah
+        </button>
+      `).join('');
+
+      capacityGuide.textContent = CAPACITY_GUIDES[currentType] || '';
+    }
+
+    /* ---------- Event Listeners: Battery Type ---------- */
+    function setBatteryType(type, setDefaultCapacity = false) {
+      currentType = type;
+      typeSelect.value = type;
+
+      typeCards.forEach(card => {
+        const isMatch = card.dataset.type === type;
+        card.classList.toggle('active', isMatch);
+        card.setAttribute('aria-checked', String(isMatch));
+      });
+
+      if (setDefaultCapacity) {
+        const defaultCap = POPULAR_CAPACITIES[type][1] || 50;
+        capacityInput.value = defaultCap;
+      }
+
+      renderCapacityPresets();
+      calculate();
+    }
+
+    typeCards.forEach(card => {
+      card.addEventListener('click', () => {
+        setBatteryType(card.dataset.type, true);
+      });
+    });
+
+    typeSelect.addEventListener('change', () => {
+      setBatteryType(typeSelect.value, true);
+    });
+
+    /* ---------- Event Listeners: Capacity ---------- */
+    capacityInput.addEventListener('input', () => {
+      renderCapacityPresets();
+      calculate();
+    });
+
+    presetsBox.addEventListener('click', e => {
+      const chip = e.target.closest('.preset-chip-btn');
+      if (!chip) return;
+      capacityInput.value = chip.dataset.ah;
+      renderCapacityPresets();
+      calculate();
+    });
+
+    /* ---------- Event Listeners: Age ---------- */
+    ageSlider.addEventListener('input', () => {
+      ageInput.value = ageSlider.value;
+      calculate();
+    });
+
+    ageInput.addEventListener('input', () => {
+      const v = parseFloat(ageInput.value);
+      if (!isNaN(v)) {
+        ageSlider.value = Math.min(15, Math.max(0, v));
+      }
+      calculate();
+    });
+
+    /* ---------- Event Listeners: Condition ---------- */
+    function setCondition(cond) {
+      currentCondition = cond;
+      conditionSelect.value = cond;
+
+      conditionCards.forEach(card => {
+        const isMatch = card.dataset.condition === cond;
+        card.classList.toggle('active', isMatch);
+        card.setAttribute('aria-checked', String(isMatch));
+      });
+
+      calculate();
+    }
+
+    conditionCards.forEach(card => {
+      card.addEventListener('click', () => {
+        setCondition(card.dataset.condition);
+      });
+    });
+
+    conditionSelect.addEventListener('change', () => {
+      setCondition(conditionSelect.value);
+    });
+
+    /* ---------- Initial Setup ---------- */
+    setBatteryType('inverter', false);
+    setCondition('average');
+    calculate();
+
+    window.addEventListener('batteryfair:languagechange', () => {
+      calculate();
+    });
+
+  })();
+  </script>
+
+</body>
+</html>
