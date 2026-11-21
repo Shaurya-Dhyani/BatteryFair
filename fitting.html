@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doorstep Battery Fitting &amp; Old Battery Exchange | Battery Fair</title>
+  <meta name="description" content="Book expert doorstep battery delivery, professional fitting, and honest old battery exchange credit at home across Tumkur and India.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .fit-radio-group {
+      display: flex;
+      gap: var(--space-3);
+      margin-top: var(--space-2);
+    }
+    .fit-radio-card {
+      flex: 1;
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-3) var(--space-4);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      cursor: pointer;
+      background: var(--color-white);
+      transition: all var(--transition-fast);
+      min-height: 48px;
+    }
+    .fit-radio-card:hover {
+      border-color: var(--color-primary);
+      background: #F0FDF4;
+    }
+    .fit-radio-card input[type="radio"] {
+      accent-color: var(--color-primary);
+      width: 18px;
+      height: 18px;
+    }
+    .fit-radio-card.active {
+      border-color: var(--color-primary);
+      background: var(--color-primary-light);
+    }
+    .track-result-box {
+      background: var(--color-white);
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      margin-top: var(--space-4);
+      box-shadow: var(--shadow-sm);
+    }
+    .status-history-list {
+      margin-top: var(--space-4);
+      padding-left: var(--space-2);
+      border-left: 2px solid var(--color-border);
+    }
+    .status-history-item {
+      position: relative;
+      padding-left: var(--space-4);
+      padding-bottom: var(--space-4);
+    }
+    .status-history-item::before {
+      content: '';
+      position: absolute;
+      left: -5px;
+      top: 4px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--color-primary);
+    }
+    .status-history-item:last-child {
+      padding-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== NAVBAR ==================== -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container navbar__inner">
+      <a href="index.html" class="navbar__logo" aria-label="Battery Fair home">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1" y="6" width="18" height="12" rx="2" ry="2"/>
+          <line x1="23" y1="13" x2="23" y2="11"/>
+          <line x1="11" y1="9" x2="11" y2="15"/>
+          <line x1="8" y1="12" x2="14" y2="12"/>
+        </svg>
+        <span>Battery Fair</span>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <div class="navbar__links">
+        <a href="index.html"      class="navbar__link" data-page="index.html" data-i18n="nav.home">Home</a>
+        <a href="finder.html"     class="navbar__link" data-page="finder.html" data-i18n="nav.find">Find Battery</a>
+        <a href="fitting.html"    class="navbar__link" data-page="fitting.html" data-i18n="nav.fitting">Doorstep Fitting</a>
+        <a href="care.html"       class="navbar__link" data-page="care.html" data-i18n="nav.care">Battery Care</a>
+        <a href="calculator.html" class="navbar__link" data-page="calculator.html" data-i18n="nav.calculator">Calculator</a>
+        <a href="sale.html"       class="navbar__link" data-page="sale.html" data-i18n="nav.sale">Sell / Exchange</a>
+      </div>
+
+      <!-- Language Dropdown (desktop) -->
+      <div class="lang-dropdown">
+        <button class="lang-dropdown__toggle" id="lang-toggle" aria-haspopup="true" aria-expanded="false">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10
+                     15.3 15.3 0 0 1-4-10A15.3 15.3 0 0 1 12 2z"/>
+          </svg>
+          <span class="lang-dropdown__label">English</span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
+        <div class="lang-dropdown__menu" id="lang-menu" role="menu">
+          <button class="lang-dropdown__item lang-dropdown__item--active" data-lang="en" role="menuitem">English</button>
+          <button class="lang-dropdown__item" data-lang="kn" role="menuitem">ಕನ್ನಡ</button>
+          <button class="lang-dropdown__item" data-lang="hi" role="menuitem">हिन्दी</button>
+        </div>
+      </div>
+
+      <!-- Hamburger (mobile) -->
+      <button class="navbar__hamburger" id="hamburger"
+              aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ==================== MOBILE MENU ==================== -->
+  <div class="mobile-menu" id="mobile-menu" role="navigation" aria-label="Mobile navigation">
+    <span class="mobile-menu__label" data-i18n="nav.navigate">Navigate</span>
+    <a href="index.html"      class="mobile-menu__link" data-page="index.html" data-i18n="nav.home">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </a>
+    <a href="finder.html"     class="mobile-menu__link" data-page="finder.html" data-i18n="nav.find">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Find Battery
+    </a>
+    <a href="fitting.html"    class="mobile-menu__link" data-page="fitting.html" data-i18n="nav.fitting">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2" ry="2"/><path d="M16 8h4l3 5v5h-3"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      Doorstep Fitting
+    </a>
+    <a href="care.html"       class="mobile-menu__link" data-page="care.html" data-i18n="nav.care">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+      Battery Care
+    </a>
+    <a href="calculator.html" class="mobile-menu__link" data-page="calculator.html" data-i18n="nav.calculator">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><line x1="8" y1="10" x2="8" y2="10.01"/><line x1="12" y1="10" x2="12" y2="10.01"/><line x1="16" y1="10" x2="16" y2="10.01"/><line x1="8" y1="14" x2="8" y2="14.01"/><line x1="12" y1="14" x2="12" y2="14.01"/><line x1="8" y1="18" x2="8" y2="18.01"/><line x1="12" y1="18" x2="12" y2="18.01"/></svg>
+      Calculator
+    </a>
+    <a href="sale.html"       class="mobile-menu__link" data-page="sale.html" data-i18n="nav.sale">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+      Sell / Exchange
+    </a>
+    <div class="mobile-menu__divider"></div>
+    <span class="mobile-menu__label" data-i18n="nav.language">Language</span>
+    <a href="#" class="mobile-menu__link mobile-menu__link--active" data-lang="en" onclick="return false;">English</a>
+    <a href="#" class="mobile-menu__link" data-lang="kn" onclick="return false;">ಕನ್ನಡ</a>
+    <a href="#" class="mobile-menu__link" data-lang="hi" onclick="return false;">हिन्दी</a>
+  </div>
+
+  <!-- ============================================================
+       HERO BANNER
+       ============================================================ -->
+  <section class="fitting-hero">
+    <div class="container">
+      <div class="fitting-hero__badge">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Doorstep Fitting &amp; Old Battery Exchange
+      </div>
+      <h1 id="hero-heading">Doorstep Battery Fitting</h1>
+      <p id="hero-subheading">
+        Get certified technicians to deliver and fit your battery at your doorstep in Tumkur and partner cities. Hand over your used battery for instant exchange credit!
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       MAIN CONTENT
+       ============================================================ -->
+  <main class="main-content" style="padding-top: 0;">
+    <div class="container">
+
+      <div class="fitting-layout">
+
+        <!-- --------------------------------------------------------
+             LEFT COLUMN: Booking Form & Confirmation Screen
+             -------------------------------------------------------- -->
+        <div class="fitting-left">
+
+          <!-- 1. Booking Form Card -->
+          <div class="fitting-card reveal-on-scroll" id="booking-form-card">
+            <div class="fitting-card__header">
+              <h2 class="fitting-card__title">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" color="var(--color-primary)">
+                  <rect x="1" y="3" width="15" height="13" rx="2" ry="2"/>
+                  <path d="M16 8h4l3 5v5h-3"/>
+                  <circle cx="5.5" cy="18.5" r="2.5"/>
+                  <circle cx="18.5" cy="18.5" r="2.5"/>
+                </svg>
+                <span id="form-card-title">Book Doorstep Fitting</span>
+              </h2>
+              <p style="font-size: var(--font-size-sm); color: var(--color-text-muted); margin-top: 4px;">
+                Fill in your appointment details. The selected dealer will dispatch a technician with your battery.
+              </p>
+            </div>
+
+            <!-- Service Mode Banner (if water-refill) -->
+            <div id="service-notice-banner" style="display: none; background: #EFF6FF; border: 1.5px solid #93C5FD; border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: 20px;">
+              <div style="font-weight: 700; color: #1E40AF; display: flex; align-items: center; gap: 8px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                Service Mode: Distilled Water Refill &amp; Terminal Maintenance Visit
+              </div>
+              <p style="font-size: 13px; color: #1E3A8A; margin-top: 4px; margin-bottom: 0;">
+                A technician will inspect specific gravity, clean corroded terminals, and top up cells with laboratory distilled water.
+              </p>
+            </div>
+
+            <!-- Exchange Credit Notice (populated from Calculator URL params or localStorage) -->
+            <div class="exchange-credit-box" id="exchange-credit-banner" style="display: none;">
+              <svg class="exchange-credit-box__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/>
+                <path d="M12 6V4"/>
+                <path d="M12 20v-2"/>
+              </svg>
+              <div>
+                <div class="exchange-credit-box__title" id="exchange-credit-amount">Estimated exchange credit: ₹0</div>
+                <p class="exchange-credit-box__desc" id="exchange-credit-sub">
+                  Calculated from live scrap lead rates. Your technician will collect the old battery and apply this discount directly.
+                </p>
+              </div>
+            </div>
+
+            <!-- Form -->
+            <form id="fitting-form" novalidate>
+
+              <!-- Name & Phone Row -->
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-4);">
+                <div class="form-group" id="group-fit-name">
+                  <label for="fit-name">Full Name <span style="color:#DC2626">*</span></label>
+                  <input type="text" class="form-input" id="fit-name" placeholder="e.g. Ramesh Kumar" required>
+                  <div class="form-error" id="err-fit-name" style="display: none; font-size: 12px; color: #DC2626; margin-top: 4px;">Please enter your name</div>
+                </div>
+
+                <div class="form-group" id="group-fit-phone">
+                  <label for="fit-phone">10-Digit Mobile / WhatsApp <span style="color:#DC2626">*</span></label>
+                  <input type="tel" class="form-input" id="fit-phone" maxlength="10" placeholder="e.g. 7905382677" required>
+                  <div class="form-error" id="err-fit-phone" style="display: none; font-size: 12px; color: #DC2626; margin-top: 4px;">Please enter a valid 10-digit number</div>
+                </div>
+              </div>
+
+              <!-- Address & Pincode Row -->
+              <div style="display: grid; grid-template-columns: 2fr 1fr; gap: var(--space-4); margin-top: var(--space-2);">
+                <div class="form-group" id="group-fit-address">
+                  <label for="fit-address">Doorstep Address / Locality <span style="color:#DC2626">*</span></label>
+                  <input type="text" class="form-input" id="fit-address" placeholder="e.g. #14, 2nd Cross, SS Puram Main Road" required>
+                  <div class="form-error" id="err-fit-address" style="display: none; font-size: 12px; color: #DC2626; margin-top: 4px;">Please enter delivery address</div>
+                </div>
+
+                <div class="form-group" id="group-fit-pincode">
+                  <label for="fit-pincode">Pincode <span style="color:#DC2626">*</span></label>
+                  <input type="text" class="form-input" id="fit-pincode" maxlength="6" placeholder="e.g. 572101" required>
+                  <div class="form-error" id="err-fit-pincode" style="display: none; font-size: 12px; color: #DC2626; margin-top: 4px;">6-digit pincode</div>
+                </div>
+              </div>
+
+              <!-- Vehicle / Usage Type & Battery Needed Row -->
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-4); margin-top: var(--space-2);">
+                <div class="form-group">
+                  <label for="fit-vehicle">Vehicle / Usage Type <span style="color:#DC2626">*</span></label>
+                  <select class="form-select" id="fit-vehicle">
+                    <option value="Car / SUV" selected>Car / SUV</option>
+                    <option value="Two-Wheeler">Two-Wheeler</option>
+                    <option value="Inverter / UPS">Inverter / UPS</option>
+                    <option value="Tractor / Agri">Tractor / Agri</option>
+                    <option value="Commercial Vehicle">Commercial Vehicle</option>
+                    <option value="Solar">Solar Power System</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="fit-battery">Battery Model Needed</label>
+                  <input type="text" class="form-input" id="fit-battery" placeholder="e.g. Amaron 150Ah or Exide 35Ah">
+                  <div style="margin-top: 6px;">
+                    <label style="font-size: var(--font-size-xs); font-weight: 500; color: var(--color-text-muted); cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                      <input type="checkbox" id="fit-recommend-check" style="accent-color: var(--color-primary); width: 16px; height: 16px;">
+                      Not sure? Recommend one for me
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Dealer Selection (Tumkur First) -->
+              <div class="form-group" style="margin-top: var(--space-2);">
+                <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+                  <label for="fit-dealer" style="margin-bottom: 0;">Select Certified Dealer <span style="color:#DC2626">*</span></label>
+                  <span style="font-size: var(--font-size-xs); color: var(--color-primary); font-weight: 600;">Tumkur dealers listed first</span>
+                </div>
+                <select class="form-select" id="fit-dealer" required>
+                  <!-- Populated by JS -->
+                </select>
+              </div>
+
+              <!-- Date & Time Slot Row -->
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-4); margin-top: var(--space-2);">
+                <div class="form-group" id="group-fit-date">
+                  <label for="fit-date">Preferred Date (Today or later) <span style="color:#DC2626">*</span></label>
+                  <input type="date" class="form-input" id="fit-date" required>
+                  <div class="form-error" id="err-fit-date" style="display: none; font-size: 12px; color: #DC2626; margin-top: 4px;">Please select date</div>
+                </div>
+
+                <div class="form-group">
+                  <label for="fit-slot-select">Preferred Time Slot <span style="color:#DC2626">*</span></label>
+                  <select class="form-select" id="fit-slot-select">
+                    <option value="Morning (9 AM - 12 PM)" selected>Morning (9:00 AM – 12:00 PM)</option>
+                    <option value="Afternoon (12 PM - 4 PM)">Afternoon (12:00 PM – 4:00 PM)</option>
+                    <option value="Evening (4 PM - 8 PM)">Evening (4:00 PM – 8:00 PM)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Old Battery Handover Yes / No -->
+              <div class="handover-toggle-box">
+                <label style="font-size: var(--font-size-sm); font-weight: 700; color: var(--color-dark); display: block; margin-bottom: 6px;">
+                  I have an old battery to hand over:
+                </label>
+                <div class="fit-radio-group">
+                  <label class="fit-radio-card" id="card-old-yes">
+                    <input type="radio" name="fit-old-battery" value="yes" checked>
+                    <span><strong>Yes</strong> (Get exchange credit)</span>
+                  </label>
+                  <label class="fit-radio-card" id="card-old-no">
+                    <input type="radio" name="fit-old-battery" value="no">
+                    <span><strong>No</strong> (New battery purchase only)</span>
+                  </label>
+                </div>
+                <div id="handover-extra-link" style="margin-top: 10px; font-size: var(--font-size-xs); color: var(--color-text-muted);">
+                  Want to estimate how much your used battery is worth?
+                  <a href="calculator.html" target="_blank" style="color: var(--color-primary); font-weight: 700; text-decoration: underline;">
+                    Open Old Battery Calculator &rarr;
+                  </a>
+                </div>
+              </div>
+
+              <!-- Submit button -->
+              <button type="submit" class="btn btn-primary btn-lg" id="btn-submit-fitting" style="width: 100%; margin-top: var(--space-6); justify-content: center;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                Confirm Doorstep Fitting Appointment
+              </button>
+            </form>
+          </div>
+
+          <!-- 2. Booking Confirmation Screen (Shown after form submission) -->
+          <div class="fitting-card reveal-on-scroll" id="fitting-confirmation-screen" style="display: none;">
+            <div style="text-align: center; padding: var(--space-4) 0;">
+              <div style="width: 64px; height: 64px; border-radius: 50%; background: #DCFCE7; color: #16A34A; display: inline-flex; align-items: center; justify-content: center; margin-bottom: var(--space-3);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <h2 style="font-size: var(--font-size-2xl); font-weight: 800; color: var(--color-dark); margin-bottom: 6px;">Fitting Appointment Booked!</h2>
+              <p style="font-size: var(--font-size-sm); color: var(--color-text-muted); margin: 0 auto; max-width: 48ch;">
+                Your request has been routed to the local dealer. You can track your technician's status in real-time below.
+              </p>
+            </div>
+
+            <!-- Booking Reference ID Banner -->
+            <div style="background: var(--color-bg); border: 1.5px dashed var(--color-border); border-radius: var(--radius-md); padding: var(--space-4); text-align: center; margin: var(--space-4) 0;">
+              <span style="font-size: var(--font-size-xs); font-weight: 700; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Booking ID</span>
+              <div style="font-size: 1.75rem; font-weight: 800; color: var(--color-dark); letter-spacing: 0.02em; margin-top: 2px;" id="conf-booking-id">
+                BF-FIT-2026-XXXX
+              </div>
+              <span style="font-size: var(--font-size-xs); color: var(--color-primary); font-weight: 600;">Saved to your browser storage</span>
+            </div>
+
+            <!-- Visual 4-Step Status Tracker Stepper -->
+            <div class="stepper-wrap">
+              <div style="font-size: var(--font-size-xs); font-weight: 700; color: var(--color-text-muted); text-transform: uppercase; margin-bottom: var(--space-4);">
+                Live Appointment Status
+              </div>
+              <div class="stepper" id="conf-stepper">
+                <!-- Step 1: Booked -->
+                <div class="stepper-item is-done" id="conf-step-1">
+                  <div class="stepper-circle">&#10003;</div>
+                  <div class="stepper-content">
+                    <div class="stepper-title">Booked</div>
+                    <div class="stepper-time" id="conf-time-1">Just now</div>
+                  </div>
+                </div>
+
+                <!-- Step 2: Dealer confirmed -->
+                <div class="stepper-item" id="conf-step-2">
+                  <div class="stepper-circle">2</div>
+                  <div class="stepper-content">
+                    <div class="stepper-title">Dealer Confirmed</div>
+                    <div class="stepper-time" id="conf-time-2">Pending dealer</div>
+                  </div>
+                </div>
+
+                <!-- Step 3: On the way -->
+                <div class="stepper-item" id="conf-step-3">
+                  <div class="stepper-circle">3</div>
+                  <div class="stepper-content">
+                    <div class="stepper-title">On the Way</div>
+                    <div class="stepper-time" id="conf-time-3">Dispatched</div>
+                  </div>
+                </div>
+
+                <!-- Step 4: Fitted & old battery collected -->
+                <div class="stepper-item" id="conf-step-4">
+                  <div class="stepper-circle">4</div>
+                  <div class="stepper-content">
+                    <div class="stepper-title">Fitted &amp; Collected</div>
+                    <div class="stepper-time" id="conf-time-4">Completed</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Booking Summary Details -->
+            <div style="background: var(--color-white); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4); margin-bottom: var(--space-5);">
+              <h4 style="font-size: var(--font-size-sm); font-weight: 700; margin-bottom: var(--space-2); color: var(--color-dark);">Appointment Summary</h4>
+              <div style="font-size: var(--font-size-sm); line-height: 1.7; color: var(--color-text);">
+                <div><strong>Assigned Dealer:</strong> <span id="conf-dealer-name">—</span></div>
+                <div><strong>Scheduled Time:</strong> <span id="conf-datetime">—</span></div>
+                <div><strong>Service Type:</strong> <span id="conf-service">—</span></div>
+                <div><strong>Delivery Address:</strong> <span id="conf-address">—</span></div>
+                <div><strong>Old Battery Exchange:</strong> <span id="conf-exchange">—</span></div>
+              </div>
+            </div>
+
+            <!-- Action Buttons: WhatsApp & Reset -->
+            <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+              <a href="#" class="btn btn-whatsapp btn-lg" id="conf-wa-btn" target="_blank" rel="noopener" style="justify-content: center; font-weight: 700;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.555 4.126 1.528 5.86L.06 23.487a.5.5 0 0 0 .613.613l5.627-1.468A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.94 9.94 0 0 1-5.332-1.543l-.382-.228-3.332.869.886-3.236-.25-.396A9.94 9.94 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+                Confirm Appointment on WhatsApp
+              </a>
+              <button type="button" class="btn btn-secondary" id="btn-book-another" style="justify-content: center;">
+                Book Another Fitting Appointment
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- --------------------------------------------------------
+             RIGHT COLUMN: Track Booking & Service Commitments
+             -------------------------------------------------------- -->
+        <div class="fitting-right">
+
+          <!-- Track My Booking Card -->
+          <div class="fitting-card reveal-on-scroll" id="track-card">
+            <h3 style="font-size: var(--font-size-lg); font-weight: 800; color: var(--color-dark); margin-bottom: 6px;">
+              Track My Booking
+            </h3>
+            <p style="font-size: var(--font-size-xs); color: var(--color-text-muted); margin-bottom: var(--space-4);">
+              Enter your 10-digit phone number or booking reference ID (e.g. BF-FIT-2026-XXXX) to view live technician status.
+            </p>
+
+            <form id="track-form" onsubmit="return false;">
+              <div class="form-group">
+                <input type="text" class="form-input" id="track-query" placeholder="Enter phone or Booking ID">
+              </div>
+              <button type="submit" class="btn btn-secondary" id="btn-do-track" style="width: 100%; justify-content: center;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                Check Booking Status
+              </button>
+            </form>
+
+            <div id="track-output-container" style="margin-top: var(--space-4);">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+          <!-- Doorstep Service Guarantees Card -->
+          <div class="fitting-card reveal-on-scroll" style="margin-top: var(--space-6);">
+            <h3 style="font-size: var(--font-size-base); font-weight: 700; color: var(--color-dark); margin-bottom: var(--space-3);">
+              Why Choose Battery Fair Doorstep?
+            </h3>
+            <ul style="display: flex; flex-direction: column; gap: var(--space-3); font-size: var(--font-size-sm); color: var(--color-text);">
+              <li style="display: flex; gap: var(--space-2); align-items: flex-start;">
+                <svg style="color: var(--color-primary); flex-shrink: 0; margin-top: 3px;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Certified Local Technicians:</strong> Fitted by verified battery experts from top local shops in Tumkur.</span>
+              </li>
+              <li style="display: flex; gap: var(--space-2); align-items: flex-start;">
+                <svg style="color: var(--color-primary); flex-shrink: 0; margin-top: 3px;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Honest Old-Battery Credit:</strong> Instant value deducted directly from your invoice pegged to lead benchmarks.</span>
+              </li>
+              <li style="display: flex; gap: var(--space-2); align-items: flex-start;">
+                <svg style="color: var(--color-primary); flex-shrink: 0; margin-top: 3px;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span><strong>Instant Digital Warranty:</strong> QR warranty certificate generated on spot and sent to WhatsApp.</span>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ============================================================
+       SECTION: WAITLIST AND DEMO BOOKING
+       ============================================================ -->
+  <section class="section waitlist-section" id="waitlist">
+    <div class="container">
+      <div class="waitlist-card reveal-on-scroll">
+
+        <div class="waitlist-header">
+          <div class="waitlist-badge">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <polyline points="9 12 11 14 15 10"/>
+            </svg>
+            Early Access Pilot
+          </div>
+          <h2 class="waitlist-title">Join the Tumkur Early Access Waitlist</h2>
+          <p class="waitlist-subtitle">For local battery dealers and vehicle owners in Tumkur.</p>
+        </div>
+
+        <div class="waitlist-points">
+          <div class="waitlist-point">
+            <div class="waitlist-point__check">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </div>
+            <span class="waitlist-point__text">Digital QR warranty cards and 6-month distilled-water reminders on WhatsApp</span>
+          </div>
+
+          <div class="waitlist-point">
+            <div class="waitlist-point__check">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </div>
+            <span class="waitlist-point__text">Transparent old-battery exchange price comparison</span>
+          </div>
+
+          <div class="waitlist-point">
+            <div class="waitlist-point__check">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </div>
+            <span class="waitlist-point__text">Fast local doorstep battery fitting</span>
+          </div>
+        </div>
+
+        <div class="waitlist-action-box">
+          <div class="waitlist-pricing">
+            <span class="waitlist-pricing__tag">Pilot Offer</span>
+            <p class="waitlist-pricing__text">₹299/month per dealer. First 10 dealers get 2 months free.</p>
+          </div>
+
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSfJ42SIGy5UYxGmC2Gc0fIYycxMEAYKkXbRm-mkS9BGHeJJ0g/viewform?usp=sf_link"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="btn btn-primary btn-lg waitlist-cta-btn">
+            <span>Join Waitlist &amp; Book Demo</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <div class="footer__brand-name">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="18" height="12" rx="2" ry="2"/><line x1="23" y1="13" x2="23" y2="11"/><line x1="11" y1="9" x2="11" y2="15"/><line x1="8" y1="12" x2="14" y2="12"/></svg>
+            Battery Fair
+          </div>
+          <p class="footer__brand-desc">India's trusted battery marketplace. Compare prices, find dealers and get the best battery for your vehicle or home.</p>
+        </div>
+        <div>
+          <h4 class="footer__heading">Quick Links</h4>
+          <ul class="footer__list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="finder.html">Find Battery</a></li>
+            <li><a href="fitting.html">Doorstep Fitting</a></li>
+            <li><a href="care.html">Battery Care</a></li>
+            <li><a href="calculator.html">Calculator</a></li>
+            <li><a href="sale.html">Dealer Portal</a></li>
+            <li><a href="index.html#waitlist">Early Access Waitlist</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer__heading">Categories</h4>
+          <ul class="footer__list">
+            <li><a href="finder.html">Two-Wheeler</a></li>
+            <li><a href="finder.html">Car / SUV</a></li>
+            <li><a href="finder.html">Inverter / UPS</a></li>
+            <li><a href="finder.html">Solar</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer__heading">Contact</h4>
+          <ul class="footer__list">
+            <li><a href="#" class="footer-wa-contact" target="_blank" rel="noopener">WhatsApp Support (+91 79053 82677)</a></li>
+            <li><a href="sale.html">Dealer Portal</a></li>
+            <li><a href="finder.html">Find Dealers</a></li>
+            <li><a href="index.html#waitlist">Join Waitlist</a></li>
+          </ul>
+        </div>
+      </div>
+      <!-- Workshop 3 Validation Notice and Team Attribution -->
+      <div class="footer__validation">
+        <p class="footer__refund-notice">Launching soon. Any money paid is fully refundable.</p>
+        <p class="footer__attribution">Built by The Scale Squad (SSAHE - 22), upGrad School of Technology, Tumkur | Contact: 7905382677</p>
+      </div>
+      <div class="footer__bottom">
+        <span class="footer__copy">&copy; 2026 Battery Fair. All rights reserved.</span>
+        <span class="footer__location">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Serving dealers across India
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+  'use strict';
+  (() => {
+    const { DEALERS } = BatteryData;
+    const STORAGE_FITTINGS_KEY = 'fittings';
+    const DEMO_WHATSAPP_NUMBER = window.DEMO_WHATSAPP_NUMBER || (BatteryData && BatteryData.DEMO_WHATSAPP_NUMBER) || '917905382677';
+    const DEMO_PHONE_RAW        = window.DEMO_PHONE_RAW || (BatteryData && BatteryData.DEMO_PHONE_RAW) || '7905382677';
+    const DEMO_PHONE_DISPLAY    = window.DEMO_PHONE_DISPLAY || (BatteryData && BatteryData.DEMO_PHONE_DISPLAY) || '+91 79053 82677';
+
+    /* ---------- Helpers ---------- */
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function getStoredFittings() {
+      try {
+        const stored = localStorage.getItem(STORAGE_FITTINGS_KEY);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed)) return parsed;
+        }
+      } catch (e) {}
+      return [];
+    }
+
+    function saveStoredFittings(list) {
+      try {
+        localStorage.setItem(STORAGE_FITTINGS_KEY, JSON.stringify(list));
+      } catch (e) {
+        console.warn('Failed to save fittings', e);
+      }
+    }
+
+    function generateFittingId() {
+      const year = new Date().getFullYear();
+      const rand = Math.floor(1000 + Math.random() * 9000);
+      return `BF-FIT-${year}-${rand}`;
+    }
+
+    /* ---------- Populate Dealer Dropdown (Tumkur First) ---------- */
+    const dealerSelect = document.getElementById('fit-dealer');
+    function populateDealers(preselectedId) {
+      if (!dealerSelect) return;
+
+      const tumkurDealers = DEALERS.filter(d => (d.city || '').toLowerCase() === 'tumkur');
+      const otherDealers  = DEALERS.filter(d => (d.city || '').toLowerCase() !== 'tumkur');
+
+      let html = '<optgroup label="📍 Tumkur (Priority Doorstep Dispatch)">';
+      tumkurDealers.forEach(d => {
+        const sel = (preselectedId && (d.id === preselectedId || d.name === preselectedId)) ? ' selected' : '';
+        html += `<option value="${escapeHtml(d.id)}"${sel}>${escapeHtml(d.name)} (${escapeHtml(d.area)}, Tumkur)</option>`;
+      });
+      html += '</optgroup>';
+
+      html += '<optgroup label="All Other Verified Partner Dealers">';
+      otherDealers.forEach(d => {
+        const sel = (preselectedId && (d.id === preselectedId || d.name === preselectedId)) ? ' selected' : '';
+        html += `<option value="${escapeHtml(d.id)}"${sel}>${escapeHtml(d.name)} (${escapeHtml(d.area || '')}, ${escapeHtml(d.city)})</option>`;
+      });
+      html += '</optgroup>';
+
+      dealerSelect.innerHTML = html;
+    }
+
+    /* ---------- Parse Query Params & Local Storage Estimate ---------- */
+    const urlParams = new URLSearchParams(window.location.search);
+    const qDealer   = urlParams.get('dealer') || urlParams.get('dealerId');
+    const qService  = urlParams.get('service');
+    let   exchangeCreditVal = null;
+
+    // Check URL params first for estimate
+    const qEst = urlParams.get('estimate');
+    const qMin = urlParams.get('min');
+    const qMax = urlParams.get('max');
+    if (qEst) {
+      exchangeCreditVal = parseInt(qEst, 10);
+    } else if (qMin && qMax) {
+      exchangeCreditVal = Math.round((parseInt(qMin, 10) + parseInt(qMax, 10)) / 2);
+    }
+
+    // Check localStorage fallback if no URL estimate
+    if (!exchangeCreditVal) {
+      try {
+        const storedEst = localStorage.getItem('batteryfair_exchange_estimate');
+        if (storedEst) {
+          const parsed = JSON.parse(storedEst);
+          if (parsed && (parsed.estimate || parsed.min)) {
+            exchangeCreditVal = parsed.estimate || Math.round((parsed.min + parsed.max) / 2);
+          }
+        }
+      } catch (e) {}
+    }
+
+    // Display exchange credit banner if credit found
+    const creditBanner = document.getElementById('exchange-credit-banner');
+    const creditAmount = document.getElementById('exchange-credit-amount');
+    if (exchangeCreditVal && creditBanner && creditAmount) {
+      creditAmount.textContent = `Estimated exchange credit: ₹${exchangeCreditVal.toLocaleString('en-IN')}`;
+      creditBanner.style.display = 'flex';
+    }
+
+    // Handle service=water-refill
+    const isWaterRefill = qService === 'water-refill';
+    if (isWaterRefill) {
+      const sBanner = document.getElementById('service-notice-banner');
+      if (sBanner) sBanner.style.display = 'block';
+      const formTitle = document.getElementById('form-card-title');
+      if (formTitle) formTitle.textContent = 'Request Distilled Water Refill Visit';
+      const batteryInput = document.getElementById('fit-battery');
+      if (batteryInput) batteryInput.value = 'Distilled water top-up & cell gravity check';
+      const heading = document.getElementById('hero-heading');
+      if (heading) heading.textContent = 'Doorstep Distilled Water Service';
+    }
+
+    // Set min date to today (YYYY-MM-DD)
+    const dateInput = document.getElementById('fit-date');
+    const today = new Date().toISOString().split('T')[0];
+    if (dateInput) {
+      dateInput.setAttribute('min', today);
+      dateInput.value = today;
+    }
+
+    // Prefill demo phone
+    const phoneInput = document.getElementById('fit-phone');
+    if (phoneInput && !phoneInput.value) {
+      phoneInput.value = DEMO_PHONE_RAW;
+    }
+
+    // Recommend checkbox behavior
+    const recommendCheck = document.getElementById('fit-recommend-check');
+    const batteryInput = document.getElementById('fit-battery');
+    if (recommendCheck && batteryInput) {
+      recommendCheck.addEventListener('change', () => {
+        if (recommendCheck.checked) {
+          batteryInput.value = 'Recommend suitable battery on visit';
+        } else if (batteryInput.value === 'Recommend suitable battery on visit') {
+          batteryInput.value = '';
+        }
+      });
+    }
+
+    // Populate dealers dropdown with Tumkur first
+    populateDealers(qDealer);
+
+    /* ---------- Form Validation & Submission ---------- */
+    const formCard = document.getElementById('booking-form-card');
+    const confCard = document.getElementById('fitting-confirmation-screen');
+    const form = document.getElementById('fitting-form');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      let isValid = true;
+      const name = document.getElementById('fit-name').value.trim();
+      const phone = document.getElementById('fit-phone').value.trim().replace(/\D/g, '');
+      const address = document.getElementById('fit-address').value.trim();
+      const pincode = document.getElementById('fit-pincode').value.trim();
+      const vehicleType = document.getElementById('fit-vehicle').value;
+      const batteryNeeded = document.getElementById('fit-battery').value.trim() || 'Recommend on visit';
+      const dealerId = document.getElementById('fit-dealer').value;
+      const date = document.getElementById('fit-date').value;
+      const slot = document.getElementById('fit-slot-select').value;
+      const hasOldBattery = document.querySelector('input[name="fit-old-battery"]:checked').value === 'yes';
+
+      // Inline validation
+      if (!name) {
+        document.getElementById('err-fit-name').style.display = 'block';
+        isValid = false;
+      } else {
+        document.getElementById('err-fit-name').style.display = 'none';
+      }
+
+      if (!phone || phone.length < 10) {
+        document.getElementById('err-fit-phone').style.display = 'block';
+        isValid = false;
+      } else {
+        document.getElementById('err-fit-phone').style.display = 'none';
+      }
+
+      if (!address) {
+        document.getElementById('err-fit-address').style.display = 'block';
+        isValid = false;
+      } else {
+        document.getElementById('err-fit-address').style.display = 'none';
+      }
+
+      if (!pincode || pincode.length !== 6) {
+        document.getElementById('err-fit-pincode').style.display = 'block';
+        isValid = false;
+      } else {
+        document.getElementById('err-fit-pincode').style.display = 'none';
+      }
+
+      if (!date) {
+        document.getElementById('err-fit-date').style.display = 'block';
+        isValid = false;
+      } else {
+        document.getElementById('err-fit-date').style.display = 'none';
+      }
+
+      if (!isValid) return;
+
+      const selectedDealerObj = DEALERS.find(d => d.id === dealerId) || { name: 'Tumkur Partner Dealer', phone: DEMO_WHATSAPP_NUMBER };
+      const bookingId = generateFittingId();
+      const nowIso = new Date().toISOString();
+
+      const newFitting = {
+        id: bookingId,
+        name: name,
+        phone: phone,
+        address: address,
+        pincode: pincode,
+        vehicleType: vehicleType,
+        batteryNeeded: batteryNeeded,
+        serviceType: isWaterRefill ? 'water-refill' : 'fitting',
+        dealerId: dealerId,
+        dealerName: selectedDealerObj.name,
+        date: date,
+        slot: slot,
+        oldBattery: hasOldBattery,
+        exchangeEstimate: hasOldBattery && exchangeCreditVal ? `₹${exchangeCreditVal.toLocaleString('en-IN')}` : null,
+        status: 'Booked',
+        statusHistory: [
+          { status: 'Booked', timestamp: nowIso, note: 'Appointment requested by customer' }
+        ],
+        createdAt: nowIso
+      };
+
+      // Save to localStorage "fittings"
+      const list = getStoredFittings();
+      list.unshift(newFitting);
+      saveStoredFittings(list);
+
+      // Render Confirmation Screen
+      renderConfirmation(newFitting, selectedDealerObj);
+    });
+
+    function renderConfirmation(fitting, dealer) {
+      formCard.style.display = 'none';
+      confCard.style.display = 'block';
+
+      document.getElementById('conf-booking-id').textContent = fitting.id;
+      document.getElementById('conf-dealer-name').textContent = `${dealer.name} (${dealer.city || 'Tumkur'})`;
+      document.getElementById('conf-datetime').textContent = `${fitting.date} · ${fitting.slot}`;
+      document.getElementById('conf-service').textContent = fitting.serviceType === 'water-refill' ? 'Distilled Water Refill' : 'New Battery Fitting';
+      document.getElementById('conf-address').textContent = `${fitting.address}, ${fitting.pincode}`;
+      document.getElementById('conf-exchange').textContent = fitting.exchangeEstimate ? `Yes · Credit ${fitting.exchangeEstimate}` : (fitting.oldBattery ? 'Yes (Value assessed on site)' : 'No old battery handover');
+
+      // Update WhatsApp link to dealer / demo
+      const dealerPhoneDigits = (dealer.phone || DEMO_WHATSAPP_NUMBER).replace(/\D/g, '');
+      const targetWa = dealerPhoneDigits.startsWith('91') ? dealerPhoneDigits : ('91' + dealerPhoneDigits);
+      const waMsg = `Hi ${dealer.name}, I just booked a Doorstep Battery Appointment on Battery Fair!\n\n` +
+        `Booking ID: *${fitting.id}*\n` +
+        `Customer: ${fitting.name} (${fitting.phone})\n` +
+        `Service: ${fitting.serviceType === 'water-refill' ? 'Distilled Water Refill' : 'New Battery Fitting'}\n` +
+        `Vehicle / Usage: ${fitting.vehicleType}\n` +
+        `Battery: ${fitting.batteryNeeded}\n` +
+        `Date & Slot: ${fitting.date} (${fitting.slot})\n` +
+        `Address: ${fitting.address}, ${fitting.pincode}\n` +
+        `${fitting.exchangeEstimate ? 'Old Battery Exchange: ' + fitting.exchangeEstimate + '\n' : ''}\n` +
+        `Please confirm my appointment.`;
+
+      const confWaBtn = document.getElementById('conf-wa-btn');
+      if (confWaBtn) {
+        confWaBtn.href = `https://wa.me/${targetWa}?text=${encodeURIComponent(waMsg)}`;
+      }
+
+      window.scrollTo({ top: confCard.offsetTop - 80, behavior: 'smooth' });
+    }
+
+    // Reset button
+    const btnBookAnother = document.getElementById('btn-book-another');
+    if (btnBookAnother) {
+      btnBookAnother.addEventListener('click', () => {
+        form.reset();
+        if (dateInput) dateInput.value = today;
+        if (phoneInput) phoneInput.value = DEMO_PHONE_RAW;
+        formCard.style.display = 'block';
+        confCard.style.display = 'none';
+        window.scrollTo({ top: formCard.offsetTop - 80, behavior: 'smooth' });
+      });
+    }
+
+    /* ---------- Track My Booking Section ---------- */
+    const trackForm = document.getElementById('track-form');
+    const trackQuery = document.getElementById('track-query');
+    const trackOutput = document.getElementById('track-output-container');
+
+    function executeTrack(query) {
+      const q = (query || '').trim().toLowerCase();
+      if (!q) {
+        trackOutput.innerHTML = '<p style="font-size:12px; color:#DC2626; margin-top:8px;">Please enter your phone number or booking ID.</p>';
+        return;
+      }
+
+      const fittings = getStoredFittings();
+      const qClean = q.replace(/\D/g, '');
+
+      const matches = fittings.filter(f => {
+        if (f.id && f.id.toLowerCase().includes(q)) return true;
+        if (qClean && qClean.length >= 6 && f.phone && f.phone.includes(qClean)) return true;
+        return false;
+      });
+
+      if (matches.length === 0) {
+        trackOutput.innerHTML = `
+          <div class="track-result-box" style="border-color:#FCD34D; background:#FFFBEB;">
+            <div style="font-weight:700; color:#92400E; font-size:14px; margin-bottom:4px;">No booking found</div>
+            <p style="font-size:12px; color:#B45309; margin:0;">
+              No appointment matches "${escapeHtml(q)}". Make sure you entered the correct 10-digit number or booking reference (BF-FIT-YYYY-XXXX).
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      trackOutput.innerHTML = matches.map(f => {
+        const status = f.status || 'Booked';
+        let statusBadgeClass = 'status-badge--booked';
+        if (status === 'Dealer confirmed') statusBadgeClass = 'status-badge--confirmed';
+        else if (status === 'On the way') statusBadgeClass = 'status-badge--ontheway';
+        else if (status === 'Fitted & old battery collected') statusBadgeClass = 'status-badge--completed';
+
+        const historyItems = (f.statusHistory && f.statusHistory.length > 0)
+          ? f.statusHistory
+          : [{ status: f.status, timestamp: f.createdAt, note: 'Booking registered' }];
+
+        const dealerObj = DEALERS.find(d => d.id === f.dealerId) || { phone: DEMO_WHATSAPP_NUMBER };
+        const dealerPhone = (dealerObj.phone || DEMO_WHATSAPP_NUMBER).replace(/\D/g, '');
+        const targetWa = dealerPhone.startsWith('91') ? dealerPhone : ('91' + dealerPhone);
+        const inquiryMsg = `Hi, I am tracking my Battery Fair booking (${f.id}). Could you please update me on technician ETA?`;
+
+        return `
+          <div class="track-result-box">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
+              <div>
+                <strong style="font-size:15px; color:var(--color-dark);">${escapeHtml(f.id)}</strong>
+                <div style="font-size:12px; color:var(--color-text-muted);">${escapeHtml(f.serviceType === 'water-refill' ? 'Water Refill' : 'Battery Fitting')} · ${escapeHtml(f.date)}</div>
+              </div>
+              <span class="status-badge ${statusBadgeClass}">${escapeHtml(status)}</span>
+            </div>
+
+            <div style="font-size:13px; line-height:1.6; color:var(--color-text); margin-bottom:12px;">
+              <div><strong>Dealer:</strong> ${escapeHtml(f.dealerName || 'Assigned Dealer')}</div>
+              <div><strong>Address:</strong> ${escapeHtml(f.address)}, ${escapeHtml(f.pincode)}</div>
+              ${f.exchangeEstimate ? `<div><strong>Old Battery Credit:</strong> <span style="color:var(--color-primary); font-weight:700;">${escapeHtml(f.exchangeEstimate)}</span></div>` : ''}
+            </div>
+
+            <!-- Progression history -->
+            <div style="background:var(--color-bg); padding:10px 14px; border-radius:8px; margin-bottom:12px;">
+              <span style="font-size:11px; font-weight:700; text-transform:uppercase; color:var(--color-text-muted);">Status Progression History</span>
+              <div class="status-history-list" style="margin-top:8px;">
+                ${historyItems.map(h => `
+                  <div class="status-history-item">
+                    <strong style="font-size:13px; color:var(--color-dark);">${escapeHtml(h.status)}</strong>
+                    <div style="font-size:11px; color:var(--color-text-muted);">${new Date(h.timestamp).toLocaleString('en-IN', { dateStyle:'short', timeStyle:'short' })}</div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+            <a href="https://wa.me/${targetWa}?text=${encodeURIComponent(inquiryMsg)}" target="_blank" rel="noopener" class="btn btn-whatsapp btn-sm" style="width:100%; justify-content:center; font-size:12px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.555 4.126 1.528 5.86L.06 23.487a.5.5 0 0 0 .613.613l5.627-1.468A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.94 9.94 0 0 1-5.332-1.543l-.382-.228-3.332.869.886-3.236-.25-.396A9.94 9.94 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+              Inquire on WhatsApp
+            </a>
+          </div>
+        `;
+      }).join('');
+    }
+
+    if (trackForm) {
+      trackForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        executeTrack(trackQuery.value);
+      });
+    }
+
+    // Auto-track if phone is in query param
+    const qPhone = urlParams.get('phone') || urlParams.get('track');
+    if (qPhone && trackQuery) {
+      trackQuery.value = qPhone;
+      executeTrack(qPhone);
+    }
+
+  })();
+  </script>
+</body>
+</html>

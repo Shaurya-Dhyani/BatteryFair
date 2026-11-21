@@ -78,8 +78,10 @@
       <div class="navbar__links">
         <a href="index.html"      class="navbar__link" data-page="index.html" data-i18n="nav.home">Home</a>
         <a href="finder.html"     class="navbar__link" data-page="finder.html" data-i18n="nav.find">Find Battery</a>
-        <a href="sale.html"       class="navbar__link" data-page="sale.html" data-i18n="nav.sale">Sell / Exchange</a>
+        <a href="fitting.html"    class="navbar__link" data-page="fitting.html" data-i18n="nav.fitting">Doorstep Fitting</a>
+        <a href="care.html"       class="navbar__link" data-page="care.html" data-i18n="nav.care">Battery Care</a>
         <a href="calculator.html" class="navbar__link" data-page="calculator.html" data-i18n="nav.calculator">Calculator</a>
+        <a href="sale.html"       class="navbar__link" data-page="sale.html" data-i18n="nav.sale">Sell / Exchange</a>
       </div>
       <div class="lang-dropdown">
         <button class="lang-dropdown__toggle" id="lang-toggle" aria-haspopup="true" aria-expanded="false">
@@ -120,13 +122,21 @@
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       Find Battery
     </a>
-    <a href="sale.html"       class="mobile-menu__link" data-page="sale.html" data-i18n="nav.sale">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-      Sell / Exchange
+    <a href="fitting.html"    class="mobile-menu__link" data-page="fitting.html" data-i18n="nav.fitting">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2" ry="2"/><path d="M16 8h4l3 5v5h-3"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      Doorstep Fitting
+    </a>
+    <a href="care.html"       class="mobile-menu__link" data-page="care.html" data-i18n="nav.care">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+      Battery Care
     </a>
     <a href="calculator.html" class="mobile-menu__link" data-page="calculator.html" data-i18n="nav.calculator">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><line x1="8" y1="10" x2="8" y2="10.01"/><line x1="12" y1="10" x2="12" y2="10.01"/><line x1="16" y1="10" x2="16" y2="10.01"/><line x1="8" y1="14" x2="8" y2="14.01"/><line x1="12" y1="14" x2="12" y2="14.01"/><line x1="8" y1="18" x2="8" y2="18.01"/><line x1="12" y1="18" x2="12" y2="18.01"/></svg>
       Calculator
+    </a>
+    <a href="sale.html"       class="mobile-menu__link" data-page="sale.html" data-i18n="nav.sale">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+      Sell / Exchange
     </a>
     <div class="mobile-menu__divider"></div>
     <span class="mobile-menu__label" data-i18n="nav.language">Language</span>
@@ -448,8 +458,22 @@
               <h3 data-i18n="sale.customers_title">My Customers</h3>
               <span class="customer-count-badge" id="customer-count">0 customers</span>
             </div>
-            <input class="customer-search-input" type="text" id="customer-table-search"
-                   placeholder="Search by customer, phone, serial...">
+            <div style="display: flex; gap: var(--space-2); align-items: center; flex-wrap: wrap;">
+              <input class="customer-search-input" type="text" id="customer-table-search"
+                     placeholder="Search by customer, phone, serial...">
+              <button type="button" class="btn btn-secondary btn-sm" id="export-csv-btn" style="height: 40px; display: inline-flex; align-items: center; gap: 6px; font-weight: 600; white-space: nowrap;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Export CSV
+              </button>
+            </div>
+          </div>
+
+          <!-- Warranty Expiry Filter Tabs -->
+          <div class="customer-tabs" id="customer-filter-tabs">
+            <button type="button" class="customer-tab active" data-filter="all">All <span class="customer-tab-count" id="count-all">0</span></button>
+            <button type="button" class="customer-tab" data-filter="active">Active <span class="customer-tab-count" id="count-active">0</span></button>
+            <button type="button" class="customer-tab" data-filter="expiring">Expiring Soon (30d) <span class="customer-tab-count" id="count-expiring">0</span></button>
+            <button type="button" class="customer-tab" data-filter="expired">Expired <span class="customer-tab-count" id="count-expired">0</span></button>
           </div>
 
           <div class="table-responsive">
@@ -484,6 +508,109 @@
           </div>
         </div>
 
+        <!-- ============================================================
+             DOORSTEP FITTING REQUESTS SECTION
+             ============================================================ -->
+        <div class="customers-section" id="fitting-requests-section" style="margin-top: var(--space-8);">
+          <div class="customers-header">
+            <div class="customers-title-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" color="var(--color-primary)">
+                <rect x="1" y="3" width="15" height="13" rx="2" ry="2"/>
+                <path d="M16 8h4l3 5v5h-3"/>
+                <circle cx="5.5" cy="18.5" r="2.5"/>
+                <circle cx="18.5" cy="18.5" r="2.5"/>
+              </svg>
+              <h3>Doorstep Fitting Requests</h3>
+              <span class="customer-count-badge" id="fitting-count">0 requests</span>
+            </div>
+            <div>
+              <span style="font-size: var(--font-size-xs); color: var(--color-text-muted);">Advance status &amp; send WhatsApp dispatch update</span>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="customers-table" id="fittings-table">
+              <thead>
+                <tr>
+                  <th>Booking ID</th>
+                  <th>Customer</th>
+                  <th>Phone</th>
+                  <th>Service Type</th>
+                  <th>Scheduled Date &amp; Slot</th>
+                  <th>Address &amp; Pincode</th>
+                  <th>Exchange Credit</th>
+                  <th>Status</th>
+                  <th style="text-align: right;">Action &amp; Notify</th>
+                </tr>
+              </thead>
+              <tbody id="fittings-table-body">
+                <!-- Rendered by JS -->
+              </tbody>
+            </table>
+          </div>
+
+          <div class="customers-empty" id="fittings-empty-state" style="display: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="1" y="3" width="15" height="13" rx="2" ry="2"/>
+              <path d="M16 8h4l3 5v5h-3"/>
+              <circle cx="5.5" cy="18.5" r="2.5"/>
+              <circle cx="18.5" cy="18.5" r="2.5"/>
+            </svg>
+            <p>No doorstep fitting requests for this dealer yet. Bookings from fitting.html appear here in real time!</p>
+          </div>
+        </div>
+
+        <!-- ============================================================
+             CARE REMINDERS DUE SECTION
+             ============================================================ -->
+        <div class="customers-section" id="care-due-section" style="margin-top: var(--space-8);">
+          <div class="customers-header">
+            <div class="customers-title-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" color="#D97706">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+              </svg>
+              <h3>Care Reminders Due</h3>
+              <span class="customer-count-badge" id="care-due-count" style="background:#FEF3C7; color:#B45309;">0 due</span>
+            </div>
+            <div>
+              <span style="font-size: var(--font-size-xs); color: var(--color-text-muted);">Refill due or warranty expiring within 60 days</span>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="customers-table" id="care-due-table">
+              <thead>
+                <tr>
+                  <th>Customer</th>
+                  <th>Phone</th>
+                  <th>Battery Details</th>
+                  <th>Serial Number</th>
+                  <th>Due Reason</th>
+                  <th>Due Date</th>
+                  <th>Time Left</th>
+                  <th style="text-align: right;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="care-due-table-body">
+                <!-- Rendered by JS -->
+              </tbody>
+            </table>
+          </div>
+
+          <div class="customers-empty" id="care-due-empty-state" style="display: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <polyline points="9 12 11 14 15 10"/>
+            </svg>
+            <p>All customers are up to date! No water refills due or expiring warranties in the next 60 days.</p>
+          </div>
+        </div>
+
       </section>
 
     </div>
@@ -505,8 +632,10 @@
           <ul class="footer__list">
             <li><a href="index.html">Home</a></li>
             <li><a href="finder.html">Find Battery</a></li>
-            <li><a href="sale.html">Sell / Exchange</a></li>
+            <li><a href="fitting.html">Doorstep Fitting</a></li>
+            <li><a href="care.html">Battery Care</a></li>
             <li><a href="calculator.html">Calculator</a></li>
+            <li><a href="sale.html">Dealer Portal</a></li>
             <li><a href="index.html#waitlist">Early Access Waitlist</a></li>
           </ul>
         </div>
@@ -565,12 +694,59 @@
     const STORAGE_DEALER_PHONE_ALT = 'dealer_phone';
     const STORAGE_DEALER_KEY       = 'bf_logged_dealer';
     const STORAGE_SALES_KEY        = 'sales';
+    const STORAGE_FITTINGS_KEY     = 'fittings';
+    const STORAGE_REMINDERS_KEY    = 'reminders';
 
     /* ---------- State ---------- */
     let currentDealer = null;
     let tableSearchQuery = '';
 
     /* ---------- Helpers ---------- */
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function getStoredFittings() {
+      try {
+        const stored = localStorage.getItem(STORAGE_FITTINGS_KEY);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        }
+      } catch (e) {}
+
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const tomorrowStr = tomorrow.toISOString().split('T')[0];
+
+      return [{
+        id: 'BF-FIT-2026-1042',
+        name: 'Ramesh Kumar',
+        phone: DEMO_PHONE_RAW,
+        address: '14, SS Puram Main Road, near Town Hall',
+        pincode: '572101',
+        vehicleType: 'Car / SUV',
+        batteryNeeded: 'Amaron Current 150Ah',
+        serviceType: 'fitting',
+        date: tomorrowStr,
+        slot: 'Morning (9 AM - 12 PM)',
+        oldBattery: true,
+        exchangeEstimate: '₹4,750',
+        dealerId: 'd3',
+        dealerName: 'Sri Lakshmi Batteries',
+        status: 'Booked',
+        statusHistory: [
+          { status: 'Booked', timestamp: new Date().toISOString(), note: 'Booking submitted by customer' }
+        ],
+        createdAt: new Date().toISOString()
+      }];
+    }
     function getStoredSales() {
       try {
         const stored = localStorage.getItem(STORAGE_SALES_KEY);
@@ -830,6 +1006,8 @@
       }
 
       renderCustomersTable();
+      renderFittingRequests();
+      renderCareRemindersDue();
     }
 
     function showLogin() {
@@ -1052,8 +1230,9 @@
       // 2. Show digital warranty card
       displayWarrantyCard(saleRecord);
 
-      // 3. Refresh "My Customers" table
+      // 3. Refresh "My Customers" table & Care Reminders
       renderCustomersTable();
+      renderCareRemindersDue();
 
       // 4. Reset form inputs and clear errors
       saleForm.reset();
@@ -1164,6 +1343,8 @@
     }
 
     /* ---------- My Customers Table Logic ---------- */
+    let tableStatusFilter = 'all';
+
     function renderCustomersTable() {
       let list = getStoredSales();
       const q = tableSearchQuery.trim().toLowerCase();
@@ -1176,6 +1357,60 @@
           const brand = (w.batteryBrand || w.battery_brand || '').toLowerCase();
           const model = (w.model || '').toLowerCase();
           return name.includes(q) || phone.includes(q) || serial.includes(q) || brand.includes(q) || model.includes(q);
+        });
+      }
+
+      // Compute status counts across query-matched items
+      const countAll = list.length;
+      let countActive = 0;
+      let countExpiring = 0;
+      let countExpired = 0;
+
+      list.forEach(w => {
+        const purchaseDate = w.purchaseDate || w.purchase_date;
+        const months = w.warrantyMonths || w.warranty_months;
+        const expiryDate = w.expiryDate || calculateExpiry(purchaseDate, months);
+        const daysLeft = calculateDaysLeft(expiryDate);
+        if (daysLeft > 0) {
+          countActive++;
+          if (daysLeft <= 30) countExpiring++;
+        } else {
+          countExpired++;
+        }
+      });
+
+      const badgeAll = document.getElementById('count-all');
+      const badgeActive = document.getElementById('count-active');
+      const badgeExpiring = document.getElementById('count-expiring');
+      const badgeExpired = document.getElementById('count-expired');
+
+      if (badgeAll) badgeAll.textContent = countAll;
+      if (badgeActive) badgeActive.textContent = countActive;
+      if (badgeExpiring) badgeExpiring.textContent = countExpiring;
+      if (badgeExpired) badgeExpired.textContent = countExpired;
+
+      // Filter by expiry status tab
+      if (tableStatusFilter === 'active') {
+        list = list.filter(w => {
+          const p = w.purchaseDate || w.purchase_date;
+          const m = w.warrantyMonths || w.warranty_months;
+          const exp = w.expiryDate || calculateExpiry(p, m);
+          return calculateDaysLeft(exp) > 0;
+        });
+      } else if (tableStatusFilter === 'expiring') {
+        list = list.filter(w => {
+          const p = w.purchaseDate || w.purchase_date;
+          const m = w.warrantyMonths || w.warranty_months;
+          const exp = w.expiryDate || calculateExpiry(p, m);
+          const d = calculateDaysLeft(exp);
+          return d > 0 && d <= 30;
+        });
+      } else if (tableStatusFilter === 'expired') {
+        list = list.filter(w => {
+          const p = w.purchaseDate || w.purchase_date;
+          const m = w.warrantyMonths || w.warranty_months;
+          const exp = w.expiryDate || calculateExpiry(p, m);
+          return calculateDaysLeft(exp) <= 0;
         });
       }
 
@@ -1214,6 +1449,12 @@
         const dealerDigits = (dealerPhone || DEMO_PHONE_RAW).replace(/\D/g, '').replace(/^91/, '');
         const dealerDisplay = dealerDigits === DEMO_PHONE_RAW ? DEMO_PHONE_DISPLAY : `+91 ${dealerDigits}`;
 
+        const waterReminderMsg = `*Battery Fair: Distilled Water Maintenance Check*\n\n` +
+          `Dear ${custName},\n` +
+          `This is a friendly reminder from ${currentDealer ? currentDealer.name : 'your battery dealer'} regarding your ${brand} ${model} battery (Serial: ${serial}) purchased on ${formatDate(purchaseDate)}.\n\n` +
+          `Please check your battery distilled water levels to prevent cell degradation and keep your warranty valid. Visit our shop anytime for a free electrolyte & gravity check!\n\n` +
+          `Dealer Contact: ${dealerDisplay}`;
+
         return `
           <tr>
             <td>
@@ -1237,8 +1478,12 @@
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                   View
                 </button>
-                <a href="https://wa.me/${targetWaCust || DEMO_WHATSAPP_NUMBER}?text=${encodeURIComponent(waMsg)}" target="_blank" rel="noopener" class="btn-icon-table btn-icon-table--wa" title="Share on WhatsApp">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
+                <a href="https://wa.me/${targetWaCust || DEMO_WHATSAPP_NUMBER}?text=${encodeURIComponent(waterReminderMsg)}" target="_blank" rel="noopener" class="btn-icon-table btn-icon-table--water" title="Send Distilled Water Reminder">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                  Water Check
+                </a>
+                <a href="https://wa.me/${targetWaCust || DEMO_WHATSAPP_NUMBER}?text=${encodeURIComponent(waMsg)}" target="_blank" rel="noopener" class="btn-icon-table btn-icon-table--wa" title="Share Warranty on WhatsApp">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.555 4.126 1.528 5.86L.06 23.487a.5.5 0 0 0 .613.613l5.627-1.468A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.94 9.94 0 0 1-5.332-1.543l-.382-.228-3.332.869.886-3.236-.25-.396A9.94 9.94 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
                   WhatsApp
                 </a>
                 <button class="btn-icon-table btn-icon-table--del" onclick="deleteCustomerWarranty('${w.id || serial}')" title="Delete">
@@ -1251,7 +1496,7 @@
       }).join('');
     }
 
-    /* Global actions for table rows */
+        /* Global actions for table rows */
     window.viewCustomerWarranty = function(id) {
       const list = getStoredSales();
       const target = list.find(w => (w.id === id || w.serialNumber === id || w.serial_number === id));
@@ -1264,15 +1509,334 @@
       if (confirm('Are you sure you want to delete this customer record?')) {
         let sales = getStoredSales();
         sales = sales.filter(s => s.id !== id && s.serialNumber !== id && s.serial_number !== id);
-        localStorage.setItem(STORAGE_SALES_KEY, JSON.stringify(sales));
+        try {
+          localStorage.setItem(STORAGE_SALES_KEY, JSON.stringify(sales));
+        } catch (e) {}
         renderCustomersTable();
+        renderCareRemindersDue();
       }
     };
+
+    /* ---------- Doorstep Fitting Requests Logic ---------- */
+    function renderFittingRequests() {
+      const tbody = document.getElementById('fittings-table-body');
+      const countBadge = document.getElementById('fitting-count');
+      const emptyState = document.getElementById('fittings-empty-state');
+      const table = document.getElementById('fittings-table');
+      if (!tbody) return;
+
+      const allFittings = getStoredFittings();
+      let fittings = allFittings;
+      if (currentDealer && currentDealer.id) {
+        const dealerMatches = allFittings.filter(f => !f.dealerId || f.dealerId === currentDealer.id || f.dealerName === currentDealer.name);
+        if (dealerMatches.length > 0) {
+          fittings = dealerMatches;
+        }
+      }
+
+      if (countBadge) {
+        countBadge.textContent = `${fittings.length} request${fittings.length === 1 ? '' : 's'}`;
+      }
+
+      if (fittings.length === 0) {
+        tbody.innerHTML = '';
+        if (emptyState) emptyState.style.display = 'block';
+        if (table) table.style.display = 'none';
+        return;
+      }
+
+      if (emptyState) emptyState.style.display = 'none';
+      if (table) table.style.display = '';
+
+      tbody.innerHTML = fittings.map(f => {
+        const id = escapeHtml(f.id);
+        const name = escapeHtml(f.name);
+        const phone = escapeHtml(f.phone || DEMO_PHONE_RAW);
+        const service = f.serviceType === 'water-refill' ? 'Distilled Water Refill' : 'Doorstep Fitting';
+        const date = escapeHtml(f.date || '');
+        const slot = escapeHtml(f.slot || 'Morning');
+        const address = escapeHtml(`${f.address || ''}${f.pincode ? ' - ' + f.pincode : ''}`);
+        const exchange = f.exchangeEstimate ? `<strong style="color:var(--color-primary)">${escapeHtml(f.exchangeEstimate)}</strong>` : (f.oldBattery ? 'Handover (TBD)' : 'No exchange');
+        const status = f.status || 'Booked';
+
+        let statusClass = 'status-badge--booked';
+        let nextStatus = '';
+        let nextBtnLabel = '';
+        if (status === 'Booked') {
+          statusClass = 'status-badge--booked';
+          nextStatus = 'Dealer confirmed';
+          nextBtnLabel = 'Confirm';
+        } else if (status === 'Dealer confirmed') {
+          statusClass = 'status-badge--confirmed';
+          nextStatus = 'On the way';
+          nextBtnLabel = 'Dispatch';
+        } else if (status === 'On the way') {
+          statusClass = 'status-badge--ontheway';
+          nextStatus = 'Fitted & old battery collected';
+          nextBtnLabel = 'Complete';
+        } else {
+          statusClass = 'status-badge--completed';
+        }
+
+        const phoneClean = (f.phone || DEMO_PHONE_RAW).replace(/\D/g, '');
+        const targetWa = phoneClean.startsWith('91') ? phoneClean : ('91' + phoneClean);
+        const dealerName = currentDealer ? currentDealer.name : (f.dealerName || 'Battery Fair Partner');
+        const waMsg = `Hi ${f.name || 'Customer'}, update from ${dealerName} regarding your Battery Fair appointment (${id}):\n\n` +
+          `Status: *${status}*\n` +
+          `Date: ${date} (${slot})\n` +
+          `Service: ${service}\n\n` +
+          `Our technician is on schedule. Contact us at ${DEMO_PHONE_DISPLAY} for any questions!`;
+
+        let actionHtml = '';
+        if (nextStatus) {
+          actionHtml = `
+            <button type="button" class="btn btn-primary btn-sm" onclick="advanceFittingStatus('${id}')" style="font-size:12px; padding:4px 10px; min-height:32px;">
+              ${nextBtnLabel} &rarr;
+            </button>
+          `;
+        } else {
+          actionHtml = `<span style="font-size:12px; color:var(--color-primary); font-weight:700;">&#10003; Completed</span>`;
+        }
+
+        return `
+          <tr>
+            <td><strong>${id}</strong></td>
+            <td>${name}</td>
+            <td><a href="tel:${phoneClean}">${phone}</a></td>
+            <td><span class="badge--stock" style="font-size:11px;">${service}</span></td>
+            <td>${date} <br><small style="color:var(--color-text-muted)">${slot}</small></td>
+            <td style="max-width:200px;"><small>${address}</small></td>
+            <td>${exchange}</td>
+            <td><span class="status-badge ${statusClass}">${escapeHtml(status)}</span></td>
+            <td style="text-align: right;">
+              <div style="display:flex; gap:6px; justify-content:flex-end; align-items:center;">
+                ${actionHtml}
+                <a href="https://wa.me/${targetWa}?text=${encodeURIComponent(waMsg)}" target="_blank" rel="noopener" class="btn-icon-table btn-icon-table--wa" title="WhatsApp Customer Update">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.555 4.126 1.528 5.86L.06 23.487a.5.5 0 0 0 .613.613l5.627-1.468A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.94 9.94 0 0 1-5.332-1.543l-.382-.228-3.332.869.886-3.236-.25-.396A9.94 9.94 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+                  WhatsApp
+                </a>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    window.advanceFittingStatus = function(id) {
+      let fittings = getStoredFittings();
+      const target = fittings.find(f => f.id === id);
+      if (!target) return;
+
+      const flow = ['Booked', 'Dealer confirmed', 'On the way', 'Fitted & old battery collected'];
+      const currentIndex = flow.indexOf(target.status);
+      if (currentIndex >= 0 && currentIndex < flow.length - 1) {
+        target.status = flow[currentIndex + 1];
+        if (!target.statusHistory) target.statusHistory = [];
+        target.statusHistory.push({
+          status: target.status,
+          timestamp: new Date().toISOString(),
+          note: `Advanced to ${target.status} by ${currentDealer ? currentDealer.name : 'dealer'}`
+        });
+        try {
+          localStorage.setItem(STORAGE_FITTINGS_KEY, JSON.stringify(fittings));
+        } catch (e) {}
+        renderFittingRequests();
+      }
+    };
+
+    /* ---------- Care Reminders Due Logic ---------- */
+    function renderCareRemindersDue() {
+      const tbody = document.getElementById('care-due-table-body');
+      const countBadge = document.getElementById('care-due-count');
+      const emptyState = document.getElementById('care-due-empty-state');
+      const table = document.getElementById('care-due-table');
+      if (!tbody) return;
+
+      const sales = getStoredSales();
+      const dueList = [];
+
+      // 1. Check customer sales records
+      sales.forEach(s => {
+        const pDate = s.purchaseDate || s.purchase_date;
+        const months = s.warrantyMonths || s.warranty_months;
+        const expDate = s.expiryDate || calculateExpiry(pDate, months);
+        const daysLeft = calculateDaysLeft(expDate);
+
+        // Warranty expiring within 60 days
+        if (daysLeft > 0 && daysLeft <= 60) {
+          dueList.push({
+            customerName: s.customerName || s.customer_name || 'Customer',
+            customerPhone: s.customerPhone || s.customer_phone || DEMO_PHONE_RAW,
+            batteryBrand: s.batteryBrand || s.battery_brand || 'Battery',
+            model: s.model || '',
+            serialNumber: s.serialNumber || s.serial_number || '',
+            dueType: 'Warranty Expiring Soon',
+            dueDate: expDate,
+            timeLeftText: `${daysLeft}d left`,
+            isUrgent: daysLeft <= 15,
+            message: `Hi ${s.customerName || 'Customer'}, your battery warranty (${s.batteryBrand} ${s.model}, SN: ${s.serialNumber}) from ${currentDealer ? currentDealer.name : 'Battery Fair'} expires on ${formatDate(expDate)} (${daysLeft} days left). Visit us for a free health check or exchange!`
+          });
+        }
+
+        // Water refill check: if purchased >= 90 days ago
+        if (pDate) {
+          const purchaseTime = new Date(pDate).getTime();
+          const now = Date.now();
+          const daysSincePurchase = Math.floor((now - purchaseTime) / (1000 * 60 * 60 * 24));
+          if (daysSincePurchase >= 90) {
+            dueList.push({
+              customerName: s.customerName || s.customer_name || 'Customer',
+              customerPhone: s.customerPhone || s.customer_phone || DEMO_PHONE_RAW,
+              batteryBrand: s.batteryBrand || s.battery_brand || 'Tubular / Inverter Battery',
+              model: s.model || '',
+              serialNumber: s.serialNumber || s.serial_number || '',
+              dueType: 'Distilled Water Refill Due',
+              dueDate: 'Overdue / Due Now',
+              timeLeftText: `${daysSincePurchase}d since start`,
+              isUrgent: true,
+              message: `Hi ${s.customerName || 'Customer'}, friendly maintenance reminder from ${currentDealer ? currentDealer.name : 'your battery shop'}! Your battery is due for a distilled water top-up to maintain cell health and warranty. Visit us anytime for a free check!`
+            });
+          }
+        }
+      });
+
+      // 2. Also check localStorage["reminders"]
+      try {
+        const storedRem = localStorage.getItem(STORAGE_REMINDERS_KEY);
+        if (storedRem) {
+          const reminders = JSON.parse(storedRem);
+          if (Array.isArray(reminders)) {
+            reminders.forEach(r => {
+              if (r.dueDate) {
+                const daysLeft = calculateDaysLeft(r.dueDate);
+                if (daysLeft <= 60) {
+                  dueList.push({
+                    customerName: r.customerName || (r.phone ? `Customer (${r.phone})` : 'Registered Customer'),
+                    customerPhone: r.phone || DEMO_PHONE_RAW,
+                    batteryBrand: r.title || 'Scheduled Care',
+                    model: r.batteryDetails || '',
+                    serialNumber: r.id || '',
+                    dueType: r.type === 'water-refill' ? 'Distilled Water Refill' : (r.title || 'Care Reminder'),
+                    dueDate: r.dueDate,
+                    timeLeftText: daysLeft > 0 ? `${daysLeft}d left` : 'Due today/past',
+                    isUrgent: daysLeft <= 15,
+                    message: `Hi, friendly reminder from ${currentDealer ? currentDealer.name : 'Battery Fair'} for ${r.title} scheduled for ${r.dueDate}. Let us know if you need assistance!`
+                  });
+                }
+              }
+            });
+          }
+        }
+      } catch (e) {}
+
+      if (countBadge) {
+        countBadge.textContent = `${dueList.length} due`;
+      }
+
+      if (dueList.length === 0) {
+        tbody.innerHTML = '';
+        if (emptyState) emptyState.style.display = 'block';
+        if (table) table.style.display = 'none';
+        return;
+      }
+
+      if (emptyState) emptyState.style.display = 'none';
+      if (table) table.style.display = '';
+
+      tbody.innerHTML = dueList.map(item => {
+        const custName = escapeHtml(item.customerName);
+        const phone = escapeHtml(item.customerPhone);
+        const phoneDigits = phone.replace(/\D/g, '') || DEMO_PHONE_RAW;
+        const targetWa = phoneDigits.startsWith('91') ? phoneDigits : ('91' + phoneDigits);
+        const battery = escapeHtml(`${item.batteryBrand} ${item.model}`.trim());
+        const serial = escapeHtml(item.serialNumber);
+        const reason = escapeHtml(item.dueType);
+        const dueDate = escapeHtml(formatDate(item.dueDate) || item.dueDate);
+        const timeLeft = escapeHtml(item.timeLeftText);
+        const badgeColor = item.isUrgent ? 'background:#FEE2E2; color:#B91C1C; border:1px solid #FCA5A5;' : 'background:#FEF3C7; color:#B45309; border:1px solid #FDE68A;';
+
+        return `
+          <tr>
+            <td><strong>${custName}</strong></td>
+            <td><a href="tel:${phoneDigits}">${phone}</a></td>
+            <td>${battery}</td>
+            <td><code>${serial || '—'}</code></td>
+            <td><span class="status-badge" style="${badgeColor}">${reason}</span></td>
+            <td>${dueDate}</td>
+            <td><strong>${timeLeft}</strong></td>
+            <td style="text-align: right;">
+              <a href="https://wa.me/${targetWa}?text=${encodeURIComponent(item.message)}" target="_blank" rel="noopener" class="btn btn-whatsapp btn-sm" style="font-size:12px; padding:4px 10px; min-height:32px; display:inline-flex;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.555 4.126 1.528 5.86L.06 23.487a.5.5 0 0 0 .613.613l5.627-1.468A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22a9.94 9.94 0 0 1-5.332-1.543l-.382-.228-3.332.869.886-3.236-.25-.396A9.94 9.94 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+                WhatsApp Nudge
+              </a>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
 
     customerSearchInput.addEventListener('input', (e) => {
       tableSearchQuery = e.target.value;
       renderCustomersTable();
     });
+
+    // Expiry Status Tabs listeners
+    const filterTabs = document.querySelectorAll('.customer-tab');
+    filterTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        filterTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        tableStatusFilter = tab.dataset.filter || 'all';
+        renderCustomersTable();
+      });
+    });
+
+    // CSV Export Handler
+    const exportCsvBtn = document.getElementById('export-csv-btn');
+    if (exportCsvBtn) {
+      exportCsvBtn.addEventListener('click', () => {
+        const list = getStoredSales();
+        if (!list || list.length === 0) {
+          alert('No customer records to export.');
+          return;
+        }
+        const headers = ['Customer Name', 'Phone', 'Brand', 'Model', 'Serial Number', 'Dealer Phone', 'Purchase Date', 'Warranty Expiry', 'Status', 'Days Remaining'];
+        const rows = list.map(w => {
+          const name = w.customerName || w.customer_name || '';
+          const phone = w.customerPhone || w.customer_phone || DEMO_PHONE_RAW;
+          const brand = w.batteryBrand || w.battery_brand || '';
+          const model = w.model || '';
+          const serial = w.serialNumber || w.serial_number || '';
+          const pDate = w.purchaseDate || w.purchase_date || '';
+          const months = w.warrantyMonths || w.warranty_months;
+          const expDate = w.expiryDate || calculateExpiry(pDate, months);
+          const daysLeft = calculateDaysLeft(expDate);
+          const status = daysLeft > 0 ? 'Active' : 'Expired';
+          return [
+            `"${name.replace(/"/g, '""')}"`,
+            `"${phone}"`,
+            `"${brand.replace(/"/g, '""')}"`,
+            `"${model.replace(/"/g, '""')}"`,
+            `"${serial.replace(/"/g, '""')}"`,
+            `"${DEMO_PHONE_DISPLAY}"`,
+            `"${pDate}"`,
+            `"${expDate}"`,
+            `"${status}"`,
+            `"${daysLeft}"`
+          ].join(',');
+        });
+        const csvContent = '\uFEFF' + [headers.join(','), ...rows].join('\r\n');
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `battery_fair_customers_${new Date().toISOString().split('T')[0]}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      });
+    }
 
     /* ---------- Initialize Everything ---------- */
     initQuickDealers();

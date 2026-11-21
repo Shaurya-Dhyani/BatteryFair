@@ -1220,21 +1220,25 @@ p {
   position: relative;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) and (max-width: 1023px) {
   .steps-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-10);
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-8);
   }
 }
 
-/* Connecting line between steps (desktop) */
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
+  .steps-grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--space-6);
+  }
+
   .steps-grid::before {
     content: '';
     position: absolute;
     top: 40px;
-    left: calc(16.666% + 24px);
-    right: calc(16.666% + 24px);
+    left: calc(10% + 20px);
+    right: calc(10% + 20px);
     height: 2px;
     background: repeating-linear-gradient(
       90deg,
@@ -1278,6 +1282,16 @@ p {
 .step__number--3 {
   background: #FEF3C7;
   color: #D97706;
+}
+
+.step__number--4 {
+  background: #E0E7FF;
+  color: #4F46E5;
+}
+
+.step__number--5 {
+  background: #F3E8FF;
+  color: #7E22CE;
 }
 
 .step__icon-ring {
@@ -3129,4 +3143,682 @@ html.reveal-ready .reveal-on-scroll.delay-4 {
     transform: none !important;
     box-shadow: none !important;
   }
+}
+
+/* ============================================================
+   Scrap Valuation Banner (Finder Page)
+   ============================================================ */
+.scrap-valuation-banner {
+  background: linear-gradient(135deg, #0B1F3A 0%, #162E4E 60%, #15803D 100%);
+  color: var(--color-white);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-6);
+  margin-bottom: var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  box-shadow: 0 8px 24px rgba(11, 31, 58, 0.15);
+  border: 1px solid rgba(22, 163, 74, 0.3);
+  flex-wrap: wrap;
+}
+
+.scrap-valuation-banner__content {
+  flex: 1;
+  min-width: 260px;
+}
+
+.scrap-valuation-banner__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(22, 163, 74, 0.3);
+  color: #86EFAC;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-2);
+}
+
+.scrap-valuation-banner__title {
+  font-size: var(--font-size-xl);
+  font-weight: 800;
+  color: var(--color-white);
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.scrap-valuation-banner__meta {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.scrap-valuation-banner__desc {
+  font-size: var(--font-size-sm);
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 4px;
+}
+
+.scrap-valuation-banner__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.scrap-valuation-banner__link {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-white);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.scrap-valuation-banner__link:hover {
+  background: var(--color-white);
+  color: var(--color-dark);
+}
+
+/* ============================================================
+   Dealer Portal: Warranty Expiry Tabs and Action Buttons
+   ============================================================ */
+.customer-tabs {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.customer-tab {
+  font-family: var(--font-family);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background: var(--color-white);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.customer-tab:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.customer-tab.active {
+  background: var(--color-primary);
+  color: var(--color-white);
+  border-color: var(--color-primary);
+  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.25);
+}
+
+.customer-tab-count {
+  font-size: 11px;
+  background: rgba(0, 0, 0, 0.08);
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+}
+
+.customer-tab.active .customer-tab-count {
+  background: rgba(255, 255, 255, 0.25);
+  color: var(--color-white);
+}
+
+.btn-icon-table--water {
+  color: #1D4ED8;
+  background: #EFF6FF;
+  border-color: #BFDBFE;
+}
+
+.btn-icon-table--water:hover {
+  background: #2563EB;
+  color: var(--color-white);
+  border-color: #2563EB;
+}
+
+/* ============================================================
+   Feature 1: Doorstep Fitting (fitting.html) & Status Tracker
+   ============================================================ */
+.fitting-hero {
+  background: linear-gradient(135deg, var(--color-dark) 0%, #162E4E 60%, #15803D 100%);
+  color: var(--color-white);
+  padding: var(--space-12) 0 var(--space-8);
+  margin-bottom: var(--space-8);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.fitting-hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(22, 163, 74, 0.25);
+  color: #86EFAC;
+  border: 1px solid rgba(134, 239, 172, 0.4);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-3);
+}
+
+.fitting-hero h1 {
+  color: var(--color-white);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 800;
+  margin-bottom: var(--space-2);
+}
+
+.fitting-hero p {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: var(--font-size-base);
+  max-width: 60ch;
+}
+
+.fitting-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+  margin-bottom: var(--space-12);
+}
+
+@media (min-width: 992px) {
+  .fitting-layout {
+    grid-template-columns: 1.5fr 1fr;
+    align-items: start;
+  }
+}
+
+.fitting-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+}
+
+.fitting-card__header {
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.fitting-card__title {
+  font-size: var(--font-size-xl);
+  font-weight: 800;
+  color: var(--color-dark);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.exchange-credit-box {
+  background: #F0FDF4;
+  border: 1.5px solid #86EFAC;
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  margin-bottom: var(--space-5);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.exchange-credit-box__icon {
+  width: 28px;
+  height: 28px;
+  color: var(--color-primary);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.exchange-credit-box__title {
+  font-size: var(--font-size-base);
+  font-weight: 800;
+  color: #15803D;
+  margin-bottom: 2px;
+}
+
+.exchange-credit-box__desc {
+  font-size: var(--font-size-xs);
+  color: #166534;
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* Radio chips for Time Slots */
+.slot-chips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.slot-chip {
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  text-align: center;
+  cursor: pointer;
+  background: var(--color-white);
+  transition: all var(--transition-fast);
+  min-height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.slot-chip:hover {
+  border-color: var(--color-primary);
+  background: #F0FDF4;
+}
+
+.slot-chip.active {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+  box-shadow: 0 0 0 1px var(--color-primary);
+}
+
+.slot-chip__label {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-dark);
+}
+
+.slot-chip__time {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+/* Handover toggle */
+.handover-toggle-box {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  margin-top: var(--space-2);
+}
+
+.handover-options {
+  display: flex;
+  gap: var(--space-4);
+  margin-top: var(--space-2);
+}
+
+.handover-option {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-dark);
+}
+
+.handover-option input[type="radio"] {
+  accent-color: var(--color-primary);
+  width: 18px;
+  height: 18px;
+}
+
+/* Visual Status Stepper */
+.stepper-wrap {
+  margin: var(--space-6) 0;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+
+.stepper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  position: relative;
+}
+
+@media (min-width: 640px) {
+  .stepper {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+}
+
+.stepper-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  flex: 1;
+  position: relative;
+}
+
+@media (min-width: 640px) {
+  .stepper-item {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-2);
+  }
+
+  .stepper-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 18px;
+    left: 50%;
+    width: 100%;
+    height: 3px;
+    background: var(--color-border);
+    z-index: 1;
+  }
+
+  .stepper-item.is-done:not(:last-child)::after {
+    background: var(--color-primary);
+  }
+}
+
+.stepper-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-white);
+  border: 2px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-weight: 700;
+  font-size: var(--font-size-sm);
+  z-index: 2;
+  position: relative;
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+}
+
+.stepper-item.is-done .stepper-circle {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.stepper-item.is-active .stepper-circle {
+  background: var(--color-white);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  box-shadow: 0 0 0 4px var(--color-primary-light);
+}
+
+.stepper-content {
+  flex: 1;
+}
+
+.stepper-title {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-dark);
+}
+
+.stepper-time {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+/* Status Badges */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.status-badge--booked {
+  background: #FEF3C7;
+  color: #B45309;
+  border: 1px solid #FDE68A;
+}
+
+.status-badge--confirmed {
+  background: #DBEAFE;
+  color: #1D4ED8;
+  border: 1px solid #BFDBFE;
+}
+
+.status-badge--ontheway {
+  background: #EDE9FE;
+  color: #6D28D9;
+  border: 1px solid #DDD6FE;
+}
+
+.status-badge--completed {
+  background: #DCFCE7;
+  color: #15803D;
+  border: 1px solid #BBF7D0;
+}
+
+/* ============================================================
+   Feature 2: Battery Care (care.html) & Reminders
+   ============================================================ */
+.care-planner-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--space-8);
+}
+
+.refill-alert {
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-md);
+  margin-top: var(--space-5);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: var(--font-size-sm);
+}
+
+.refill-alert--good {
+  background: #F0FDF4;
+  border: 1.5px solid #86EFAC;
+  color: #166534;
+}
+
+.refill-alert--due {
+  background: #FFFBEB;
+  border: 1.5px solid #FCD34D;
+  color: #92400E;
+}
+
+.refill-alert--overdue {
+  background: #FEF2F2;
+  border: 1.5px solid #FCA5A5;
+  color: #991B1B;
+}
+
+.refill-alert--sealed {
+  background: #EFF6FF;
+  border: 1.5px solid #93C5FD;
+  color: #1E40AF;
+}
+
+.refill-alert__title {
+  font-size: var(--font-size-base);
+  font-weight: 800;
+  margin-bottom: 2px;
+}
+
+.tips-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+
+@media (min-width: 640px) {
+  .tips-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .tips-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.tip-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.tip-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.tip-card__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-3);
+}
+
+.tip-card__icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.tip-card__title {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--color-dark);
+  margin-bottom: var(--space-2);
+}
+
+.tip-card__desc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Reminder list */
+.reminder-item {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  margin-bottom: var(--space-3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.reminder-item__main {
+  flex: 1;
+  min-width: 220px;
+}
+
+.reminder-item__title {
+  font-weight: 700;
+  font-size: var(--font-size-base);
+  color: var(--color-dark);
+}
+
+.reminder-item__meta {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+.reminder-item__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.btn-ics {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  background: #F1F5F9;
+  color: #334155;
+  border: 1px solid #CBD5E1;
+  min-height: 36px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-ics:hover {
+  background: var(--color-dark);
+  color: var(--color-white);
+  border-color: var(--color-dark);
+}
+
+/* Dealer Portal extra section styling */
+.dealer-subpanel {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin-top: var(--space-8);
+  box-shadow: var(--shadow-sm);
+}
+
+.dealer-subpanel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.dealer-subpanel__title {
+  font-size: var(--font-size-xl);
+  font-weight: 800;
+  color: var(--color-dark);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
 }

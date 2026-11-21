@@ -23,6 +23,8 @@ const BatteryI18n = (() => {
       // Navbar & Mobile Menu
       'nav.home': 'Home',
       'nav.find': 'Find Battery',
+      'nav.fitting': 'Doorstep Fitting',
+      'nav.care': 'Battery Care',
       'nav.sale': 'Sell / Exchange',
       'nav.calculator': 'Calculator',
       'nav.navigate': 'Navigate',
@@ -84,6 +86,8 @@ const BatteryI18n = (() => {
       // Navbar & Mobile Menu
       'nav.home': 'होम',
       'nav.find': 'बैटरी खोजें',
+      'nav.fitting': 'डोरस्टेप फिटिंग',
+      'nav.care': 'बैटरी केयर',
       'nav.sale': 'बेचें / बदलें',
       'nav.calculator': 'कैलकुलेटर',
       'nav.navigate': 'नेविगेट करें',
@@ -145,6 +149,8 @@ const BatteryI18n = (() => {
       // Navbar & Mobile Menu
       'nav.home': 'ಮುಖಪುಟ',
       'nav.find': 'ಬ್ಯಾಟರಿ ಹುಡುಕಿ',
+      'nav.fitting': 'ಡೋರ್‌ಸ್ಟೆಪ್ ಫಿಟ್ಟಿಂಗ್',
+      'nav.care': 'ಬ್ಯಾಟರಿ ಕೇರ್',
       'nav.sale': 'ಮಾರಾಟ / ವಿನಿಮಯ',
       'nav.calculator': 'ಕ್ಯಾಲ್ಕುಲೇಟರ್',
       'nav.navigate': 'ನ್ಯಾವಿಗೇಟ್',
@@ -207,11 +213,15 @@ const BatteryI18n = (() => {
   const SELECTOR_MAP = {
     '.navbar__links a[data-page="index.html"]': 'nav.home',
     '.navbar__links a[data-page="finder.html"]': 'nav.find',
+    '.navbar__links a[data-page="fitting.html"]': 'nav.fitting',
+    '.navbar__links a[data-page="care.html"]': 'nav.care',
     '.navbar__links a[data-page="sale.html"]': 'nav.sale',
     '.navbar__links a[data-page="calculator.html"]': 'nav.calculator',
 
     '.mobile-menu a[data-page="index.html"]': 'nav.home',
     '.mobile-menu a[data-page="finder.html"]': 'nav.find',
+    '.mobile-menu a[data-page="fitting.html"]': 'nav.fitting',
+    '.mobile-menu a[data-page="care.html"]': 'nav.care',
     '.mobile-menu a[data-page="sale.html"]': 'nav.sale',
     '.mobile-menu a[data-page="calculator.html"]': 'nav.calculator',
 
@@ -502,7 +512,11 @@ document.addEventListener('DOMContentLoaded', () => {
       '.customers-card',
       '.customers-section',
       '.search-bar',
-      '.filter-bar'
+      '.filter-bar',
+      '.fitting-card',
+      '.fitting-tracker-card',
+      '.care-card',
+      '.tip-card'
     ];
 
     autoSelectors.forEach(selector => {
