@@ -27,6 +27,7 @@ const BatteryI18n = (() => {
       'nav.care': 'Battery Care',
       'nav.sale': 'Sell / Exchange',
       'nav.calculator': 'Calculator',
+      'nav.dashboard': 'Dealer Dashboard',
       'nav.navigate': 'Navigate',
       'nav.language': 'Language',
 
@@ -90,6 +91,7 @@ const BatteryI18n = (() => {
       'nav.care': 'बैटरी केयर',
       'nav.sale': 'बेचें / बदलें',
       'nav.calculator': 'कैलकुलेटर',
+      'nav.dashboard': 'डीलर डैशबोर्ड',
       'nav.navigate': 'नेविगेट करें',
       'nav.language': 'भाषा',
 
@@ -153,6 +155,7 @@ const BatteryI18n = (() => {
       'nav.care': 'ಬ್ಯಾಟರಿ ಕೇರ್',
       'nav.sale': 'ಮಾರಾಟ / ವಿನಿಮಯ',
       'nav.calculator': 'ಕ್ಯಾಲ್ಕುಲೇಟರ್',
+      'nav.dashboard': 'ಡೀಲರ್ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್',
       'nav.navigate': 'ನ್ಯಾವಿಗೇಟ್',
       'nav.language': 'ಭಾಷೆ',
 
@@ -217,6 +220,7 @@ const BatteryI18n = (() => {
     '.navbar__links a[data-page="care.html"]': 'nav.care',
     '.navbar__links a[data-page="sale.html"]': 'nav.sale',
     '.navbar__links a[data-page="calculator.html"]': 'nav.calculator',
+    '.navbar__links a[data-page="dealer.html"]': 'nav.dashboard',
 
     '.mobile-menu a[data-page="index.html"]': 'nav.home',
     '.mobile-menu a[data-page="finder.html"]': 'nav.find',
@@ -224,6 +228,7 @@ const BatteryI18n = (() => {
     '.mobile-menu a[data-page="care.html"]': 'nav.care',
     '.mobile-menu a[data-page="sale.html"]': 'nav.sale',
     '.mobile-menu a[data-page="calculator.html"]': 'nav.calculator',
+    '.mobile-menu a[data-page="dealer.html"]': 'nav.dashboard',
 
     '.mobile-menu__label:nth-of-type(1)': 'nav.navigate',
     '.mobile-menu__label:nth-of-type(2)': 'nav.language'

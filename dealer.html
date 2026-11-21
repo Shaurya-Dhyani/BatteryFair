@@ -1,0 +1,3212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dealer Dashboard | Battery Fair</title>
+  <meta name="description" content="Manage inventory, pricing, warranty claims, doorstep fittings, and customer care reminders from one unified panel.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <!-- QRCode.js CDN for real QR code generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    /* Scoped QR Code and Modal helper styles */
+    .warranty-card__qr-section {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      background: var(--color-bg, #F8FAFC);
+      border-radius: var(--radius-md, 10px);
+      padding: 1rem;
+      border: 1px dashed var(--color-border, #E2E8F0);
+    }
+    .warranty-card__qr-box {
+      width: 160px !important;
+      height: 160px !important;
+      min-width: 160px !important;
+      min-height: 160px !important;
+      background: #FFFFFF !important;
+      padding: 8px !important;
+      border-radius: var(--radius-md, 10px) !important;
+      box-shadow: 0 2px 10px rgba(11, 31, 58, 0.08) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      box-sizing: border-box !important;
+      margin: 0 auto;
+    }
+    .warranty-card__qr-box canvas,
+    .warranty-card__qr-box img {
+      width: 144px !important;
+      height: 144px !important;
+      display: block !important;
+      margin: 0 auto !important;
+    }
+    .exchange-rate-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: var(--space-4);
+      margin-top: var(--space-3);
+    }
+    .exchange-rate-card {
+      background: #F8FAFC;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-4);
+    }
+    .exchange-rate-card label {
+      font-size: var(--font-size-xs);
+      font-weight: 700;
+      color: var(--color-dark);
+      display: block;
+      margin-bottom: 6px;
+    }
+    .rate-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .claim-history-list {
+      margin-top: var(--space-3);
+      padding-left: var(--space-2);
+      border-left: 2px solid var(--color-border);
+    }
+    .claim-history-item {
+      position: relative;
+      padding-left: var(--space-3);
+      padding-bottom: var(--space-2);
+      font-size: var(--font-size-xs);
+    }
+    .claim-history-item::before {
+      content: '';
+      position: absolute;
+      left: -5px;
+      top: 5px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--color-primary);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== NAVBAR ==================== -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container navbar__inner">
+      <a href="index.html" class="navbar__logo" aria-label="Battery Fair home">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1" y="6" width="18" height="12" rx="2" ry="2"/>
+          <line x1="23" y1="13" x2="23" y2="11"/>
+          <line x1="11" y1="9" x2="11" y2="15"/>
+          <line x1="8" y1="12" x2="14" y2="12"/>
+        </svg>
+        <span>Battery Fair</span>
+      </a>
+      <div class="navbar__links">
+        <a href="index.html"      class="navbar__link" data-page="index.html" data-i18n="nav.home">Home</a>
+        <a href="finder.html"     class="navbar__link" data-page="finder.html" data-i18n="nav.find">Find Battery</a>
+        <a href="fitting.html"    class="navbar__link" data-page="fitting.html" data-i18n="nav.fitting">Doorstep Fitting</a>
+        <a href="care.html"       class="navbar__link" data-page="care.html" data-i18n="nav.care">Battery Care</a>
+        <a href="calculator.html" class="navbar__link" data-page="calculator.html" data-i18n="nav.calculator">Calculator</a>
+        <a href="sale.html"       class="navbar__link" data-page="sale.html" data-i18n="nav.sale">Sell / Exchange</a>
+        <a href="dealer.html"     class="navbar__link navbar__link--active" data-page="dealer.html" data-i18n="nav.dashboard">Dealer Dashboard</a>
+      </div>
+      <div class="lang-dropdown">
+        <button class="lang-dropdown__toggle" id="lang-toggle" aria-haspopup="true" aria-expanded="false">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10A15.3 15.3 0 0 1 12 2z"/>
+          </svg>
+          <span class="lang-dropdown__label">English</span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
+        <div class="lang-dropdown__menu" id="lang-menu" role="menu">
+          <button class="lang-dropdown__item lang-dropdown__item--active" data-lang="en" role="menuitem">English</button>
+          <button class="lang-dropdown__item" data-lang="kn" role="menuitem">ಕನ್ನಡ</button>
+          <button class="lang-dropdown__item" data-lang="hi" role="menuitem">हिन्दी</button>
+        </div>
+      </div>
+      <button class="navbar__hamburger" id="hamburger"
+              aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ==================== MOBILE MENU ==================== -->
+  <div class="mobile-menu" id="mobile-menu" role="navigation" aria-label="Mobile navigation">
+    <span class="mobile-menu__label" data-i18n="nav.navigate">Navigate</span>
+    <a href="index.html"      class="mobile-menu__link" data-page="index.html" data-i18n="nav.home">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </a>
+    <a href="finder.html"     class="mobile-menu__link" data-page="finder.html" data-i18n="nav.find">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Find Battery
+    </a>
+    <a href="fitting.html"    class="mobile-menu__link" data-page="fitting.html" data-i18n="nav.fitting">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2" ry="2"/><path d="M16 8h4l3 5v5h-3"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      Doorstep Fitting
+    </a>
+    <a href="care.html"       class="mobile-menu__link" data-page="care.html" data-i18n="nav.care">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+      Battery Care
+    </a>
+    <a href="calculator.html" class="mobile-menu__link" data-page="calculator.html" data-i18n="nav.calculator">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><line x1="8" y1="10" x2="8" y2="10.01"/><line x1="12" y1="10" x2="12" y2="10.01"/><line x1="16" y1="10" x2="16" y2="10.01"/><line x1="8" y1="14" x2="8" y2="14.01"/><line x1="12" y1="14" x2="12" y2="14.01"/><line x1="8" y1="18" x2="8" y2="18.01"/><line x1="12" y1="18" x2="12" y2="18.01"/></svg>
+      Calculator
+    </a>
+    <a href="sale.html"       class="mobile-menu__link" data-page="sale.html" data-i18n="nav.sale">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+      Sell / Exchange
+    </a>
+    <a href="dealer.html"     class="mobile-menu__link mobile-menu__link--active" data-page="dealer.html" data-i18n="nav.dashboard">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+      Dealer Dashboard
+    </a>
+    <div class="mobile-menu__divider"></div>
+    <span class="mobile-menu__label" data-i18n="nav.language">Language</span>
+    <a href="#" class="mobile-menu__link mobile-menu__link--active" data-lang="en" onclick="return false;">English</a>
+    <a href="#" class="mobile-menu__link" data-lang="kn" onclick="return false;">ಕನ್ನಡ</a>
+    <a href="#" class="mobile-menu__link" data-lang="hi" onclick="return false;">हिन्दी</a>
+  </div>
+
+  <!-- ============================================================
+       HERO BANNER
+       ============================================================ -->
+  <section class="finder-hero">
+    <div class="container">
+      <div class="hero__badge" style="margin-bottom: var(--space-3); background: rgba(22, 163, 74, 0.12); color: var(--color-primary); border: 1px solid rgba(22, 163, 74, 0.25);">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+        Partner Dealer Panel
+      </div>
+      <h1>Dealer Dashboard</h1>
+      <p>Manage inventory, pricing, and warranty claims from one panel.</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       DEALER SESSION BAR (Visible when logged in)
+       ============================================================ -->
+  <div class="dealer-bar" id="dealer-session-bar" style="display: none;">
+    <div class="container dealer-bar__inner">
+      <div class="dealer-bar__info">
+        <div class="dealer-bar__avatar">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l1-4h16l1 4"/>
+            <path d="M3 9v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V9"/>
+            <path d="M9 21V9"/><path d="M15 21V9"/><path d="M3 9h18"/>
+          </svg>
+        </div>
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <span class="dealer-bar__title" id="session-dealer-name">Sri Balaji Power Solutions</span>
+            <span class="badge badge--demo" id="demo-data-badge" style="display: none;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              Demo Data Active
+            </span>
+          </div>
+          <div class="dealer-bar__meta" id="session-dealer-meta">Jayanagar, Bengaluru</div>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+        <!-- Demo Data Toggle Button -->
+        <button type="button" class="btn btn-secondary btn-sm" id="toggle-demo-btn" style="min-height: 38px; padding: 6px 12px; font-weight: 600;">
+          Load Demo Data
+        </button>
+
+        <!-- Quick Register a Sale Link -->
+        <a href="sale.html" class="btn btn-primary btn-sm" style="min-height: 38px; padding: 6px 14px; font-weight: 600;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          Register a Sale
+        </a>
+
+        <!-- Logout Button -->
+        <button class="dealer-bar__logout" id="dealer-logout-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+          Logout
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <main class="main-content" style="padding-top: 0;">
+    <div class="container">
+
+      <!-- ============================================================
+           MOCK DEALER LOGIN (Visible when logged out)
+           ============================================================ -->
+      <section class="login-section" id="dealer-login-section">
+        <div class="login-card">
+          <div class="login-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l1-4h16l1 4"/>
+              <path d="M3 9v11a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V9"/>
+              <path d="M9 21V9"/><path d="M15 21V9"/><path d="M3 9h18"/>
+            </svg>
+          </div>
+          <h2>Dealer Login</h2>
+          <p>Enter any 10-digit mobile number to access your unified dealer dashboard.</p>
+
+          <form id="dealer-login-form" novalidate>
+            <div class="form-group" id="login-phone-group" style="text-align: left;">
+              <label for="login-phone">WhatsApp / Phone Number</label>
+              <input class="form-input" type="tel" id="login-phone"
+                     placeholder="e.g. 7905382677" value="7905382677" maxlength="10" autocomplete="tel">
+              <div class="form-error" id="login-phone-error">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+                <span>Please enter a valid 10-digit mobile number</span>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg" id="login-btn" style="width: 100%; margin-top: var(--space-4);">
+              Login to Dashboard
+            </button>
+          </form>
+
+          <!-- Quick select chips for testing -->
+          <div class="login-quick-select">
+            <span class="login-quick-select__label">Quick Demo Logins (Partner Dealers)</span>
+            <div class="login-quick-chips" id="quick-dealers-container">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           DASHBOARD SHELL (Visible when logged in)
+           ============================================================ -->
+      <section class="dash-shell" id="dealer-dashboard-section" style="display: none;">
+        <div class="dash-layout">
+
+          <!-- Left: Responsive Sidebar / Tab Navigation -->
+          <aside class="dash-sidebar">
+            <nav class="dash-nav" role="tablist">
+              <button type="button" class="dash-nav__btn dash-nav__btn--active" data-tab="overview" role="tab" aria-selected="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+                <span>Overview</span>
+              </button>
+
+              <button type="button" class="dash-nav__btn" data-tab="inventory" role="tab" aria-selected="false">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="18" height="12" rx="2" ry="2"/><line x1="23" y1="13" x2="23" y2="11"/><line x1="11" y1="9" x2="11" y2="15"/><line x1="8" y1="12" x2="14" y2="12"/></svg>
+                <span>Inventory &amp; Pricing</span>
+                <span class="dash-nav__badge" id="nav-count-stock">0</span>
+              </button>
+
+              <button type="button" class="dash-nav__btn" data-tab="claims" role="tab" aria-selected="false">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <span>Warranty Claims</span>
+                <span class="dash-nav__badge" id="nav-count-claims">0</span>
+              </button>
+
+              <button type="button" class="dash-nav__btn" data-tab="fittings" role="tab" aria-selected="false">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2" ry="2"/><path d="M16 8h4l3 5v5h-3"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                <span>Fitting Requests</span>
+                <span class="dash-nav__badge" id="nav-count-fittings">0</span>
+              </button>
+
+              <button type="button" class="dash-nav__btn" data-tab="customers" role="tab" aria-selected="false">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <span>Customers</span>
+                <span class="dash-nav__badge" id="nav-count-customers">0</span>
+              </button>
+
+              <button type="button" class="dash-nav__btn" data-tab="reminders" role="tab" aria-selected="false">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                <span>Care Reminders</span>
+                <span class="dash-nav__badge" id="nav-count-reminders">0</span>
+              </button>
+
+              <button type="button" class="dash-nav__btn" data-tab="plan" role="tab" aria-selected="false">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                <span>Pilot Plan</span>
+              </button>
+            </nav>
+          </aside>
+
+          <!-- Right: Tab Panels -->
+          <div class="dash-content">
+
+            <!-- ==========================================
+                 TAB 1: OVERVIEW
+                 ========================================== -->
+            <div class="dash-panel dash-panel--active" id="panel-overview">
+              <div class="dash-panel__header">
+                <div>
+                  <h2 class="dash-panel__title">Business Overview</h2>
+                  <p class="dash-panel__desc">Key operational metrics computed strictly from your saved shop records.</p>
+                </div>
+                <div class="dash-panel__actions">
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="switchDashboardTab('inventory')">
+                    Update Stock
+                  </button>
+                  <a href="sale.html" class="btn btn-primary btn-sm">
+                    + Register Sale
+                  </a>
+                </div>
+              </div>
+
+              <!-- Real KPI Cards computed strictly from saved data -->
+              <div class="kpi-grid">
+                <!-- KPI 1: Total Sales & This Month -->
+                <div class="kpi-card">
+                  <div class="kpi-card__top">
+                    <span class="kpi-card__label">Total Sales</span>
+                    <div class="kpi-card__icon kpi-card__icon--green">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+                    </div>
+                  </div>
+                  <div class="kpi-card__value" id="kpi-sales-total">0</div>
+                  <div class="kpi-card__sub" id="kpi-sales-month">0 recorded this month</div>
+                </div>
+
+                <!-- KPI 2: Active Warranties -->
+                <div class="kpi-card">
+                  <div class="kpi-card__top">
+                    <span class="kpi-card__label">Active Warranties</span>
+                    <div class="kpi-card__icon kpi-card__icon--blue">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
+                  </div>
+                  <div class="kpi-card__value" id="kpi-warranties-active">0</div>
+                  <div class="kpi-card__sub" id="kpi-warranties-sub">Digital cards protected</div>
+                </div>
+
+                <!-- KPI 3: Open Claims -->
+                <div class="kpi-card">
+                  <div class="kpi-card__top">
+                    <span class="kpi-card__label">Open Claims</span>
+                    <div class="kpi-card__icon kpi-card__icon--amber">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    </div>
+                  </div>
+                  <div class="kpi-card__value" id="kpi-claims-open">0</div>
+                  <div class="kpi-card__sub" id="kpi-claims-sub">Awaiting resolution</div>
+                </div>
+
+                <!-- KPI 4: Pending Fittings -->
+                <div class="kpi-card">
+                  <div class="kpi-card__top">
+                    <span class="kpi-card__label">Doorstep Fittings</span>
+                    <div class="kpi-card__icon kpi-card__icon--purple">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2" ry="2"/><path d="M16 8h4l3 5v5h-3"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                    </div>
+                  </div>
+                  <div class="kpi-card__value" id="kpi-fittings-pending">0</div>
+                  <div class="kpi-card__sub" id="kpi-fittings-sub">Booked / in transit</div>
+                </div>
+
+                <!-- KPI 5: Reminders Due (7 Days) -->
+                <div class="kpi-card">
+                  <div class="kpi-card__top">
+                    <span class="kpi-card__label">Reminders (7 Days)</span>
+                    <div class="kpi-card__icon kpi-card__icon--red">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                    </div>
+                  </div>
+                  <div class="kpi-card__value" id="kpi-reminders-due">0</div>
+                  <div class="kpi-card__sub">Water top-ups &amp; expiries</div>
+                </div>
+              </div>
+
+              <!-- Actionable Empty State Notice (if no records exist) -->
+              <div id="overview-empty-notices"></div>
+
+              <!-- Today Action Queue -->
+              <div class="today-box">
+                <div class="today-box__header">
+                  <div class="today-box__title">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <span>Today's Priorities</span>
+                  </div>
+                  <span class="badge" id="today-priority-count">0 pending actions</span>
+                </div>
+
+                <div class="today-list" id="today-list-container">
+                  <!-- Populated by JS -->
+                </div>
+              </div>
+            </div>
+
+            <!-- ==========================================
+                 TAB 2: INVENTORY & PRICING
+                 ========================================== -->
+            <div class="dash-panel" id="panel-inventory">
+              <div class="dash-panel__header">
+                <div>
+                  <h2 class="dash-panel__title">Inventory &amp; Live Pricing</h2>
+                  <p class="dash-panel__desc">Batteries listed here update your shop cards and price ranges in Find Battery.</p>
+                </div>
+                <div class="dash-panel__actions">
+                  <button type="button" class="btn btn-secondary btn-sm" id="btn-toggle-rates">
+                    Configure Exchange Rates
+                  </button>
+                  <button type="button" class="btn btn-primary btn-sm" id="btn-open-add-stock">
+                    + Add Battery Stock
+                  </button>
+                </div>
+              </div>
+
+              <!-- Collapsible Old Battery Exchange Rates Setting -->
+              <div class="card card--flat" id="rates-setting-card" style="display: none; margin-bottom: var(--space-6); background: #FAFBFD; border: 1.5px solid var(--color-border);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-2);">
+                  <h3 style="font-size: var(--font-size-base); font-weight: 700; color: var(--color-dark);">
+                    Dealer Buyback Exchange Rates (per Ah)
+                  </h3>
+                  <button type="button" class="btn-icon-table" id="btn-close-rates" style="border: none;">Close</button>
+                </div>
+                <p style="font-size: var(--font-size-xs); color: var(--color-text-muted);">
+                  Set your customized scrap rate per Ah for customers trading in old batteries. Prefilled from benchmark calculator rates.
+                </p>
+
+                <form id="exchange-rates-form">
+                  <div class="exchange-rate-grid">
+                    <div class="exchange-rate-card">
+                      <label for="rate-inverter">Inverter / UPS Battery</label>
+                      <div class="rate-input-wrap">
+                        <span style="font-weight: 700;">₹</span>
+                        <input type="number" class="form-input" id="rate-inverter" value="60" min="10" max="200" style="height: 38px;">
+                        <span style="font-size: 12px; color: var(--color-text-muted);">/ Ah</span>
+                      </div>
+                    </div>
+
+                    <div class="exchange-rate-card">
+                      <label for="rate-car">Car / SUV Battery</label>
+                      <div class="rate-input-wrap">
+                        <span style="font-weight: 700;">₹</span>
+                        <input type="number" class="form-input" id="rate-car" value="50" min="10" max="200" style="height: 38px;">
+                        <span style="font-size: 12px; color: var(--color-text-muted);">/ Ah</span>
+                      </div>
+                    </div>
+
+                    <div class="exchange-rate-card">
+                      <label for="rate-twowheeler">Two-Wheeler Battery</label>
+                      <div class="rate-input-wrap">
+                        <span style="font-weight: 700;">₹</span>
+                        <input type="number" class="form-input" id="rate-twowheeler" value="40" min="10" max="200" style="height: 38px;">
+                        <span style="font-size: 12px; color: var(--color-text-muted);">/ Ah</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style="margin-top: var(--space-4); display: flex; justify-content: flex-end; gap: var(--space-2);">
+                    <button type="submit" class="btn btn-primary btn-sm">Save Exchange Rates</button>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Inventory Table Card -->
+              <div class="dash-table-card">
+                <div class="dash-table-card__header">
+                  <span style="font-weight: 700; color: var(--color-dark);" id="stock-table-count">0 items in stock</span>
+                  <div style="display: flex; gap: var(--space-2); align-items: center;">
+                    <input type="text" class="form-input" id="stock-search-input" placeholder="Search brand or model..." style="height: 36px; font-size: 13px; max-width: 220px;">
+                  </div>
+                </div>
+
+                <div class="dash-table-wrapper">
+                  <table class="table" style="margin-bottom: 0;">
+                    <thead>
+                      <tr>
+                        <th>Battery Model</th>
+                        <th>Type &amp; Ah</th>
+                        <th>Selling Price</th>
+                        <th>Market Helper</th>
+                        <th>Quantity</th>
+                        <th>Stock Status</th>
+                        <th>Last Updated</th>
+                        <th style="text-align: right;">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="stock-table-body">
+                      <!-- Populated by JS -->
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Empty State for Inventory -->
+                <div class="empty-state" id="stock-empty-state" style="display: none; padding: var(--space-8) var(--space-4);">
+                  <div class="empty-state__icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <rect x="1" y="6" width="18" height="12" rx="2" ry="2"/>
+                      <line x1="23" y1="13" x2="23" y2="11"/>
+                    </svg>
+                  </div>
+                  <h3>No stock items added yet</h3>
+                  <p>Add your battery models and live prices to display verified rates to customers in Find Battery.</p>
+                  <button type="button" class="btn btn-primary" onclick="openAddStockModal()" style="margin-top: var(--space-3);">
+                    + Add First Battery
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- ==========================================
+                 TAB 3: WARRANTY CLAIMS
+                 ========================================== -->
+            <div class="dash-panel" id="panel-claims">
+              <div class="dash-panel__header">
+                <div>
+                  <h2 class="dash-panel__title">Warranty Claims Management</h2>
+                  <p class="dash-panel__desc">Log and track battery claims, verify warranty dates, and notify customers on WhatsApp.</p>
+                </div>
+                <div class="dash-panel__actions">
+                  <button type="button" class="btn btn-primary btn-sm" id="btn-open-log-claim">
+                    + Log a Claim
+                  </button>
+                </div>
+              </div>
+
+              <!-- Claims Filter & Search Bar -->
+              <div class="dash-table-card" style="margin-bottom: var(--space-4);">
+                <div style="padding: var(--space-4); display: flex; flex-wrap: wrap; gap: var(--space-3); justify-content: space-between; align-items: center;">
+                  <div class="customer-tabs" style="margin-bottom: 0;">
+                    <button type="button" class="customer-tab active" data-claim-filter="all">All Claims</button>
+                    <button type="button" class="customer-tab" data-claim-filter="Open">Open</button>
+                    <button type="button" class="customer-tab" data-claim-filter="In review">In Review</button>
+                    <button type="button" class="customer-tab" data-claim-filter="Approved">Approved</button>
+                    <button type="button" class="customer-tab" data-claim-filter="Replaced">Replaced</button>
+                    <button type="button" class="customer-tab" data-claim-filter="Rejected">Rejected</button>
+                  </div>
+
+                  <div style="display: flex; gap: var(--space-2); flex: 1; max-width: 320px; min-width: 220px;">
+                    <input type="text" class="form-input" id="claims-search-input" placeholder="Search serial or phone..." style="height: 38px; font-size: 13px;">
+                  </div>
+                </div>
+
+                <!-- Live Warranty Lookup Banner -->
+                <div id="claim-lookup-banner" style="display: none; padding: var(--space-3) var(--space-4); background: #EFF6FF; border-top: 1px solid #BFDBFE; font-size: var(--font-size-xs);">
+                  <!-- Populated when searching -->
+                </div>
+
+                <div class="dash-table-wrapper">
+                  <table class="table" style="margin-bottom: 0;">
+                    <thead>
+                      <tr>
+                        <th>Claim ID</th>
+                        <th>Customer</th>
+                        <th>Battery &amp; Serial</th>
+                        <th>Issue Reported</th>
+                        <th>Warranty Status</th>
+                        <th>Claim Status</th>
+                        <th>Last History Note</th>
+                        <th style="text-align: right;">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="claims-table-body">
+                      <!-- Populated by JS -->
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Empty State for Claims -->
+                <div class="empty-state" id="claims-empty-state" style="display: none; padding: var(--space-8) var(--space-4);">
+                  <div class="empty-state__icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                      <polyline points="9 12 11 14 15 10"/>
+                    </svg>
+                  </div>
+                  <h3>No warranty claims found</h3>
+                  <p>When a customer brings in a battery issue, click "Log a Claim" to record it and trigger automated tracking.</p>
+                  <button type="button" class="btn btn-primary" onclick="openLogClaimModal()" style="margin-top: var(--space-3);">
+                    + Log New Claim
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- ==========================================
+                 TAB 4: FITTING REQUESTS
+                 ========================================== -->
+            <div class="dash-panel" id="panel-fittings">
+              <div class="dash-panel__header">
+                <div>
+                  <h2 class="dash-panel__title">Doorstep Fitting Requests</h2>
+                  <p class="dash-panel__desc">Advance customer appointment stages: Booked &rarr; Confirmed &rarr; On the Way &rarr; Fitted &amp; Collected.</p>
+                </div>
+                <div class="dash-panel__actions">
+                  <a href="fitting.html" class="btn btn-secondary btn-sm" target="_blank" rel="noopener">
+                    Doorstep Service Info
+                  </a>
+                </div>
+              </div>
+
+              <div class="dash-table-card">
+                <div class="dash-table-card__header">
+                  <div class="customer-tabs" style="margin-bottom: 0;">
+                    <button type="button" class="customer-tab active" data-fit-filter="all">All Requests</button>
+                    <button type="button" class="customer-tab" data-fit-filter="Booked">Booked</button>
+                    <button type="button" class="customer-tab" data-fit-filter="Dealer confirmed">Confirmed</button>
+                    <button type="button" class="customer-tab" data-fit-filter="On the way">On the Way</button>
+                    <button type="button" class="customer-tab" data-fit-filter="Fitted &amp; old battery collected">Completed</button>
+                  </div>
+                  <span class="badge" id="fitting-count-badge">0 requests</span>
+                </div>
+
+                <div class="dash-table-wrapper">
+                  <table class="table" style="margin-bottom: 0;">
+                    <thead>
+                      <tr>
+                        <th>Booking ID</th>
+                        <th>Customer</th>
+                        <th>Service &amp; Vehicle</th>
+                        <th>Scheduled Date</th>
+                        <th>Address</th>
+                        <th>Old Battery Exchange</th>
+                        <th>Status</th>
+                        <th style="text-align: right;">Advance Flow</th>
+                      </tr>
+                    </thead>
+                    <tbody id="dash-fittings-body">
+                      <!-- Populated by JS -->
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="empty-state" id="dash-fittings-empty" style="display: none; padding: var(--space-8) var(--space-4);">
+                  <div class="empty-state__icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <rect x="1" y="3" width="15" height="13" rx="2" ry="2"/>
+                      <path d="M16 8h4l3 5v5h-3"/>
+                    </svg>
+                  </div>
+                  <h3>No fitting appointments</h3>
+                  <p>Bookings made via the Doorstep Fitting service or Find Battery will appear here for dispatch.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- ==========================================
+                 TAB 5: CUSTOMERS
+                 ========================================== -->
+            <div class="dash-panel" id="panel-customers">
+              <div class="dash-panel__header">
+                <div>
+                  <h2 class="dash-panel__title">Customer Directory</h2>
+                  <p class="dash-panel__desc">Registered battery warranties issued by your shop with instant digital QR certificate access.</p>
+                </div>
+                <div class="dash-panel__actions">
+                  <button type="button" class="btn btn-secondary btn-sm" id="btn-export-customers-csv">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Export CSV
+                  </button>
+                  <a href="sale.html" class="btn btn-primary btn-sm">
+                    + Register New Sale
+                  </a>
+                </div>
+              </div>
+
+              <div class="dash-table-card">
+                <div class="dash-table-card__header">
+                  <div class="customer-tabs" style="margin-bottom: 0;">
+                    <button type="button" class="customer-tab active" data-cust-filter="all">All (<span id="cust-cnt-all">0</span>)</button>
+                    <button type="button" class="customer-tab" data-cust-filter="active">Active (<span id="cust-cnt-active">0</span>)</button>
+                    <button type="button" class="customer-tab" data-cust-filter="expiring">Expiring Soon (<span id="cust-cnt-expiring">0</span>)</button>
+                    <button type="button" class="customer-tab" data-cust-filter="expired">Expired (<span id="cust-cnt-expired">0</span>)</button>
+                  </div>
+                  <input type="text" class="form-input" id="cust-search-input" placeholder="Search name, phone, serial..." style="height: 38px; font-size: 13px; max-width: 250px;">
+                </div>
+
+                <div class="dash-table-wrapper">
+                  <table class="table" style="margin-bottom: 0;">
+                    <thead>
+                      <tr>
+                        <th>Customer Name</th>
+                        <th>WhatsApp Phone</th>
+                        <th>Battery Model</th>
+                        <th>Serial Number</th>
+                        <th>Purchase Date</th>
+                        <th>Expiry Date</th>
+                        <th>Warranty Status</th>
+                        <th style="text-align: right;">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="dash-cust-table-body">
+                      <!-- Populated by JS -->
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="empty-state" id="dash-cust-empty" style="display: none; padding: var(--space-8) var(--space-4);">
+                  <div class="empty-state__icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                    </svg>
+                  </div>
+                  <h3>No customer records found</h3>
+                  <p>Register customer battery sales in the Dealer Portal to issue paperless certificates.</p>
+                  <a href="sale.html" class="btn btn-primary" style="margin-top: var(--space-3);">Register a Sale</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- ==========================================
+                 TAB 6: CARE REMINDERS
+                 ========================================== -->
+            <div class="dash-panel" id="panel-reminders">
+              <div class="dash-panel__header">
+                <div>
+                  <h2 class="dash-panel__title">Proactive Care Reminders</h2>
+                  <p class="dash-panel__desc">Automatic distilled-water refills (every 90 days) and warranties expiring within 60 days.</p>
+                </div>
+                <div class="dash-panel__actions">
+                  <a href="care.html" class="btn btn-secondary btn-sm" target="_blank" rel="noopener">
+                    Battery Care Guide
+                  </a>
+                </div>
+              </div>
+
+              <div class="dash-table-card">
+                <div class="dash-table-card__header">
+                  <span style="font-weight: 700; color: var(--color-dark);" id="reminders-table-count">0 reminders due</span>
+                  <span class="badge badge--green" style="font-size: 11px;">1-Tap WhatsApp Nudge</span>
+                </div>
+
+                <div class="dash-table-wrapper">
+                  <table class="table" style="margin-bottom: 0;">
+                    <thead>
+                      <tr>
+                        <th>Customer</th>
+                        <th>Phone</th>
+                        <th>Battery Model</th>
+                        <th>Serial</th>
+                        <th>Care Trigger</th>
+                        <th>Due Date</th>
+                        <th>Urgency</th>
+                        <th>Nudge Status</th>
+                        <th style="text-align: right;">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="dash-reminders-table-body">
+                      <!-- Populated by JS -->
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="empty-state" id="dash-reminders-empty" style="display: none; padding: var(--space-8) var(--space-4);">
+                  <div class="empty-state__icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+                    </svg>
+                  </div>
+                  <h3>All customer batteries up to date</h3>
+                  <p>No distilled water refills or warranty expiries are pending within the 60-day window.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- ==========================================
+                 TAB 7: PILOT PLAN
+                 ========================================== -->
+            <div class="dash-panel" id="panel-plan">
+              <div class="plan-hero-card">
+                <div class="waitlist-badge" style="background: rgba(255,255,255,0.15); color: #FFFFFF; border: 1px solid rgba(255,255,255,0.3); margin-bottom: var(--space-4);">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  Verified Partner Pilot
+                </div>
+                <h2>Battery Fair Dealer Plan</h2>
+                <p>Join India's verified battery dealer network. Manage inventory, issue digital QR warranties, and receive direct customer doorstep fitting leads.</p>
+
+                <div class="plan-price-callout">
+                  <span class="plan-price-num">₹299</span>
+                  <span class="plan-price-period">/ month per dealer</span>
+                </div>
+
+                <div style="background: rgba(22, 163, 74, 0.25); border: 1px solid rgba(74, 222, 128, 0.4); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4); max-width: 520px; font-size: var(--font-size-sm); margin-bottom: var(--space-6);">
+                  <strong>Early Partner Special:</strong> First 10 dealers in Tumkur and partner cities get <strong>2 months free</strong>. Any money paid is fully refundable.
+                </div>
+
+                <div class="plan-features-list">
+                  <div class="plan-feature-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    <div>
+                      <strong style="color: #FFFFFF; font-size: 14px; display: block;">Unlimited Digital Warranty Cards</strong>
+                      <span style="font-size: 12px; color: #CBD5E1;">Instant QR certificates sent straight to customer WhatsApp.</span>
+                    </div>
+                  </div>
+
+                  <div class="plan-feature-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    <div>
+                      <strong style="color: #FFFFFF; font-size: 14px; display: block;">Live Stock &amp; Price Publishing</strong>
+                      <span style="font-size: 12px; color: #CBD5E1;">Your real inventory and prices show directly in Find Battery.</span>
+                    </div>
+                  </div>
+
+                  <div class="plan-feature-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    <div>
+                      <strong style="color: #FFFFFF; font-size: 14px; display: block;">Doorstep Fitting Leads</strong>
+                      <span style="font-size: 12px; color: #CBD5E1;">Receive pre-qualified replacement and water refill customer appointments.</span>
+                    </div>
+                  </div>
+
+                  <div class="plan-feature-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    <div>
+                      <strong style="color: #FFFFFF; font-size: 14px; display: block;">Automated Care Nudges</strong>
+                      <span style="font-size: 12px; color: #CBD5E1;">Distilled-water maintenance alerts bring customers back to your shop.</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="margin-top: var(--space-8); display: flex; gap: var(--space-4); align-items: center; flex-wrap: wrap;">
+                  <a href="https://docs.google.com/forms/d/e/1FAIpQLSfJ42SIGy5UYxGmC2Gc0fIYycxMEAYKkXbRm-mkS9BGHeJJ0g/viewform?usp=sf_link"
+                     target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg" style="background: #16A34A; border-color: #16A34A; font-weight: 700;">
+                    <span>Join Waitlist &amp; Book Demo</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </a>
+                  <span style="font-size: var(--font-size-xs); color: #94A3B8;">No payment required now. Verified dealers are enrolled directly.</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ============================================================
+       MODALS
+       ============================================================ -->
+
+  <!-- Modal 1: Add / Edit Inventory Stock -->
+  <div class="dash-modal-backdrop" id="modal-stock" style="display: none;">
+    <div class="dash-modal">
+      <div class="dash-modal__header">
+        <h3 class="dash-modal__title" id="modal-stock-title">Add Battery to Stock</h3>
+        <button type="button" class="dash-modal__close" onclick="closeStockModal()" aria-label="Close">&times;</button>
+      </div>
+
+      <form id="form-stock" novalidate>
+        <input type="hidden" id="stock-item-id">
+
+        <div class="form-row form-row-2">
+          <div class="form-group" id="fg-stock-brand">
+            <label for="stock-brand">Brand <span class="text-accent">*</span></label>
+            <select class="form-select" id="stock-brand" required>
+              <option value="" disabled selected>Select brand</option>
+              <option value="Amaron">Amaron</option>
+              <option value="Exide">Exide</option>
+              <option value="Luminous">Luminous</option>
+              <option value="Livguard">Livguard</option>
+              <option value="Okaya">Okaya</option>
+              <option value="SF Sonic">SF Sonic</option>
+              <option value="Tata Green">Tata Green</option>
+              <option value="Microtek">Microtek</option>
+            </select>
+            <div class="form-error" id="err-stock-brand" style="display: none; color: #dc2626; font-size: 12px; margin-top: 4px;">Please select a brand</div>
+          </div>
+
+          <div class="form-group" id="fg-stock-type">
+            <label for="stock-type">Category / Type <span class="text-accent">*</span></label>
+            <select class="form-select" id="stock-type" required>
+              <option value="" disabled selected>Select category</option>
+              <option value="two-wheeler">Two-Wheeler</option>
+              <option value="car">Car / SUV</option>
+              <option value="inverter">Inverter / UPS</option>
+              <option value="commercial">Commercial Vehicle</option>
+              <option value="solar">Solar</option>
+              <option value="tractor">Tractor / Agri</option>
+            </select>
+            <div class="form-error" id="err-stock-type" style="display: none; color: #dc2626; font-size: 12px; margin-top: 4px;">Please select a category</div>
+          </div>
+        </div>
+
+        <div class="form-row form-row-2">
+          <div class="form-group" id="fg-stock-model">
+            <label for="stock-model">Model Name <span class="text-accent">*</span></label>
+            <input type="text" class="form-input" id="stock-model" placeholder="e.g. Current 150Ah" required>
+            <div class="form-error" id="err-stock-model" style="display: none; color: #dc2626; font-size: 12px; margin-top: 4px;">Model is required</div>
+          </div>
+
+          <div class="form-group" id="fg-stock-capacity">
+            <label for="stock-capacity">Capacity (Ah) <span class="text-accent">*</span></label>
+            <input type="number" class="form-input" id="stock-capacity" placeholder="e.g. 150" min="2" max="300" required>
+            <div class="form-error" id="err-stock-capacity" style="display: none; color: #dc2626; font-size: 12px; margin-top: 4px;">Valid capacity in Ah is required</div>
+          </div>
+        </div>
+
+        <div class="form-row form-row-2">
+          <div class="form-group" id="fg-stock-price">
+            <label for="stock-price">Selling Price (₹) <span class="text-accent">*</span></label>
+            <input type="number" class="form-input" id="stock-price" placeholder="e.g. 14500" min="500" required>
+            <div class="form-error" id="err-stock-price" style="display: none; color: #dc2626; font-size: 12px; margin-top: 4px;">Valid selling price is required</div>
+          </div>
+
+          <div class="form-group" id="fg-stock-qty">
+            <label for="stock-qty">Initial Quantity in Stock <span class="text-accent">*</span></label>
+            <input type="number" class="form-input" id="stock-qty" placeholder="e.g. 5" min="0" value="3" required>
+            <div class="form-error" id="err-stock-qty" style="display: none; color: #dc2626; font-size: 12px; margin-top: 4px;">Quantity is required (0 or more)</div>
+          </div>
+        </div>
+
+        <div style="margin-top: var(--space-4); display: flex; justify-content: flex-end; gap: var(--space-2);">
+          <button type="button" class="btn btn-secondary" onclick="closeStockModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-save-stock">Save Battery</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 2: Log a Claim -->
+  <div class="dash-modal-backdrop" id="modal-claim" style="display: none;">
+    <div class="dash-modal">
+      <div class="dash-modal__header">
+        <h3 class="dash-modal__title">Log Warranty Claim</h3>
+        <button type="button" class="dash-modal__close" onclick="closeClaimModal()" aria-label="Close">&times;</button>
+      </div>
+
+      <form id="form-claim" novalidate>
+        <div class="form-group" id="fg-claim-serial">
+          <label for="claim-serial">Battery Serial Number <span class="text-accent">*</span></label>
+          <div style="display: flex; gap: 8px;">
+            <input type="text" class="form-input" id="claim-serial" placeholder="Enter battery serial (e.g. AMR2026BF79)" style="text-transform: uppercase;" required>
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-claim-lookup" style="white-space: nowrap;">Lookup Sale</button>
+          </div>
+          <div class="form-error" id="err-claim-serial" style="display: none; color: #dc2626; font-size: 12px; margin-top: 4px;">Serial number is required</div>
+          <div id="claim-lookup-result" style="display: none; margin-top: 6px; font-size: 12px; padding: 6px 10px; border-radius: 6px; background: #F1F5F9;"></div>
+        </div>
+
+        <div class="form-row form-row-2">
+          <div class="form-group" id="fg-claim-customer">
+            <label for="claim-customer">Customer Name <span class="text-accent">*</span></label>
+            <input type="text" class="form-input" id="claim-customer" placeholder="Enter customer name" required>
+            <div class="form-error" id="err-claim-customer" style="display: none; color: #dc2626; font-size: 12px; margin-top: 4px;">Customer name is required</div>
+          </div>
+
+          <div class="form-group" id="fg-claim-phone">
+            <label for="claim-phone">Customer Phone / WhatsApp <span class="text-accent">*</span></label>
+            <input type="tel" class="form-input" id="claim-phone" placeholder="e.g. 7905382677" maxlength="10" required>
+            <div class="form-error" id="err-claim-phone" style="display: none; color: #dc2626; font-size: 12px; margin-top: 4px;">10-digit mobile number is required</div>
+          </div>
+        </div>
+
+        <div class="form-row form-row-2">
+          <div class="form-group">
+            <label for="claim-brand-model">Battery Brand &amp; Model</label>
+            <input type="text" class="form-input" id="claim-brand-model" placeholder="e.g. Amaron Current 150Ah">
+          </div>
+
+          <div class="form-group">
+            <label for="claim-status">Initial Status</label>
+            <select class="form-select" id="claim-status">
+              <option value="Open" selected>Open (Under Inspection)</option>
+              <option value="In review">In Review (With Manufacturer)</option>
+              <option value="Approved">Approved (Replacement Ready)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" id="fg-claim-issue">
+          <label for="claim-issue">Issue Description <span class="text-accent">*</span></label>
+          <select class="form-select" id="claim-issue" required style="margin-bottom: 8px;">
+            <option value="Not holding charge / dead after 1 day">Not holding charge / dead after 1 day</option>
+            <option value="Physical swelling / bulging case">Physical swelling / bulging case</option>
+            <option value="Acid leakage at terminals">Acid leakage at terminals</option>
+            <option value="Internal cell short / low voltage">Internal cell short / low voltage</option>
+            <option value="High gravity drop in one cell">High gravity drop in one cell</option>
+            <option value="Other manufacturing defect">Other manufacturing defect</option>
+          </select>
+          <textarea class="form-input" id="claim-notes" rows="2" placeholder="Additional technician notes / remarks..."></textarea>
+        </div>
+
+        <div style="margin-top: var(--space-4); display: flex; justify-content: flex-end; gap: var(--space-2);">
+          <button type="button" class="btn btn-secondary" onclick="closeClaimModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Create Claim Record</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 3: View Digital Warranty Certificate Card -->
+  <div class="dash-modal-backdrop" id="modal-warranty-view" style="display: none;">
+    <div class="dash-modal" style="max-width: 620px;">
+      <div class="dash-modal__header">
+        <h3 class="dash-modal__title">Digital Warranty Certificate</h3>
+        <button type="button" class="dash-modal__close" onclick="closeWarrantyViewModal()" aria-label="Close">&times;</button>
+      </div>
+
+      <div class="warranty-card" style="box-shadow: none; border: 1.5px solid var(--color-border); margin: 0;">
+        <div class="warranty-card__header">
+          <div class="warranty-card__badge" style="background: var(--color-primary); color: #FFFFFF;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span id="vw-card-status">Active Warranty</span>
+          </div>
+          <span class="warranty-card__id" id="vw-card-id">BF-WAR-2026-0000</span>
+        </div>
+
+        <div class="warranty-card__body">
+          <div class="warranty-card__qr-section" style="margin-bottom: var(--space-4);">
+            <div class="warranty-card__qr-box" id="vw-qrcode-container"></div>
+            <div>
+              <strong style="color: var(--color-dark); font-size: 14px; display: block;">Paperless QR Certificate</strong>
+              <p style="font-size: 12px; color: var(--color-text-muted); margin-top: 4px;">
+                Scan with any smartphone or present at partner battery dealerships across India for cashless claims.
+              </p>
+            </div>
+          </div>
+
+          <div class="warranty-card__details">
+            <div class="warranty-card__row">
+              <span class="warranty-card__label">Customer Name</span>
+              <span class="warranty-card__val" id="vw-cust-name">-</span>
+            </div>
+            <div class="warranty-card__row">
+              <span class="warranty-card__label">Battery Model</span>
+              <span class="warranty-card__val" id="vw-battery-model">-</span>
+            </div>
+            <div class="warranty-card__row">
+              <span class="warranty-card__label">Serial Number</span>
+              <span class="warranty-card__val" id="vw-serial-no" style="font-family: monospace; font-weight: 700;">-</span>
+            </div>
+            <div class="warranty-card__row">
+              <span class="warranty-card__label">Purchase Date</span>
+              <span class="warranty-card__val" id="vw-purchase-date">-</span>
+            </div>
+            <div class="warranty-card__row">
+              <span class="warranty-card__label">Warranty Expiry</span>
+              <span class="warranty-card__val" id="vw-expiry-date" style="color: var(--color-primary); font-weight: 700;">-</span>
+            </div>
+            <div class="warranty-card__row">
+              <span class="warranty-card__label">Registered Dealer</span>
+              <span class="warranty-card__val" id="vw-dealer-name">-</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="warranty-card__footer" style="margin-top: var(--space-4); display: flex; justify-content: flex-end; gap: var(--space-2);">
+          <a href="#" class="btn btn-whatsapp btn-sm" id="vw-wa-btn" target="_blank" rel="noopener">
+            Share on WhatsApp
+          </a>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="closeWarrantyViewModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <div class="footer__brand-name">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="18" height="12" rx="2" ry="2"/><line x1="23" y1="13" x2="23" y2="11"/><line x1="11" y1="9" x2="11" y2="15"/><line x1="8" y1="12" x2="14" y2="12"/></svg>
+            Battery Fair
+          </div>
+          <p class="footer__brand-desc">India's trusted battery marketplace. Compare prices, find dealers and get the best battery for your vehicle or home.</p>
+        </div>
+        <div>
+          <h4 class="footer__heading">Quick Links</h4>
+          <ul class="footer__list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="finder.html">Find Battery</a></li>
+            <li><a href="fitting.html">Doorstep Fitting</a></li>
+            <li><a href="care.html">Battery Care</a></li>
+            <li><a href="calculator.html">Calculator</a></li>
+            <li><a href="sale.html">Dealer Portal</a></li>
+            <li><a href="dealer.html">Dealer Dashboard</a></li>
+            <li><a href="index.html#waitlist">Early Access Waitlist</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer__heading">Categories</h4>
+          <ul class="footer__list">
+            <li><a href="finder.html">Two-Wheeler</a></li>
+            <li><a href="finder.html">Car / SUV</a></li>
+            <li><a href="finder.html">Inverter / UPS</a></li>
+            <li><a href="finder.html">Solar</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer__heading">Contact</h4>
+          <ul class="footer__list">
+            <li><a href="#" class="footer-wa-contact" target="_blank" rel="noopener">WhatsApp Support (+91 79053 82677)</a></li>
+            <li><a href="sale.html">Dealer Portal</a></li>
+            <li><a href="finder.html">Find Dealers</a></li>
+            <li><a href="index.html#waitlist">Join Waitlist</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Workshop 3 Validation Notice and Team Attribution -->
+      <div class="footer__validation">
+        <p class="footer__refund-notice">Launching soon. Any money paid is fully refundable.</p>
+        <p class="footer__attribution">Built by The Scale Squad (SSAHE - 22), upGrad School of Technology, Tumkur | Contact: 7905382677</p>
+      </div>
+
+      <div class="footer__bottom">
+        <span class="footer__copy">&copy; 2026 Battery Fair. All rights reserved.</span>
+        <span class="footer__location">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Serving dealers across India
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+
+  <!-- ============================================================
+       Dealer Dashboard Application Logic
+       ============================================================ -->
+  <script>
+  'use strict';
+  (() => {
+    const { DEALERS } = BatteryData;
+
+    /* ---------- Central Demo WhatsApp & Phone Configuration ---------- */
+    const DEMO_WHATSAPP_NUMBER = window.DEMO_WHATSAPP_NUMBER || (BatteryData && BatteryData.DEMO_WHATSAPP_NUMBER) || '917905382677';
+    const DEMO_PHONE_RAW        = window.DEMO_PHONE_RAW || (BatteryData && BatteryData.DEMO_PHONE_RAW) || '7905382677';
+    const DEMO_PHONE_DISPLAY    = window.DEMO_PHONE_DISPLAY || (BatteryData && BatteryData.DEMO_PHONE_DISPLAY) || '+91 79053 82677';
+
+    /* ---------- LocalStorage Keys ---------- */
+    const STORAGE_DEALER_KEY          = 'bf_logged_dealer';
+    const STORAGE_DEALER_PHONE_KEY    = 'dealerPhone';
+    const STORAGE_DEALER_PHONE_ALT    = 'dealer_phone';
+    const STORAGE_STOCK_KEY           = 'dealerStock';
+    const STORAGE_CLAIMS_KEY          = 'claims';
+    const STORAGE_SALES_KEY           = 'sales';
+    const STORAGE_FITTINGS_KEY        = 'fittings';
+    const STORAGE_REMINDERS_KEY       = 'reminders';
+    const STORAGE_EXCHANGE_RATES_KEY  = 'dealerExchangeRates';
+    const STORAGE_SENT_REMINDERS_KEY  = 'sentReminders';
+    const STORAGE_DEMO_ACTIVE_KEY     = 'bf_demo_data_active';
+
+    /* ---------- State ---------- */
+    let currentDealer = null;
+    let activeTab = 'overview';
+    let claimStatusFilter = 'all';
+    let fittingStatusFilter = 'all';
+    let customerStatusFilter = 'all';
+    let stockSearchQuery = '';
+    let claimsSearchQuery = '';
+    let customerSearchQuery = '';
+
+    /* ---------- DOM Elements ---------- */
+    const loginSection        = document.getElementById('dealer-login-section');
+    const dashboardSection    = document.getElementById('dealer-dashboard-section');
+    const sessionBar          = document.getElementById('dealer-session-bar');
+    const sessionDealerName   = document.getElementById('session-dealer-name');
+    const sessionDealerMeta   = document.getElementById('session-dealer-meta');
+    const demoDataBadge       = document.getElementById('demo-data-badge');
+    const toggleDemoBtn       = document.getElementById('toggle-demo-btn');
+    const dealerLogoutBtn     = document.getElementById('dealer-logout-btn');
+    const dealerLoginForm     = document.getElementById('dealer-login-form');
+    const loginPhoneInput     = document.getElementById('login-phone');
+    const loginPhoneGroup     = document.getElementById('login-phone-group');
+    const quickDealersWrap    = document.getElementById('quick-dealers-container');
+
+    /* ---------- Utility Functions ---------- */
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function timeAgo(dateInput) {
+      if (!dateInput) return 'Updated recently';
+      const then = new Date(dateInput).getTime();
+      const now = Date.now();
+      if (isNaN(then)) return 'Updated recently';
+      const seconds = Math.max(0, Math.floor((now - then) / 1000));
+      if (seconds < 60) return 'Updated just now';
+      const minutes = Math.floor(seconds / 60);
+      if (minutes < 60) return `Updated ${minutes}m ago`;
+      const hours = Math.floor(minutes / 60);
+      if (hours < 24) return `Updated ${hours}h ago`;
+      const days = Math.floor(hours / 24);
+      return `Updated ${days}d ago`;
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return '';
+      let y, m, day;
+      if (typeof dateStr === 'string') {
+        const match = dateStr.trim().match(/^(\d{4})-(\d{2})-(\d{2})/);
+        if (match) {
+          y = parseInt(match[1], 10);
+          m = parseInt(match[2], 10);
+          day = parseInt(match[3], 10);
+        }
+      }
+      let d = (y !== undefined && m !== undefined && day !== undefined) ? new Date(y, m - 1, day) : new Date(dateStr);
+      if (isNaN(d.getTime())) return dateStr;
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+    }
+
+    function calculateDaysLeft(expiryDateStr) {
+      if (!expiryDateStr) return 0;
+      const now = new Date();
+      now.setHours(0, 0, 0, 0);
+      let exp;
+      if (typeof expiryDateStr === 'string') {
+        const match = expiryDateStr.trim().match(/^(\d{4})-(\d{2})-(\d{2})/);
+        if (match) {
+          exp = new Date(parseInt(match[1], 10), parseInt(match[2], 10) - 1, parseInt(match[3], 10));
+        } else {
+          exp = new Date(expiryDateStr);
+        }
+      } else {
+        exp = new Date(expiryDateStr);
+      }
+      if (isNaN(exp.getTime())) return 0;
+      exp.setHours(0, 0, 0, 0);
+      return Math.ceil((exp - now) / (1000 * 60 * 60 * 24));
+    }
+
+    function calculateExpiry(purchaseDateStr, months) {
+      if (!purchaseDateStr) return '';
+      let d = new Date(purchaseDateStr);
+      if (isNaN(d.getTime())) return '';
+      d.setMonth(d.getMonth() + parseInt(months || 24, 10));
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const dateVal = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${dateVal}`;
+    }
+
+    function generateClaimId() {
+      const rand = Math.floor(1000 + Math.random() * 9000);
+      return `BF-CLM-${new Date().getFullYear()}-${rand}`;
+    }
+
+    /* ---------- Storage Safe Accessors ---------- */
+    function getStoredData(key) {
+      try {
+        const raw = localStorage.getItem(key);
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveStoredData(key, data) {
+      try {
+        localStorage.setItem(key, JSON.stringify(data));
+      } catch (e) {
+        console.warn(`Error writing to ${key}:`, e);
+      }
+    }
+
+    function isDemoActive() {
+      try {
+        return localStorage.getItem(STORAGE_DEMO_ACTIVE_KEY) === '1';
+      } catch (e) {
+        return false;
+      }
+    }
+
+    /* ---------- Dealer Match Helper ---------- */
+    function pickDealerFromData(phone, dealerId) {
+      if (typeof DEALERS === 'undefined' || !Array.isArray(DEALERS) || DEALERS.length === 0) {
+        return {
+          id: 'd1',
+          name: 'Sri Balaji Power Solutions',
+          city: 'Bengaluru',
+          area: 'Jayanagar',
+          phone: DEMO_WHATSAPP_NUMBER
+        };
+      }
+      if (dealerId) {
+        const found = DEALERS.find(d => d.id === dealerId);
+        if (found) return found;
+      }
+      const cleaned = phone ? phone.toString().replace(/\D/g, '') : '';
+      const phoneMatch = DEALERS.find(d => {
+        const dp = (d.phone || '').toString().replace(/\D/g, '');
+        return dp && (dp === cleaned || dp.endsWith(cleaned) || cleaned.endsWith(dp));
+      });
+      if (cleaned.length >= 4) {
+        const sum = cleaned.split('').reduce((acc, ch) => acc + (parseInt(ch, 10) || 0), 0);
+        return DEALERS[sum % DEALERS.length] || phoneMatch || DEALERS[0];
+      }
+      return phoneMatch || DEALERS[0];
+    }
+
+    /* ---------- Authentication Handlers ---------- */
+    function checkExistingLogin() {
+      const storedDealer = localStorage.getItem(STORAGE_DEALER_KEY);
+      if (storedDealer) {
+        try {
+          const d = JSON.parse(storedDealer);
+          if (d && d.name && d.city) {
+            currentDealer = d;
+            showDashboard();
+            return;
+          }
+        } catch(e) {}
+      }
+
+      const storedPhone = localStorage.getItem(STORAGE_DEALER_PHONE_KEY) || localStorage.getItem(STORAGE_DEALER_PHONE_ALT);
+      if (storedPhone && storedPhone.replace(/\D/g, '').length >= 10) {
+        handleDealerLogin(storedPhone.replace(/\D/g, ''));
+        return;
+      }
+
+      showLogin();
+    }
+
+    function handleDealerLogin(phone, dealerId = null) {
+      let cleaned = phone ? phone.toString().replace(/\D/g, '') : '';
+      if (cleaned.length !== 10 && cleaned.length !== 12) {
+        cleaned = DEMO_PHONE_RAW;
+      }
+      if (loginPhoneGroup) loginPhoneGroup.classList.remove('has-error');
+
+      const picked = pickDealerFromData(cleaned, dealerId);
+      currentDealer = {
+        id: picked.id,
+        name: picked.name,
+        area: picked.area,
+        city: picked.city,
+        pincode: picked.pincode,
+        phone: DEMO_WHATSAPP_NUMBER
+      };
+
+      localStorage.setItem(STORAGE_DEALER_PHONE_KEY, DEMO_PHONE_RAW);
+      localStorage.setItem(STORAGE_DEALER_PHONE_ALT, DEMO_PHONE_RAW);
+      localStorage.setItem(STORAGE_DEALER_KEY, JSON.stringify(currentDealer));
+
+      showDashboard();
+    }
+
+    function showLogin() {
+      currentDealer = null;
+      if (loginSection) loginSection.style.display = 'block';
+      if (dashboardSection) dashboardSection.style.display = 'none';
+      if (sessionBar) sessionBar.style.display = 'none';
+    }
+
+    function showDashboard() {
+      if (loginSection) loginSection.style.display = 'none';
+      if (dashboardSection) dashboardSection.style.display = 'block';
+      if (sessionBar) sessionBar.style.display = 'block';
+
+      if (currentDealer) {
+        sessionDealerName.textContent = currentDealer.name;
+        sessionDealerMeta.textContent = `${currentDealer.area ? currentDealer.area + ', ' : ''}${currentDealer.city} · ${DEMO_PHONE_DISPLAY}`;
+      }
+
+      updateDemoBadgeUI();
+      loadExchangeRatesSettings();
+      renderAllTabs();
+    }
+
+    if (dealerLogoutBtn) {
+      dealerLogoutBtn.addEventListener('click', () => {
+        localStorage.removeItem(STORAGE_DEALER_PHONE_KEY);
+        localStorage.removeItem(STORAGE_DEALER_PHONE_ALT);
+        localStorage.removeItem(STORAGE_DEALER_KEY);
+        if (loginPhoneInput) loginPhoneInput.value = '';
+        showLogin();
+      });
+    }
+
+    if (dealerLoginForm) {
+      dealerLoginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        handleDealerLogin(loginPhoneInput.value);
+      });
+    }
+
+    function initQuickDealers() {
+      if (!quickDealersWrap) return;
+      quickDealersWrap.innerHTML = DEALERS.slice(0, 4).map((d) =>
+        `<button type="button" class="quick-dealer-btn" data-dealer-id="${d.id}" data-phone="${DEMO_PHONE_RAW}">
+          ${d.name} (${d.city})
+        </button>`
+      ).join('');
+
+      quickDealersWrap.querySelectorAll('.quick-dealer-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (loginPhoneInput) loginPhoneInput.value = DEMO_PHONE_RAW;
+          handleDealerLogin(DEMO_PHONE_RAW, btn.dataset.dealerId);
+        });
+      });
+    }
+
+    /* ---------- Tab Switching ---------- */
+    window.switchDashboardTab = function(tabName) {
+      activeTab = tabName;
+      document.querySelectorAll('.dash-nav__btn').forEach(btn => {
+        const matches = btn.dataset.tab === tabName;
+        btn.classList.toggle('dash-nav__btn--active', matches);
+        btn.setAttribute('aria-selected', matches ? 'true' : 'false');
+      });
+
+      document.querySelectorAll('.dash-panel').forEach(panel => {
+        panel.classList.remove('dash-panel--active');
+      });
+
+      const targetPanel = document.getElementById(`panel-${tabName}`);
+      if (targetPanel) {
+        targetPanel.classList.add('dash-panel--active');
+      }
+
+      renderAllTabs();
+
+      if (window.innerWidth < 992) {
+        window.scrollTo({ top: dashboardSection.offsetTop - 70, behavior: 'smooth' });
+      }
+    };
+
+    document.querySelectorAll('.dash-nav__btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        switchDashboardTab(btn.dataset.tab);
+      });
+    });
+
+    /* ---------- Demo Data Management ---------- */
+    function updateDemoBadgeUI() {
+      const active = isDemoActive();
+      if (demoDataBadge) demoDataBadge.style.display = active ? 'inline-flex' : 'none';
+      if (toggleDemoBtn) {
+        toggleDemoBtn.textContent = active ? 'Clear Demo Data' : 'Load Demo Data';
+        toggleDemoBtn.className = active ? 'btn btn-secondary btn-sm' : 'btn btn-primary btn-sm';
+      }
+    }
+
+    if (toggleDemoBtn) {
+      toggleDemoBtn.addEventListener('click', () => {
+        if (isDemoActive()) {
+          clearDemoData();
+        } else {
+          loadDemoData();
+        }
+      });
+    }
+
+    function loadDemoData() {
+      if (!currentDealer) return;
+      const now = new Date();
+      const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000).toISOString();
+      const threeDaysAgo = new Date(now.getTime() - 72 * 60 * 60 * 1000).toISOString();
+      const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+
+      // Sample stock
+      const sampleStock = [
+        {
+          id: 'STK-' + Date.now() + '-1',
+          dealerId: currentDealer.id,
+          dealerPhone: DEMO_PHONE_RAW,
+          brand: 'Amaron',
+          model: 'Current 150Ah',
+          type: 'inverter',
+          capacity: 150,
+          price: 14500,
+          quantity: 4,
+          lastUpdated: yesterday
+        },
+        {
+          id: 'STK-' + Date.now() + '-2',
+          dealerId: currentDealer.id,
+          dealerPhone: DEMO_PHONE_RAW,
+          brand: 'Exide',
+          model: 'Inva Tubular 150Ah',
+          type: 'inverter',
+          capacity: 150,
+          price: 15200,
+          quantity: 2,
+          lastUpdated: threeDaysAgo
+        },
+        {
+          id: 'STK-' + Date.now() + '-3',
+          dealerId: currentDealer.id,
+          dealerPhone: DEMO_PHONE_RAW,
+          brand: 'Amaron',
+          model: 'Hi-Life 65Ah',
+          type: 'car',
+          capacity: 65,
+          price: 5400,
+          quantity: 1,
+          lastUpdated: yesterday
+        },
+        {
+          id: 'STK-' + Date.now() + '-4',
+          dealerId: currentDealer.id,
+          dealerPhone: DEMO_PHONE_RAW,
+          brand: 'Luminous',
+          model: 'Solar Power 200Ah',
+          type: 'solar',
+          capacity: 200,
+          price: 18900,
+          quantity: 0,
+          lastUpdated: threeDaysAgo
+        }
+      ];
+
+      // Sample claims
+      const sampleClaims = [
+        {
+          id: 'BF-CLM-2026-1082',
+          dealerId: currentDealer.id,
+          dealerPhone: DEMO_PHONE_RAW,
+          warrantyId: 'BF-WAR-2026-7905',
+          serial: 'AMR2026BF79',
+          customer: 'Rahul Sharma',
+          customerPhone: DEMO_PHONE_RAW,
+          brand: 'Amaron',
+          model: 'Current 150Ah',
+          issue: 'Not holding charge / dead after 1 day',
+          status: 'In review',
+          notes: 'Customer brought battery for gravity and load test. Factory representative notified.',
+          history: [
+            { status: 'Open', note: 'Claim logged by dealer technician', timestamp: threeDaysAgo },
+            { status: 'In review', note: 'Load test conducted. Specific gravity cell 3 low.', timestamp: yesterday }
+          ],
+          createdAt: threeDaysAgo
+        },
+        {
+          id: 'BF-CLM-2026-1094',
+          dealerId: currentDealer.id,
+          dealerPhone: DEMO_PHONE_RAW,
+          warrantyId: 'BF-WAR-2026-3421',
+          serial: 'EXD2025TT91',
+          customer: 'Prakash Rao',
+          customerPhone: '9845012345',
+          brand: 'Exide',
+          model: 'Inva Tubular 150Ah',
+          issue: 'Acid leakage at terminals',
+          status: 'Open',
+          notes: 'Terminal post crack observed. Awaiting customer drop-off.',
+          history: [
+            { status: 'Open', note: 'Claim registered over phone with customer photos', timestamp: yesterday }
+          ],
+          createdAt: yesterday
+        }
+      ];
+
+      // Sample fittings
+      const sampleFittings = [
+        {
+          id: 'BF-FIT-2026-1042',
+          dealerId: currentDealer.id,
+          dealerName: currentDealer.name,
+          name: 'Ramesh Kumar',
+          phone: DEMO_PHONE_RAW,
+          address: '14, SS Puram Main Road, near Town Hall',
+          pincode: currentDealer.pincode || '572101',
+          vehicleType: 'Car / SUV',
+          batteryNeeded: 'Amaron Current 150Ah',
+          serviceType: 'fitting',
+          date: tomorrow,
+          slot: 'Morning (9 AM - 12 PM)',
+          oldBattery: true,
+          exchangeEstimate: '₹4,750',
+          status: 'Booked',
+          statusHistory: [
+            { status: 'Booked', note: 'Booking requested by customer on Battery Fair', timestamp: yesterday }
+          ],
+          createdAt: yesterday
+        },
+        {
+          id: 'BF-FIT-2026-1038',
+          dealerId: currentDealer.id,
+          dealerName: currentDealer.name,
+          name: 'Anand Kulkarni',
+          phone: '9845098765',
+          address: '7th Cross, Gandhinagar',
+          pincode: currentDealer.pincode || '572102',
+          vehicleType: 'Inverter / UPS',
+          batteryNeeded: 'Exide Inva Tubular 150Ah',
+          serviceType: 'fitting',
+          date: new Date().toISOString().split('T')[0],
+          slot: 'Afternoon (1 PM - 4 PM)',
+          oldBattery: true,
+          exchangeEstimate: '₹5,200',
+          status: 'On the way',
+          statusHistory: [
+            { status: 'Booked', note: 'Booking submitted by customer', timestamp: threeDaysAgo },
+            { status: 'Dealer confirmed', note: 'Stock allocated by shop', timestamp: yesterday },
+            { status: 'On the way', note: 'Technician dispatched with replacement battery', timestamp: new Date().toISOString() }
+          ],
+          createdAt: threeDaysAgo
+        }
+      ];
+
+      // Sample sales
+      const sampleSales = [
+        {
+          id: 'BF-WAR-2026-7905',
+          customerName: 'Rahul Sharma',
+          customerPhone: DEMO_PHONE_RAW,
+          batteryBrand: 'Amaron',
+          model: 'Current 150Ah',
+          serialNumber: 'AMR2026BF79',
+          dealerName: currentDealer.name,
+          dealerCity: currentDealer.city,
+          dealerPhone: DEMO_WHATSAPP_NUMBER,
+          purchaseDate: '2026-09-19',
+          warrantyMonths: 24,
+          expiryDate: '2028-09-19',
+          createdAt: '2026-09-19T10:00:00.000Z'
+        },
+        {
+          id: 'BF-WAR-2026-4412',
+          customerName: 'Kavitha Hegde',
+          customerPhone: '9845022334',
+          batteryBrand: 'Exide',
+          model: 'Mileage 45Ah',
+          serialNumber: 'EXD45ML2026',
+          dealerName: currentDealer.name,
+          dealerCity: currentDealer.city,
+          dealerPhone: DEMO_WHATSAPP_NUMBER,
+          purchaseDate: new Date().toISOString().split('T')[0],
+          warrantyMonths: 36,
+          expiryDate: calculateExpiry(new Date().toISOString().split('T')[0], 36),
+          createdAt: new Date().toISOString()
+        },
+        {
+          id: 'BF-WAR-2026-1189',
+          customerName: 'Suresh Patil',
+          customerPhone: '9448055667',
+          batteryBrand: 'Luminous',
+          model: 'Inverlast 150Ah',
+          serialNumber: 'LUM150INV24',
+          dealerName: currentDealer.name,
+          dealerCity: currentDealer.city,
+          dealerPhone: DEMO_WHATSAPP_NUMBER,
+          purchaseDate: '2024-11-20',
+          warrantyMonths: 24,
+          expiryDate: '2026-11-20',
+          createdAt: '2024-11-20T10:00:00.000Z'
+        }
+      ];
+
+      // Merge into storage without losing existing dealer items
+      let stock = getStoredData(STORAGE_STOCK_KEY);
+      stock = stock.filter(s => s.dealerId !== currentDealer.id);
+      stock.push(...sampleStock);
+      saveStoredData(STORAGE_STOCK_KEY, stock);
+
+      let claims = getStoredData(STORAGE_CLAIMS_KEY);
+      claims = claims.filter(c => c.dealerId !== currentDealer.id);
+      claims.push(...sampleClaims);
+      saveStoredData(STORAGE_CLAIMS_KEY, claims);
+
+      let fittings = getStoredData(STORAGE_FITTINGS_KEY);
+      fittings = fittings.filter(f => f.dealerId !== currentDealer.id);
+      fittings.push(...sampleFittings);
+      saveStoredData(STORAGE_FITTINGS_KEY, fittings);
+
+      let sales = getStoredData(STORAGE_SALES_KEY);
+      sampleSales.forEach(s => {
+        if (!sales.some(existing => existing.serialNumber === s.serialNumber)) {
+          sales.unshift(s);
+        }
+      });
+      saveStoredData(STORAGE_SALES_KEY, sales);
+
+      try {
+        localStorage.setItem(STORAGE_DEMO_ACTIVE_KEY, '1');
+      } catch (e) {}
+
+      updateDemoBadgeUI();
+      renderAllTabs();
+    }
+
+    function clearDemoData() {
+      if (!currentDealer) return;
+      let stock = getStoredData(STORAGE_STOCK_KEY);
+      stock = stock.filter(s => s.dealerId !== currentDealer.id);
+      saveStoredData(STORAGE_STOCK_KEY, stock);
+
+      let claims = getStoredData(STORAGE_CLAIMS_KEY);
+      claims = claims.filter(c => c.dealerId !== currentDealer.id);
+      saveStoredData(STORAGE_CLAIMS_KEY, claims);
+
+      let fittings = getStoredData(STORAGE_FITTINGS_KEY);
+      fittings = fittings.filter(f => f.dealerId !== currentDealer.id);
+      saveStoredData(STORAGE_FITTINGS_KEY, fittings);
+
+      try {
+        localStorage.removeItem(STORAGE_DEMO_ACTIVE_KEY);
+      } catch (e) {}
+
+      updateDemoBadgeUI();
+      renderAllTabs();
+    }
+
+    /* ---------- Market Benchmark Calculator ---------- */
+    function getMarketBenchmark(type, capacity, currentPrice) {
+      const Ah = parseInt(capacity, 10) || 100;
+      let baselinePerAh = 95;
+      if (type === 'two-wheeler') baselinePerAh = 140;
+      else if (type === 'car') baselinePerAh = 85;
+      else if (type === 'inverter') baselinePerAh = 98;
+      else if (type === 'solar') baselinePerAh = 105;
+
+      const benchmarkPrice = Math.round(Ah * baselinePerAh);
+      if (!currentPrice || isNaN(currentPrice) || currentPrice <= 0) {
+        return { diff: 0, text: 'At market', cls: 'market-tag--fair' };
+      }
+
+      const diffPct = Math.round(((currentPrice - benchmarkPrice) / benchmarkPrice) * 100);
+      if (diffPct <= -5) {
+        return { diff: diffPct, text: `${Math.abs(diffPct)}% below market`, cls: 'market-tag--below' };
+      } else if (diffPct >= 5) {
+        return { diff: diffPct, text: `${diffPct}% above market`, cls: 'market-tag--above' };
+      } else {
+        return { diff: diffPct, text: 'At market price', cls: 'market-tag--fair' };
+      }
+    }
+
+    /* ---------- Master Render Pipeline ---------- */
+    function renderAllTabs() {
+      if (!currentDealer) return;
+      renderOverviewTab();
+      renderInventoryTab();
+      renderClaimsTab();
+      renderFittingsTab();
+      renderCustomersTab();
+      renderCareRemindersTab();
+    }
+
+    /* ============================================================
+       TAB 1: OVERVIEW IMPLEMENTATION
+       ============================================================ */
+    function renderOverviewTab() {
+      const sales = getStoredData(STORAGE_SALES_KEY);
+      const stock = getStoredData(STORAGE_STOCK_KEY).filter(s => s.dealerId === currentDealer.id || s.dealerPhone === DEMO_PHONE_RAW);
+      const claims = getStoredData(STORAGE_CLAIMS_KEY).filter(c => c.dealerId === currentDealer.id || c.dealerPhone === DEMO_PHONE_RAW);
+      const fittings = getStoredData(STORAGE_FITTINGS_KEY).filter(f => !f.dealerId || f.dealerId === currentDealer.id || f.dealerName === currentDealer.name);
+
+      // 1. Sales KPI (total and this month)
+      const now = new Date();
+      const curYear = now.getFullYear();
+      const curMonth = now.getMonth();
+      const salesThisMonth = sales.filter(s => {
+        const pDate = s.purchaseDate || s.purchase_date;
+        if (!pDate) return false;
+        const d = new Date(pDate);
+        return !isNaN(d.getTime()) && d.getFullYear() === curYear && d.getMonth() === curMonth;
+      });
+
+      document.getElementById('kpi-sales-total').textContent = sales.length;
+      document.getElementById('kpi-sales-month').textContent = `${salesThisMonth.length} recorded this month`;
+
+      // 2. Active Warranties KPI
+      let activeWarrantiesCount = 0;
+      sales.forEach(s => {
+        const pDate = s.purchaseDate || s.purchase_date;
+        const months = s.warrantyMonths || s.warranty_months || 24;
+        const expDate = s.expiryDate || calculateExpiry(pDate, months);
+        if (calculateDaysLeft(expDate) > 0) activeWarrantiesCount++;
+      });
+      document.getElementById('kpi-warranties-active').textContent = activeWarrantiesCount;
+
+      // 3. Open Claims KPI
+      const openClaims = claims.filter(c => c.status === 'Open' || c.status === 'In review');
+      document.getElementById('kpi-claims-open').textContent = openClaims.length;
+
+      // 4. Pending Fittings KPI
+      const pendingFittings = fittings.filter(f => f.status === 'Booked' || f.status === 'Dealer confirmed' || f.status === 'On the way');
+      document.getElementById('kpi-fittings-pending').textContent = pendingFittings.length;
+
+      // 5. Reminders Due KPI (7 days)
+      const dueNext7Days = [];
+      sales.forEach(s => {
+        const pDate = s.purchaseDate || s.purchase_date;
+        const months = s.warrantyMonths || s.warranty_months || 24;
+        const expDate = s.expiryDate || calculateExpiry(pDate, months);
+        const daysLeft = calculateDaysLeft(expDate);
+        if (daysLeft > 0 && daysLeft <= 7) {
+          dueNext7Days.push({
+            type: 'Warranty expiring in ' + daysLeft + ' days',
+            customer: s.customerName || 'Customer',
+            phone: s.customerPhone || DEMO_PHONE_RAW,
+            battery: `${s.batteryBrand} ${s.model}`,
+            date: expDate
+          });
+        }
+        if (pDate) {
+          const daysSince = Math.floor((now.getTime() - new Date(pDate).getTime()) / (1000 * 60 * 60 * 24));
+          if (daysSince >= 90) {
+            dueNext7Days.push({
+              type: 'Distilled water refill overdue',
+              customer: s.customerName || 'Customer',
+              phone: s.customerPhone || DEMO_PHONE_RAW,
+              battery: `${s.batteryBrand} ${s.model}`,
+              date: 'Due now'
+            });
+          }
+        }
+      });
+      document.getElementById('kpi-reminders-due').textContent = dueNext7Days.length;
+
+      // Sidebar badges
+      document.getElementById('nav-count-stock').textContent = stock.length;
+      document.getElementById('nav-count-claims').textContent = openClaims.length;
+      document.getElementById('nav-count-fittings').textContent = pendingFittings.length;
+      document.getElementById('nav-count-customers').textContent = sales.length;
+      document.getElementById('nav-count-reminders').textContent = dueNext7Days.length;
+
+      // Empty State Banners
+      const noticeSlot = document.getElementById('overview-empty-notices');
+      let noticeHtml = '';
+      if (sales.length === 0) {
+        noticeHtml += `
+          <div class="empty-kpi-banner">
+            <div class="empty-kpi-banner__text">
+              <strong>No customer sales registered yet.</strong> Register your first battery sale to generate digital warranty cards with QR codes.
+            </div>
+            <a href="sale.html" class="btn btn-primary btn-sm">Register a Sale</a>
+          </div>
+        `;
+      }
+      if (stock.length === 0) {
+        noticeHtml += `
+          <div class="empty-kpi-banner">
+            <div class="empty-kpi-banner__text">
+              <strong>No inventory stock added yet.</strong> Add your available batteries so buyers in Find Battery see your live models and prices.
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" onclick="switchDashboardTab('inventory')">+ Add Battery Stock</button>
+          </div>
+        `;
+      }
+      noticeSlot.innerHTML = noticeHtml;
+
+      // Today Action Queue Items
+      const todayContainer = document.getElementById('today-list-container');
+      const todayCountBadge = document.getElementById('today-priority-count');
+      const priorityItems = [];
+
+      // 1. Pending fittings
+      pendingFittings.forEach(f => {
+        priorityItems.push({
+          badge: 'Fitting Appointment',
+          badgeCls: 'status-badge--ontheway',
+          title: `${f.name} - ${f.vehicleType} (${f.batteryNeeded || 'New Battery'})`,
+          meta: `Scheduled: ${f.date} (${f.slot}) | ${f.address}`,
+          actionLabel: 'View Fitting',
+          actionFn: () => switchDashboardTab('fittings')
+        });
+      });
+
+      // 2. Open claims
+      openClaims.forEach(c => {
+        priorityItems.push({
+          badge: 'Claim ' + c.status,
+          badgeCls: 'status-badge--review',
+          title: `Claim ${c.id}: ${c.customer} (${c.serial})`,
+          meta: `Issue: ${c.issue} | Logged: ${formatDate(c.createdAt)}`,
+          actionLabel: 'Review Claim',
+          actionFn: () => switchDashboardTab('claims')
+        });
+      });
+
+      // 3. Reminders
+      dueNext7Days.slice(0, 3).forEach(r => {
+        priorityItems.push({
+          badge: 'Care Alert',
+          badgeCls: 'status-badge--booked',
+          title: `${r.customer} - ${r.battery}`,
+          meta: `${r.type} | Phone: ${r.phone}`,
+          actionLabel: 'Send Nudge',
+          actionFn: () => switchDashboardTab('reminders')
+        });
+      });
+
+      todayCountBadge.textContent = `${priorityItems.length} pending action${priorityItems.length === 1 ? '' : 's'}`;
+
+      if (priorityItems.length === 0) {
+        todayContainer.innerHTML = `
+          <div style="text-align: center; padding: var(--space-6); color: var(--color-text-muted);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin: 0 auto var(--space-2); color: var(--color-primary);"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <strong style="display: block; color: var(--color-dark); font-size: 14px;">All caught up for today!</strong>
+            <span style="font-size: 13px;">No pending fitting dispatches, unresolved warranty claims, or overdue care reminders.</span>
+          </div>
+        `;
+        return;
+      }
+
+      todayContainer.innerHTML = priorityItems.map((item, idx) => `
+        <div class="today-item">
+          <div class="today-item__main">
+            <span class="status-badge ${item.badgeCls}">${item.badge}</span>
+            <div>
+              <div class="today-item__title">${escapeHtml(item.title)}</div>
+              <div class="today-item__meta">${escapeHtml(item.meta)}</div>
+            </div>
+          </div>
+          <div class="today-item__actions">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="triggerTodayAction(${idx})">
+              ${item.actionLabel} &rarr;
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      window._priorityActions = priorityItems;
+    }
+
+    window.triggerTodayAction = function(idx) {
+      if (window._priorityActions && window._priorityActions[idx]) {
+        window._priorityActions[idx].actionFn();
+      }
+    };
+
+    /* ============================================================
+       TAB 2: INVENTORY & PRICING IMPLEMENTATION
+       ============================================================ */
+    function renderInventoryTab() {
+      const allStock = getStoredData(STORAGE_STOCK_KEY);
+      let list = allStock.filter(s => s.dealerId === currentDealer.id || s.dealerPhone === DEMO_PHONE_RAW);
+
+      const q = stockSearchQuery.trim().toLowerCase();
+      if (q) {
+        list = list.filter(item => {
+          const b = (item.brand || '').toLowerCase();
+          const m = (item.model || '').toLowerCase();
+          const t = (item.type || '').toLowerCase();
+          return b.includes(q) || m.includes(q) || t.includes(q);
+        });
+      }
+
+      const tbody = document.getElementById('stock-table-body');
+      const countEl = document.getElementById('stock-table-count');
+      const emptyState = document.getElementById('stock-empty-state');
+      if (!tbody) return;
+
+      countEl.textContent = `${list.length} item${list.length === 1 ? '' : 's'} listed`;
+
+      if (list.length === 0) {
+        tbody.innerHTML = '';
+        if (emptyState) emptyState.style.display = 'block';
+        return;
+      }
+
+      if (emptyState) emptyState.style.display = 'none';
+
+      tbody.innerHTML = list.map(item => {
+        const id = escapeHtml(item.id);
+        const brand = escapeHtml(item.brand);
+        const model = escapeHtml(item.model);
+        const type = escapeHtml(item.type || 'car');
+        const capacity = parseInt(item.capacity, 10) || 100;
+        const price = parseInt(item.price, 10) || 0;
+        const qty = parseInt(item.quantity, 10) || 0;
+        const updatedText = timeAgo(item.lastUpdated);
+
+        // Status badge
+        let statusBadge = '';
+        if (qty === 0) {
+          statusBadge = '<span class="status-badge status-badge--rejected">Out of stock</span>';
+        } else if (qty <= 2) {
+          statusBadge = `<span class="status-badge status-badge--review">Low (${qty} left)</span>`;
+        } else {
+          statusBadge = `<span class="status-badge status-badge--approved">In stock (${qty})</span>`;
+        }
+
+        // Market benchmark helper
+        const benchmark = getMarketBenchmark(item.type, capacity, price);
+
+        return `
+          <tr>
+            <td>
+              <strong>${brand}</strong>
+              <div style="font-size: 13px; color: var(--color-dark);">${model}</div>
+            </td>
+            <td>
+              <span class="badge--stock" style="font-size: 11px; text-transform: capitalize;">${type}</span>
+              <div style="font-size: 12px; color: var(--color-text-muted); margin-top: 2px;">${capacity} Ah</div>
+            </td>
+            <td>
+              <strong style="font-size: 15px; color: var(--color-dark);">₹${price.toLocaleString('en-IN')}</strong>
+            </td>
+            <td>
+              <span class="market-tag ${benchmark.cls}">${benchmark.text}</span>
+            </td>
+            <td>
+              <div class="qty-stepper">
+                <button type="button" class="qty-stepper__btn" onclick="adjustStockQty('${id}', -1)" title="Decrease quantity">-</button>
+                <span class="qty-stepper__val">${qty}</span>
+                <button type="button" class="qty-stepper__btn" onclick="adjustStockQty('${id}', 1)" title="Increase quantity">+</button>
+              </div>
+            </td>
+            <td>${statusBadge}</td>
+            <td>
+              <small style="color: var(--color-text-muted);">${updatedText}</small>
+            </td>
+            <td style="text-align: right;">
+              <div class="table-actions" style="justify-content: flex-end; gap: 4px;">
+                <button type="button" class="btn-icon-table" onclick="toggleOutOfStock('${id}')" title="Toggle Out of Stock">
+                  ${qty === 0 ? 'Restore' : 'Set 0'}
+                </button>
+                <button type="button" class="btn-icon-table" onclick="editStockItem('${id}')" title="Edit Item">
+                  Edit
+                </button>
+                <button type="button" class="btn-icon-table btn-icon-table--del" onclick="deleteStockItem('${id}')" title="Delete Item">
+                  &times;
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Stock Actions
+    window.adjustStockQty = function(id, delta) {
+      let stock = getStoredData(STORAGE_STOCK_KEY);
+      const item = stock.find(s => s.id === id);
+      if (!item) return;
+      item.quantity = Math.max(0, (parseInt(item.quantity, 10) || 0) + delta);
+      item.lastUpdated = new Date().toISOString();
+      saveStoredData(STORAGE_STOCK_KEY, stock);
+      renderAllTabs();
+    };
+
+    window.toggleOutOfStock = function(id) {
+      let stock = getStoredData(STORAGE_STOCK_KEY);
+      const item = stock.find(s => s.id === id);
+      if (!item) return;
+      if (item.quantity > 0) {
+        item._prevQuantity = item.quantity;
+        item.quantity = 0;
+      } else {
+        item.quantity = item._prevQuantity && item._prevQuantity > 0 ? item._prevQuantity : 3;
+      }
+      item.lastUpdated = new Date().toISOString();
+      saveStoredData(STORAGE_STOCK_KEY, stock);
+      renderAllTabs();
+    };
+
+    window.deleteStockItem = function(id) {
+      if (confirm('Delete this battery model from your live inventory?')) {
+        let stock = getStoredData(STORAGE_STOCK_KEY);
+        stock = stock.filter(s => s.id !== id);
+        saveStoredData(STORAGE_STOCK_KEY, stock);
+        renderAllTabs();
+      }
+    };
+
+    // Stock Search listener
+    const stockSearch = document.getElementById('stock-search-input');
+    if (stockSearch) {
+      stockSearch.addEventListener('input', (e) => {
+        stockSearchQuery = e.target.value;
+        renderInventoryTab();
+      });
+    }
+
+    // Stock Modal
+    const modalStock = document.getElementById('modal-stock');
+    const formStock = document.getElementById('form-stock');
+
+    window.openAddStockModal = function() {
+      if (!modalStock) return;
+      formStock.reset();
+      document.getElementById('stock-item-id').value = '';
+      document.getElementById('modal-stock-title').textContent = 'Add Battery to Stock';
+      clearStockErrors();
+      modalStock.style.display = 'flex';
+    };
+
+    window.closeStockModal = function() {
+      if (modalStock) modalStock.style.display = 'none';
+      clearStockErrors();
+    };
+
+    window.editStockItem = function(id) {
+      const stock = getStoredData(STORAGE_STOCK_KEY);
+      const item = stock.find(s => s.id === id);
+      if (!item || !modalStock) return;
+
+      document.getElementById('stock-item-id').value = item.id;
+      document.getElementById('stock-brand').value = item.brand;
+      document.getElementById('stock-type').value = item.type;
+      document.getElementById('stock-model').value = item.model;
+      document.getElementById('stock-capacity').value = item.capacity;
+      document.getElementById('stock-price').value = item.price;
+      document.getElementById('stock-qty').value = item.quantity;
+      document.getElementById('modal-stock-title').textContent = 'Edit Battery Stock';
+      clearStockErrors();
+      modalStock.style.display = 'flex';
+    };
+
+    function clearStockErrors() {
+      ['brand', 'type', 'model', 'capacity', 'price', 'qty'].forEach(field => {
+        const err = document.getElementById(`err-stock-${field}`);
+        const fg = document.getElementById(`fg-stock-${field}`);
+        if (err) err.style.display = 'none';
+        if (fg) fg.classList.remove('has-error');
+      });
+    }
+
+    if (formStock) {
+      formStock.addEventListener('submit', (e) => {
+        e.preventDefault();
+        clearStockErrors();
+
+        const editId = document.getElementById('stock-item-id').value;
+        const brand = document.getElementById('stock-brand').value.trim();
+        const type = document.getElementById('stock-type').value.trim();
+        const model = document.getElementById('stock-model').value.trim();
+        const capacity = parseInt(document.getElementById('stock-capacity').value, 10);
+        const price = parseInt(document.getElementById('stock-price').value, 10);
+        const qty = parseInt(document.getElementById('stock-qty').value, 10);
+
+        let hasError = false;
+        if (!brand) {
+          document.getElementById('err-stock-brand').style.display = 'block';
+          document.getElementById('fg-stock-brand').classList.add('has-error');
+          hasError = true;
+        }
+        if (!type) {
+          document.getElementById('err-stock-type').style.display = 'block';
+          document.getElementById('fg-stock-type').classList.add('has-error');
+          hasError = true;
+        }
+        if (!model) {
+          document.getElementById('err-stock-model').style.display = 'block';
+          document.getElementById('fg-stock-model').classList.add('has-error');
+          hasError = true;
+        }
+        if (isNaN(capacity) || capacity < 2) {
+          document.getElementById('err-stock-capacity').style.display = 'block';
+          document.getElementById('fg-stock-capacity').classList.add('has-error');
+          hasError = true;
+        }
+        if (isNaN(price) || price < 500) {
+          document.getElementById('err-stock-price').style.display = 'block';
+          document.getElementById('fg-stock-price').classList.add('has-error');
+          hasError = true;
+        }
+        if (isNaN(qty) || qty < 0) {
+          document.getElementById('err-stock-qty').style.display = 'block';
+          document.getElementById('fg-stock-qty').classList.add('has-error');
+          hasError = true;
+        }
+
+        if (hasError) return;
+
+        let stock = getStoredData(STORAGE_STOCK_KEY);
+        const nowIso = new Date().toISOString();
+
+        if (editId) {
+          const item = stock.find(s => s.id === editId);
+          if (item) {
+            item.brand = brand;
+            item.type = type;
+            item.model = model;
+            item.capacity = capacity;
+            item.price = price;
+            item.quantity = qty;
+            item.lastUpdated = nowIso;
+          }
+        } else {
+          const newItem = {
+            id: 'STK-' + Date.now(),
+            dealerId: currentDealer.id,
+            dealerPhone: DEMO_PHONE_RAW,
+            brand: brand,
+            type: type,
+            model: model,
+            capacity: capacity,
+            price: price,
+            quantity: qty,
+            lastUpdated: nowIso
+          };
+          stock.unshift(newItem);
+        }
+
+        saveStoredData(STORAGE_STOCK_KEY, stock);
+        closeStockModal();
+        renderAllTabs();
+      });
+    }
+
+    const btnOpenAddStock = document.getElementById('btn-open-add-stock');
+    if (btnOpenAddStock) {
+      btnOpenAddStock.addEventListener('click', openAddStockModal);
+    }
+
+    // Exchange Rates Settings
+    const btnToggleRates = document.getElementById('btn-toggle-rates');
+    const ratesCard = document.getElementById('rates-setting-card');
+    const btnCloseRates = document.getElementById('btn-close-rates');
+    const formRates = document.getElementById('exchange-rates-form');
+
+    if (btnToggleRates && ratesCard) {
+      btnToggleRates.addEventListener('click', () => {
+        ratesCard.style.display = ratesCard.style.display === 'none' ? 'block' : 'none';
+      });
+    }
+    if (btnCloseRates && ratesCard) {
+      btnCloseRates.addEventListener('click', () => {
+        ratesCard.style.display = 'none';
+      });
+    }
+
+    function loadExchangeRatesSettings() {
+      try {
+        const raw = localStorage.getItem(STORAGE_EXCHANGE_RATES_KEY);
+        if (raw) {
+          const r = JSON.parse(raw);
+          if (r.inverter) document.getElementById('rate-inverter').value = r.inverter;
+          if (r.car) document.getElementById('rate-car').value = r.car;
+          if (r.twowheeler) document.getElementById('rate-twowheeler').value = r.twowheeler;
+        }
+      } catch (e) {}
+    }
+
+    if (formRates) {
+      formRates.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const rates = {
+          inverter: parseInt(document.getElementById('rate-inverter').value, 10) || 60,
+          car: parseInt(document.getElementById('rate-car').value, 10) || 50,
+          twowheeler: parseInt(document.getElementById('rate-twowheeler').value, 10) || 40
+        };
+        saveStoredData(STORAGE_EXCHANGE_RATES_KEY, rates);
+        alert('Old battery buyback rates updated successfully!');
+        if (ratesCard) ratesCard.style.display = 'none';
+      });
+    }
+
+    /* ============================================================
+       TAB 3: WARRANTY CLAIMS IMPLEMENTATION
+       ============================================================ */
+    function renderClaimsTab() {
+      const allClaims = getStoredData(STORAGE_CLAIMS_KEY);
+      let list = allClaims.filter(c => !c.dealerId || c.dealerId === currentDealer.id || c.dealerPhone === DEMO_PHONE_RAW);
+
+      if (claimStatusFilter !== 'all') {
+        list = list.filter(c => c.status === claimStatusFilter);
+      }
+
+      const q = claimsSearchQuery.trim().toLowerCase();
+      const lookupBanner = document.getElementById('claim-lookup-banner');
+
+      if (q) {
+        list = list.filter(c => {
+          const s = (c.serial || '').toLowerCase();
+          const p = (c.customerPhone || '').toLowerCase();
+          const n = (c.customer || '').toLowerCase();
+          return s.includes(q) || p.includes(q) || n.includes(q);
+        });
+
+        // Search lookup against sales vault
+        const sales = getStoredData(STORAGE_SALES_KEY);
+        const match = sales.find(s => {
+          const sn = (s.serialNumber || s.serial_number || '').toLowerCase();
+          const ph = (s.customerPhone || s.customer_phone || '');
+          return sn.includes(q) || ph.includes(q);
+        });
+
+        if (match && lookupBanner) {
+          const pDate = match.purchaseDate || match.purchase_date;
+          const months = match.warrantyMonths || match.warranty_months || 24;
+          const exp = match.expiryDate || calculateExpiry(pDate, months);
+          const daysLeft = calculateDaysLeft(exp);
+          const isAct = daysLeft > 0;
+          lookupBanner.style.display = 'block';
+          lookupBanner.innerHTML = `
+            <strong>Verified Sale Record:</strong> ${match.customerName} | Battery: ${match.batteryBrand} ${match.model} (SN: <code>${match.serialNumber}</code>) |
+            Purchased: ${formatDate(pDate)} | Warranty: <strong style="color: ${isAct ? 'var(--color-primary)' : 'var(--color-accent)'}">${isAct ? 'Active (' + daysLeft + ' days left)' : 'Expired (' + Math.abs(daysLeft) + ' days ago)'}</strong>
+          `;
+        } else if (lookupBanner) {
+          lookupBanner.style.display = 'none';
+        }
+      } else if (lookupBanner) {
+        lookupBanner.style.display = 'none';
+      }
+
+      const tbody = document.getElementById('claims-table-body');
+      const emptyState = document.getElementById('claims-empty-state');
+      if (!tbody) return;
+
+      if (list.length === 0) {
+        tbody.innerHTML = '';
+        if (emptyState) emptyState.style.display = 'block';
+        return;
+      }
+
+      if (emptyState) emptyState.style.display = 'none';
+
+      // Look up sales vault for warranty status pills
+      const salesVault = getStoredData(STORAGE_SALES_KEY);
+
+      tbody.innerHTML = list.map(c => {
+        const id = escapeHtml(c.id);
+        const cust = escapeHtml(c.customer);
+        const phone = escapeHtml(c.customerPhone || DEMO_PHONE_RAW);
+        const phoneClean = phone.replace(/\D/g, '') || DEMO_PHONE_RAW;
+        const targetWa = phoneClean.startsWith('91') ? phoneClean : ('91' + phoneClean);
+        const serial = escapeHtml(c.serial || '');
+        const battery = escapeHtml(`${c.brand || ''} ${c.model || ''}`.trim() || 'Battery');
+        const issue = escapeHtml(c.issue || 'Defect');
+        const status = c.status || 'Open';
+
+        // Check matching sale
+        const saleMatch = salesVault.find(s => s.serialNumber === c.serial || s.serial_number === c.serial);
+        let warrantyPill = '<span class="badge" style="font-size:11px;">Manual Record</span>';
+        if (saleMatch) {
+          const p = saleMatch.purchaseDate || saleMatch.purchase_date;
+          const m = saleMatch.warrantyMonths || saleMatch.warranty_months || 24;
+          const exp = saleMatch.expiryDate || calculateExpiry(p, m);
+          const dLeft = calculateDaysLeft(exp);
+          if (dLeft > 0) {
+            warrantyPill = `<span class="status-badge status-badge--approved" style="font-size:11px;">Active (${dLeft}d left)</span>`;
+          } else {
+            warrantyPill = `<span class="status-badge status-badge--rejected" style="font-size:11px;">Expired</span>`;
+          }
+        }
+
+        // Status badge class
+        let statusCls = 'status-badge--open';
+        if (status === 'In review') statusCls = 'status-badge--review';
+        else if (status === 'Approved') statusCls = 'status-badge--approved';
+        else if (status === 'Replaced') statusCls = 'status-badge--replaced';
+        else if (status === 'Rejected') statusCls = 'status-badge--rejected';
+
+        // History summary
+        let historyNote = c.notes || 'Logged';
+        if (c.history && Array.isArray(c.history) && c.history.length > 0) {
+          const lastH = c.history[c.history.length - 1];
+          historyNote = `${lastH.note} (${timeAgo(lastH.timestamp)})`;
+        }
+
+        // WhatsApp message
+        const waMsg = `*Battery Fair: Warranty Claim Update*\n\n` +
+          `Dear ${c.customer},\n` +
+          `Update on your battery claim *${c.id}* for ${battery} (SN: ${serial}):\n` +
+          `Status: *${status}*\n` +
+          `Latest Update: ${historyNote}\n\n` +
+          `For questions, reach ${currentDealer ? currentDealer.name : 'your dealer'} at ${DEMO_PHONE_DISPLAY}.`;
+
+        return `
+          <tr>
+            <td><strong>${id}</strong></td>
+            <td>
+              <strong>${cust}</strong>
+              <div style="font-size:12px;"><a href="tel:${phoneClean}">${phone}</a></div>
+            </td>
+            <td>
+              <div>${battery}</div>
+              <code style="font-size:11px; background:#F1F5F9; padding:2px 5px; border-radius:3px;">${serial}</code>
+            </td>
+            <td><small style="max-width:180px; display:inline-block;">${issue}</small></td>
+            <td>${warrantyPill}</td>
+            <td>
+              <select class="form-select" onchange="changeClaimStatus('${id}', this.value)" style="height:32px; font-size:12px; padding:2px 8px; width:auto; font-weight:700;">
+                <option value="Open" ${status === 'Open' ? 'selected' : ''}>Open</option>
+                <option value="In review" ${status === 'In review' ? 'selected' : ''}>In review</option>
+                <option value="Approved" ${status === 'Approved' ? 'selected' : ''}>Approved</option>
+                <option value="Replaced" ${status === 'Replaced' ? 'selected' : ''}>Replaced</option>
+                <option value="Rejected" ${status === 'Rejected' ? 'selected' : ''}>Rejected</option>
+              </select>
+            </td>
+            <td><small style="color:var(--color-text-muted);">${escapeHtml(historyNote)}</small></td>
+            <td style="text-align: right;">
+              <div class="table-actions" style="justify-content: flex-end; gap: 4px;">
+                <button type="button" class="btn-icon-table" onclick="promptAddClaimNote('${id}')" title="Add Note">
+                  + Note
+                </button>
+                <a href="https://wa.me/${targetWa}?text=${encodeURIComponent(waMsg)}" target="_blank" rel="noopener" class="btn-icon-table btn-icon-table--wa" title="WhatsApp Customer">
+                  WhatsApp
+                </a>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    window.changeClaimStatus = function(id, newStatus) {
+      let claims = getStoredData(STORAGE_CLAIMS_KEY);
+      const claim = claims.find(c => c.id === id);
+      if (!claim) return;
+      claim.status = newStatus;
+      if (!claim.history) claim.history = [];
+      claim.history.push({
+        status: newStatus,
+        note: `Status updated to ${newStatus} by ${currentDealer ? currentDealer.name : 'dealer'}`,
+        timestamp: new Date().toISOString()
+      });
+      saveStoredData(STORAGE_CLAIMS_KEY, claims);
+      renderAllTabs();
+    };
+
+    window.promptAddClaimNote = function(id) {
+      const note = prompt('Enter technician inspection note / manufacturer RMA update:');
+      if (!note || !note.trim()) return;
+      let claims = getStoredData(STORAGE_CLAIMS_KEY);
+      const claim = claims.find(c => c.id === id);
+      if (!claim) return;
+      if (!claim.history) claim.history = [];
+      claim.history.push({
+        status: claim.status,
+        note: note.trim(),
+        timestamp: new Date().toISOString()
+      });
+      saveStoredData(STORAGE_CLAIMS_KEY, claims);
+      renderAllTabs();
+    };
+
+    // Claim Filter Listeners
+    document.querySelectorAll('[data-claim-filter]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-claim-filter]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        claimStatusFilter = btn.dataset.claimFilter;
+        renderClaimsTab();
+      });
+    });
+
+    const claimsSearch = document.getElementById('claims-search-input');
+    if (claimsSearch) {
+      claimsSearch.addEventListener('input', (e) => {
+        claimsSearchQuery = e.target.value;
+        renderClaimsTab();
+      });
+    }
+
+    // Modal: Log Claim
+    const modalClaim = document.getElementById('modal-claim');
+    const formClaim = document.getElementById('form-claim');
+    const btnOpenLogClaim = document.getElementById('btn-open-log-claim');
+
+    window.openLogClaimModal = function() {
+      if (!modalClaim) return;
+      formClaim.reset();
+      document.getElementById('claim-lookup-result').style.display = 'none';
+      modalClaim.style.display = 'flex';
+    };
+
+    window.closeClaimModal = function() {
+      if (modalClaim) modalClaim.style.display = 'none';
+    };
+
+    if (btnOpenLogClaim) {
+      btnOpenLogClaim.addEventListener('click', openLogClaimModal);
+    }
+
+    // Live serial lookup button in modal
+    const btnClaimLookup = document.getElementById('btn-claim-lookup');
+    if (btnClaimLookup) {
+      btnClaimLookup.addEventListener('click', () => {
+        const serial = document.getElementById('claim-serial').value.trim().toUpperCase();
+        const resBox = document.getElementById('claim-lookup-result');
+        if (!serial) {
+          alert('Please enter a serial number to lookup.');
+          return;
+        }
+        const sales = getStoredData(STORAGE_SALES_KEY);
+        const match = sales.find(s => (s.serialNumber || s.serial_number || '').toUpperCase() === serial);
+        if (match) {
+          document.getElementById('claim-customer').value = match.customerName || '';
+          document.getElementById('claim-phone').value = (match.customerPhone || '').replace(/\D/g, '').replace(/^91/, '');
+          document.getElementById('claim-brand-model').value = `${match.batteryBrand || ''} ${match.model || ''}`.trim();
+          const p = match.purchaseDate || match.purchase_date;
+          const m = match.warrantyMonths || match.warranty_months || 24;
+          const exp = match.expiryDate || calculateExpiry(p, m);
+          const daysLeft = calculateDaysLeft(exp);
+          resBox.style.display = 'block';
+          resBox.style.color = daysLeft > 0 ? '#15803D' : '#B45309';
+          resBox.textContent = `Found sale: Purchased ${formatDate(p)} | Warranty: ${daysLeft > 0 ? daysLeft + ' days active' : 'Expired'}`;
+        } else {
+          resBox.style.display = 'block';
+          resBox.style.color = '#B45309';
+          resBox.textContent = 'Serial not found in digital vault. You can still log the claim manually.';
+        }
+      });
+    }
+
+    if (formClaim) {
+      formClaim.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const serial = document.getElementById('claim-serial').value.trim().toUpperCase();
+        const cust = document.getElementById('claim-customer').value.trim();
+        const phone = document.getElementById('claim-phone').value.trim();
+        const brandModel = document.getElementById('claim-brand-model').value.trim();
+        const issue = document.getElementById('claim-issue').value.trim();
+        const status = document.getElementById('claim-status').value;
+        const notes = document.getElementById('claim-notes').value.trim();
+
+        if (!serial || !cust || !phone) {
+          alert('Please enter Serial Number, Customer Name, and Customer Phone.');
+          return;
+        }
+
+        const nowIso = new Date().toISOString();
+        const newClaim = {
+          id: generateClaimId(),
+          dealerId: currentDealer.id,
+          dealerPhone: DEMO_PHONE_RAW,
+          serial: serial,
+          customer: cust,
+          customerPhone: phone,
+          brand: brandModel.split(' ')[0] || 'Battery',
+          model: brandModel.split(' ').slice(1).join(' ') || '',
+          issue: issue,
+          status: status,
+          notes: notes || 'Claim initiated by dealer',
+          history: [
+            { status: status, note: notes || 'Claim created', timestamp: nowIso }
+          ],
+          createdAt: nowIso
+        };
+
+        const claims = getStoredData(STORAGE_CLAIMS_KEY);
+        claims.unshift(newClaim);
+        saveStoredData(STORAGE_CLAIMS_KEY, claims);
+
+        closeClaimModal();
+        renderAllTabs();
+      });
+    }
+
+    /* ============================================================
+       TAB 4: FITTING REQUESTS IMPLEMENTATION
+       ============================================================ */
+    function renderFittingsTab() {
+      const allFittings = getStoredData(STORAGE_FITTINGS_KEY);
+      let list = allFittings.filter(f => !f.dealerId || f.dealerId === currentDealer.id || f.dealerName === currentDealer.name);
+
+      if (fittingStatusFilter !== 'all') {
+        list = list.filter(f => (f.status || 'Booked') === fittingStatusFilter);
+      }
+
+      const tbody = document.getElementById('dash-fittings-body');
+      const countBadge = document.getElementById('fitting-count-badge');
+      const emptyState = document.getElementById('dash-fittings-empty');
+      if (!tbody) return;
+
+      countBadge.textContent = `${list.length} request${list.length === 1 ? '' : 's'}`;
+
+      if (list.length === 0) {
+        tbody.innerHTML = '';
+        if (emptyState) emptyState.style.display = 'block';
+        return;
+      }
+
+      if (emptyState) emptyState.style.display = 'none';
+
+      tbody.innerHTML = list.map(f => {
+        const id = escapeHtml(f.id);
+        const name = escapeHtml(f.name);
+        const phone = escapeHtml(f.phone || DEMO_PHONE_RAW);
+        const phoneClean = phone.replace(/\D/g, '') || DEMO_PHONE_RAW;
+        const targetWa = phoneClean.startsWith('91') ? phoneClean : ('91' + phoneClean);
+        const service = f.serviceType === 'water-refill' ? 'Distilled Water Refill' : 'Doorstep Fitting';
+        const vehicle = escapeHtml(f.vehicleType || 'Vehicle');
+        const battery = escapeHtml(f.batteryNeeded || 'New Battery');
+        const date = escapeHtml(f.date || '');
+        const slot = escapeHtml(f.slot || 'Morning');
+        const address = escapeHtml(`${f.address || ''}${f.pincode ? ' - ' + f.pincode : ''}`);
+        const exchange = f.exchangeEstimate ? `<strong style="color:var(--color-primary)">${escapeHtml(f.exchangeEstimate)}</strong>` : (f.oldBattery ? 'Handover (TBD)' : 'No exchange');
+        const status = f.status || 'Booked';
+
+        let statusClass = 'status-badge--booked';
+        let nextStatus = '';
+        let nextBtnLabel = '';
+        if (status === 'Booked') {
+          statusClass = 'status-badge--booked';
+          nextStatus = 'Dealer confirmed';
+          nextBtnLabel = 'Confirm';
+        } else if (status === 'Dealer confirmed') {
+          statusClass = 'status-badge--confirmed';
+          nextStatus = 'On the way';
+          nextBtnLabel = 'Dispatch';
+        } else if (status === 'On the way') {
+          statusClass = 'status-badge--ontheway';
+          nextStatus = 'Fitted & old battery collected';
+          nextBtnLabel = 'Complete';
+        } else {
+          statusClass = 'status-badge--completed';
+        }
+
+        const dealerName = currentDealer ? currentDealer.name : (f.dealerName || 'Battery Fair Partner');
+        const waMsg = `Hi ${f.name || 'Customer'}, update from ${dealerName} regarding your Battery Fair appointment (${id}):\n\n` +
+          `Status: *${status}*\n` +
+          `Date: ${date} (${slot})\n` +
+          `Service: ${service}\n\n` +
+          `Our technician is on schedule. Contact us at ${DEMO_PHONE_DISPLAY} for any questions!`;
+
+        let actionHtml = '';
+        if (nextStatus) {
+          actionHtml = `
+            <button type="button" class="btn btn-primary btn-sm" onclick="advanceFittingStatusDashboard('${id}')" style="font-size:12px; padding:4px 10px; min-height:32px;">
+              ${nextBtnLabel} &rarr;
+            </button>
+          `;
+        } else {
+          actionHtml = `<span style="font-size:12px; color:var(--color-primary); font-weight:700;">&#10003; Done</span>`;
+        }
+
+        return `
+          <tr>
+            <td><strong>${id}</strong></td>
+            <td>
+              <strong>${name}</strong>
+              <div style="font-size:12px;"><a href="tel:${phoneClean}">${phone}</a></div>
+            </td>
+            <td>
+              <span class="badge--stock" style="font-size:11px;">${service}</span>
+              <div style="font-size:12px; color:var(--color-dark); margin-top:2px;">${vehicle} (${battery})</div>
+            </td>
+            <td>
+              <div>${date}</div>
+              <small style="color:var(--color-text-muted);">${slot}</small>
+            </td>
+            <td><small style="max-width:180px; display:inline-block;">${address}</small></td>
+            <td>${exchange}</td>
+            <td><span class="status-badge ${statusClass}">${escapeHtml(status)}</span></td>
+            <td style="text-align: right;">
+              <div style="display:flex; gap:6px; justify-content:flex-end; align-items:center;">
+                ${actionHtml}
+                <a href="https://wa.me/${targetWa}?text=${encodeURIComponent(waMsg)}" target="_blank" rel="noopener" class="btn-icon-table btn-icon-table--wa" title="WhatsApp Customer">
+                  WhatsApp
+                </a>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    window.advanceFittingStatusDashboard = function(id) {
+      let fittings = getStoredData(STORAGE_FITTINGS_KEY);
+      const target = fittings.find(f => f.id === id);
+      if (!target) return;
+
+      const flow = ['Booked', 'Dealer confirmed', 'On the way', 'Fitted & old battery collected'];
+      const currentIndex = flow.indexOf(target.status || 'Booked');
+      if (currentIndex >= 0 && currentIndex < flow.length - 1) {
+        target.status = flow[currentIndex + 1];
+        if (!target.statusHistory) target.statusHistory = [];
+        target.statusHistory.push({
+          status: target.status,
+          timestamp: new Date().toISOString(),
+          note: `Advanced to ${target.status} by ${currentDealer ? currentDealer.name : 'dealer'}`
+        });
+        saveStoredData(STORAGE_FITTINGS_KEY, fittings);
+        renderAllTabs();
+      }
+    };
+
+    document.querySelectorAll('[data-fit-filter]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-fit-filter]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        fittingStatusFilter = btn.dataset.fitFilter;
+        renderFittingsTab();
+      });
+    });
+
+    /* ============================================================
+       TAB 5: CUSTOMERS DIRECTORY IMPLEMENTATION
+       ============================================================ */
+    function renderCustomersTab() {
+      let list = getStoredData(STORAGE_SALES_KEY);
+      const q = customerSearchQuery.trim().toLowerCase();
+
+      if (q) {
+        list = list.filter(w => {
+          const name = (w.customerName || w.customer_name || '').toLowerCase();
+          const phone = (w.customerPhone || w.customer_phone || '');
+          const serial = (w.serialNumber || w.serial_number || '').toLowerCase();
+          const brand = (w.batteryBrand || w.battery_brand || '').toLowerCase();
+          const model = (w.model || '').toLowerCase();
+          return name.includes(q) || phone.includes(q) || serial.includes(q) || brand.includes(q) || model.includes(q);
+        });
+      }
+
+      // Count across all query-filtered items
+      let cntActive = 0;
+      let cntExpiring = 0;
+      let cntExpired = 0;
+
+      list.forEach(w => {
+        const pDate = w.purchaseDate || w.purchase_date;
+        const months = w.warrantyMonths || w.warranty_months || 24;
+        const exp = w.expiryDate || calculateExpiry(pDate, months);
+        const daysLeft = calculateDaysLeft(exp);
+        if (daysLeft > 0) {
+          cntActive++;
+          if (daysLeft <= 30) cntExpiring++;
+        } else {
+          cntExpired++;
+        }
+      });
+
+      document.getElementById('cust-cnt-all').textContent = list.length;
+      document.getElementById('cust-cnt-active').textContent = cntActive;
+      document.getElementById('cust-cnt-expiring').textContent = cntExpiring;
+      document.getElementById('cust-cnt-expired').textContent = cntExpired;
+
+      if (customerStatusFilter === 'active') {
+        list = list.filter(w => {
+          const p = w.purchaseDate || w.purchase_date;
+          const m = w.warrantyMonths || w.warranty_months || 24;
+          return calculateDaysLeft(w.expiryDate || calculateExpiry(p, m)) > 0;
+        });
+      } else if (customerStatusFilter === 'expiring') {
+        list = list.filter(w => {
+          const p = w.purchaseDate || w.purchase_date;
+          const m = w.warrantyMonths || w.warranty_months || 24;
+          const d = calculateDaysLeft(w.expiryDate || calculateExpiry(p, m));
+          return d > 0 && d <= 30;
+        });
+      } else if (customerStatusFilter === 'expired') {
+        list = list.filter(w => {
+          const p = w.purchaseDate || w.purchase_date;
+          const m = w.warrantyMonths || w.warranty_months || 24;
+          return calculateDaysLeft(w.expiryDate || calculateExpiry(p, m)) <= 0;
+        });
+      }
+
+      const tbody = document.getElementById('dash-cust-table-body');
+      const emptyState = document.getElementById('dash-cust-empty');
+      if (!tbody) return;
+
+      if (list.length === 0) {
+        tbody.innerHTML = '';
+        if (emptyState) emptyState.style.display = 'block';
+        return;
+      }
+
+      if (emptyState) emptyState.style.display = 'none';
+
+      tbody.innerHTML = list.map(w => {
+        const id = escapeHtml(w.id || w.serialNumber || '');
+        const custName = escapeHtml(w.customerName || w.customer_name || 'Customer');
+        const custPhone = escapeHtml(w.customerPhone || w.customer_phone || DEMO_PHONE_RAW);
+        const brand = escapeHtml(w.batteryBrand || w.battery_brand || '');
+        const model = escapeHtml(w.model || '');
+        const serial = escapeHtml(w.serialNumber || w.serial_number || '');
+        const pDate = w.purchaseDate || w.purchase_date;
+        const months = w.warrantyMonths || w.warranty_months || 24;
+        const expDate = w.expiryDate || calculateExpiry(pDate, months);
+        const daysLeft = calculateDaysLeft(expDate);
+        const isActive = daysLeft > 0;
+
+        const statusHtml = isActive
+          ? `<span class="badge badge--green">Active (${daysLeft}d left)</span>`
+          : `<span class="badge badge--amber">Expired</span>`;
+
+        const phoneClean = custPhone.replace(/\D/g, '') || DEMO_PHONE_RAW;
+        const targetWa = phoneClean.startsWith('91') ? phoneClean : ('91' + phoneClean);
+        const waMsg = `*Battery Fair: Digital Warranty Certificate*\n` +
+          `Customer: ${custName}\nBattery: ${brand} ${model}\nSerial: ${serial}\nDealer Phone: ${DEMO_PHONE_DISPLAY}\nExpiry: ${formatDate(expDate)}`;
+
+        const waterMsg = `*Battery Fair: Distilled Water Maintenance Check*\n\n` +
+          `Dear ${custName},\n` +
+          `Friendly reminder from ${currentDealer ? currentDealer.name : 'Battery Fair'} regarding your ${brand} ${model} battery (Serial: ${serial}).\n` +
+          `Please check battery electrolyte levels to prevent cell damage and maintain your warranty!`;
+
+        return `
+          <tr>
+            <td><strong>${custName}</strong></td>
+            <td><a href="tel:${phoneClean}">${custPhone}</a></td>
+            <td><strong>${brand}</strong> ${model}</td>
+            <td><code style="font-size:12px; background:#F1F5F9; padding:2px 6px; border-radius:4px;">${serial}</code></td>
+            <td>${formatDate(pDate)}</td>
+            <td><strong style="color: ${isActive ? 'var(--color-primary)' : 'var(--color-accent)'}">${formatDate(expDate)}</strong></td>
+            <td>${statusHtml}</td>
+            <td style="text-align: right;">
+              <div class="table-actions" style="justify-content: flex-end; gap:4px;">
+                <button type="button" class="btn-icon-table" onclick="openWarrantyCertificateModal('${id}')" title="View Digital Certificate">
+                  View
+                </button>
+                <a href="https://wa.me/${targetWa}?text=${encodeURIComponent(waterMsg)}" target="_blank" rel="noopener" class="btn-icon-table btn-icon-table--water" title="Send Water Reminder">
+                  Water Check
+                </a>
+                <a href="https://wa.me/${targetWa}?text=${encodeURIComponent(waMsg)}" target="_blank" rel="noopener" class="btn-icon-table btn-icon-table--wa" title="Share Warranty on WhatsApp">
+                  WhatsApp
+                </a>
+                <button type="button" class="btn-icon-table btn-icon-table--del" onclick="deleteCustomerRecord('${id}')" title="Delete Record">
+                  &times;
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    window.deleteCustomerRecord = function(id) {
+      if (confirm('Are you sure you want to delete this customer warranty record?')) {
+        let sales = getStoredData(STORAGE_SALES_KEY);
+        sales = sales.filter(s => s.id !== id && s.serialNumber !== id && s.serial_number !== id);
+        saveStoredData(STORAGE_SALES_KEY, sales);
+        renderAllTabs();
+      }
+    };
+
+    // Customer filters and search
+    document.querySelectorAll('[data-cust-filter]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-cust-filter]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        customerStatusFilter = btn.dataset.custFilter;
+        renderCustomersTab();
+      });
+    });
+
+    const custSearch = document.getElementById('cust-search-input');
+    if (custSearch) {
+      custSearch.addEventListener('input', (e) => {
+        customerSearchQuery = e.target.value;
+        renderCustomersTab();
+      });
+    }
+
+    // CSV Export
+    const btnExportCsv = document.getElementById('btn-export-customers-csv');
+    if (btnExportCsv) {
+      btnExportCsv.addEventListener('click', () => {
+        const list = getStoredData(STORAGE_SALES_KEY);
+        if (!list || list.length === 0) {
+          alert('No customer sales records available to export.');
+          return;
+        }
+        const headers = ['Customer Name', 'Phone', 'Brand', 'Model', 'Serial Number', 'Purchase Date', 'Warranty Expiry', 'Status', 'Days Remaining'];
+        const rows = list.map(w => {
+          const name = w.customerName || w.customer_name || '';
+          const phone = w.customerPhone || w.customer_phone || DEMO_PHONE_RAW;
+          const brand = w.batteryBrand || w.battery_brand || '';
+          const model = w.model || '';
+          const serial = w.serialNumber || w.serial_number || '';
+          const p = w.purchaseDate || w.purchase_date || '';
+          const m = w.warrantyMonths || w.warranty_months || 24;
+          const exp = w.expiryDate || calculateExpiry(p, m);
+          const daysLeft = calculateDaysLeft(exp);
+          const status = daysLeft > 0 ? 'Active' : 'Expired';
+          return [
+            `"${name.replace(/"/g, '""')}"`,
+            `"${phone}"`,
+            `"${brand.replace(/"/g, '""')}"`,
+            `"${model.replace(/"/g, '""')}"`,
+            `"${serial.replace(/"/g, '""')}"`,
+            `"${p}"`,
+            `"${exp}"`,
+            `"${status}"`,
+            `"${daysLeft}"`
+          ].join(',');
+        });
+        const csvContent = '\uFEFF' + [headers.join(','), ...rows].join('\r\n');
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `battery_fair_customers_${new Date().toISOString().split('T')[0]}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      });
+    }
+
+    // Warranty Certificate Modal
+    const modalWarrantyView = document.getElementById('modal-warranty-view');
+    window.openWarrantyCertificateModal = function(id) {
+      const sales = getStoredData(STORAGE_SALES_KEY);
+      const sale = sales.find(s => s.id === id || s.serialNumber === id || s.serial_number === id);
+      if (!sale || !modalWarrantyView) return;
+
+      const pDate = sale.purchaseDate || sale.purchase_date;
+      const months = sale.warrantyMonths || sale.warranty_months || 24;
+      const expDate = sale.expiryDate || calculateExpiry(pDate, months);
+      const daysLeft = calculateDaysLeft(expDate);
+      const isAct = daysLeft > 0;
+
+      document.getElementById('vw-card-status').textContent = isAct ? `Active · ${daysLeft} days left` : 'Expired';
+      document.getElementById('vw-card-id').textContent = sale.id || 'BF-WAR-2026';
+      document.getElementById('vw-cust-name').textContent = sale.customerName || sale.customer_name || 'Customer';
+      document.getElementById('vw-battery-model').textContent = `${sale.batteryBrand || ''} ${sale.model || ''}`;
+      document.getElementById('vw-serial-no').textContent = sale.serialNumber || sale.serial_number || '-';
+      document.getElementById('vw-purchase-date').textContent = formatDate(pDate);
+      document.getElementById('vw-expiry-date').textContent = formatDate(expDate);
+      document.getElementById('vw-dealer-name').textContent = sale.dealerName || (currentDealer ? currentDealer.name : 'Battery Fair Dealer');
+
+      // QR Code Generation
+      const qrBox = document.getElementById('vw-qrcode-container');
+      qrBox.innerHTML = '';
+      const qrPayload = `https://batteryfair.in/verify?sn=${encodeURIComponent(sale.serialNumber || sale.serial_number || '')}&wid=${encodeURIComponent(sale.id || '')}`;
+      let qrRendered = false;
+      if (typeof QRCode !== 'undefined') {
+        try {
+          new QRCode(qrBox, {
+            text: qrPayload,
+            width: 144,
+            height: 144,
+            colorDark: '#0B1F3A',
+            colorLight: '#FFFFFF',
+            correctLevel: 1
+          });
+          qrRendered = true;
+        } catch (e) {
+          qrRendered = false;
+        }
+      }
+      if (!qrRendered) {
+        qrBox.innerHTML = `
+          <svg viewBox="0 0 29 29" width="144" height="144" shape-rendering="crispEdges">
+            <rect width="29" height="29" fill="#FFFFFF"/>
+            <path d="M0,0 h7 v7 h-7 z M1,1 h5 v5 h-5 z M2,2 h3 v3 h-3 z M22,0 h7 v7 h-7 z M23,1 h5 v5 h-5 z M24,2 h3 v3 h-3 z M0,22 h7 v7 h-7 z M1,23 h5 v5 h-5 z M2,24 h3 v3 h-3 z M9,1 h2 v2 h-2 z M13,1 h3 v1 h-3 z M18,2 h2 v3 h-2 z M9,5 h1 v4 h-1 z M12,4 h3 v2 h-3 z M16,6 h4 v1 h-4 z M1,9 h2 v3 h-2 z M4,10 h3 v1 h-3 z M9,11 h3 v3 h-3 z M14,10 h4 v2 h-4 z M20,9 h2 v3 h-2 z M24,10 h4 v3 h-4 z M1,14 h3 v3 h-3 z M6,13 h3 v2 h-3 z M10,16 h4 v2 h-4 z M16,14 h3 v4 h-3 z M21,14 h4 v2 h-4 z M26,15 h3 v4 h-3 z M2,19 h4 v2 h-4 z M8,19 h3 v3 h-3 z M13,20 h2 v4 h-2 z M17,20 h4 v2 h-4 z M23,20 h2 v2 h-2 z M9,24 h2 v4 h-2 z M12,25 h4 v2 h-4 z M18,24 h3 v2 h-3 z M23,24 h5 v3 h-5 z" fill="#0B1F3A"/>
+          </svg>
+        `;
+      }
+
+      // WhatsApp link
+      const phoneClean = (sale.customerPhone || DEMO_PHONE_RAW).replace(/\D/g, '');
+      const targetWa = phoneClean.startsWith('91') ? phoneClean : ('91' + phoneClean);
+      const waMsg = `*Battery Fair: Digital Warranty Certificate* 🛡️\n\n` +
+        `Customer: *${sale.customerName}*\n` +
+        `Battery: ${sale.batteryBrand} ${sale.model}\n` +
+        `Serial: ${sale.serialNumber}\n` +
+        `Warranty: ${formatDate(expDate)} (${isAct ? 'Active' : 'Expired'})\n` +
+        `Dealer: ${currentDealer ? currentDealer.name : 'Battery Fair'}`;
+      document.getElementById('vw-wa-btn').href = `https://wa.me/${targetWa}?text=${encodeURIComponent(waMsg)}`;
+
+      modalWarrantyView.style.display = 'flex';
+    };
+
+    window.closeWarrantyViewModal = function() {
+      if (modalWarrantyView) modalWarrantyView.style.display = 'none';
+    };
+
+    /* ============================================================
+       TAB 6: CARE REMINDERS IMPLEMENTATION
+       ============================================================ */
+    function renderCareRemindersTab() {
+      const sales = getStoredData(STORAGE_SALES_KEY);
+      const storedRem = getStoredData(STORAGE_REMINDERS_KEY);
+      let sentMap = {};
+      try {
+        const rawSent = localStorage.getItem(STORAGE_SENT_REMINDERS_KEY);
+        if (rawSent) sentMap = JSON.parse(rawSent) || {};
+      } catch (e) {}
+
+      const dueList = [];
+      const now = new Date();
+
+      // 1. Process customer sales
+      sales.forEach(s => {
+        const pDate = s.purchaseDate || s.purchase_date;
+        const months = s.warrantyMonths || s.warranty_months || 24;
+        const expDate = s.expiryDate || calculateExpiry(pDate, months);
+        const daysLeft = calculateDaysLeft(expDate);
+
+        // Warranty expiring within 60 days
+        if (daysLeft > 0 && daysLeft <= 60) {
+          const key = `war_${s.serialNumber || s.id}`;
+          dueList.push({
+            id: key,
+            customerName: s.customerName || 'Customer',
+            customerPhone: s.customerPhone || DEMO_PHONE_RAW,
+            batteryBrand: s.batteryBrand || '',
+            model: s.model || '',
+            serial: s.serialNumber || '',
+            dueType: 'Warranty Expiring Soon',
+            dueDate: expDate,
+            urgencyText: `${daysLeft}d left`,
+            isUrgent: daysLeft <= 15,
+            sentAt: sentMap[key] || null,
+            message: `Hi ${s.customerName || 'Customer'}, your battery warranty (${s.batteryBrand} ${s.model}) expires on ${formatDate(expDate)} (${daysLeft} days left). Visit ${currentDealer ? currentDealer.name : 'our shop'} for a free health check or exchange!`
+          });
+        }
+
+        // Water refill check: if purchased >= 90 days ago
+        if (pDate) {
+          const daysSince = Math.floor((now.getTime() - new Date(pDate).getTime()) / (1000 * 60 * 60 * 24));
+          if (daysSince >= 90) {
+            const key = `water_${s.serialNumber || s.id}`;
+            dueList.push({
+              id: key,
+              customerName: s.customerName || 'Customer',
+              customerPhone: s.customerPhone || DEMO_PHONE_RAW,
+              batteryBrand: s.batteryBrand || 'Tubular / Inverter',
+              model: s.model || '',
+              serial: s.serialNumber || '',
+              dueType: 'Distilled Water Refill Due',
+              dueDate: 'Due Now',
+              urgencyText: `${daysSince}d since purchase`,
+              isUrgent: true,
+              sentAt: sentMap[key] || null,
+              message: `Hi ${s.customerName || 'Customer'}, friendly maintenance reminder from ${currentDealer ? currentDealer.name : 'Battery Fair'}! Your battery is due for a distilled water top-up to prevent cell degradation and keep your warranty valid. Visit us anytime for a free electrolyte check!`
+            });
+          }
+        }
+      });
+
+      // 2. Process care.html reminders
+      storedRem.forEach(r => {
+        if (r.dueDate) {
+          const dLeft = calculateDaysLeft(r.dueDate);
+          if (dLeft <= 60) {
+            const key = `rem_${r.id}`;
+            dueList.push({
+              id: key,
+              customerName: r.customerName || 'Registered Customer',
+              customerPhone: r.phone || DEMO_PHONE_RAW,
+              batteryBrand: r.title || 'Scheduled Care',
+              model: r.batteryDetails || '',
+              serial: r.id || '',
+              dueType: r.type === 'water-refill' ? 'Distilled Water Refill' : (r.title || 'Care Reminder'),
+              dueDate: r.dueDate,
+              urgencyText: dLeft > 0 ? `${dLeft}d left` : 'Due today/past',
+              isUrgent: dLeft <= 15,
+              sentAt: sentMap[key] || null,
+              message: `Hi, friendly reminder from ${currentDealer ? currentDealer.name : 'Battery Fair'} for ${r.title} scheduled on ${formatDate(r.dueDate)}. Let us know if you need assistance!`
+            });
+          }
+        }
+      });
+
+      const tbody = document.getElementById('dash-reminders-table-body');
+      const countEl = document.getElementById('reminders-table-count');
+      const emptyState = document.getElementById('dash-reminders-empty');
+      if (!tbody) return;
+
+      countEl.textContent = `${dueList.length} reminder${dueList.length === 1 ? '' : 's'} due`;
+
+      if (dueList.length === 0) {
+        tbody.innerHTML = '';
+        if (emptyState) emptyState.style.display = 'block';
+        return;
+      }
+
+      if (emptyState) emptyState.style.display = 'none';
+
+      tbody.innerHTML = dueList.map(item => {
+        const id = escapeHtml(item.id);
+        const name = escapeHtml(item.customerName);
+        const phone = escapeHtml(item.customerPhone);
+        const phoneClean = phone.replace(/\D/g, '') || DEMO_PHONE_RAW;
+        const targetWa = phoneClean.startsWith('91') ? phoneClean : ('91' + phoneClean);
+        const battery = escapeHtml(`${item.batteryBrand} ${item.model}`.trim());
+        const serial = escapeHtml(item.serial);
+        const reason = escapeHtml(item.dueType);
+        const dueDate = escapeHtml(formatDate(item.dueDate) || item.dueDate);
+        const urgency = escapeHtml(item.urgencyText);
+        const isUrgent = item.isUrgent;
+        const sentAt = item.sentAt;
+
+        const badgeCls = isUrgent ? 'status-badge--rejected' : 'status-badge--review';
+        const sentHtml = sentAt
+          ? `<span style="font-size:11px; color:var(--color-primary); font-weight:700;">Sent ${formatDate(sentAt)}</span>`
+          : `<span style="font-size:11px; color:var(--color-text-muted);">Not sent yet</span>`;
+
+        return `
+          <tr>
+            <td><strong>${name}</strong></td>
+            <td><a href="tel:${phoneClean}">${phone}</a></td>
+            <td>${battery}</td>
+            <td><code style="font-size:11px;">${serial || '-'}</code></td>
+            <td><span class="status-badge ${badgeCls}">${reason}</span></td>
+            <td>${dueDate}</td>
+            <td><strong>${urgency}</strong></td>
+            <td>${sentHtml}</td>
+            <td style="text-align: right;">
+              <div style="display:flex; gap:6px; justify-content:flex-end; align-items:center;">
+                <button type="button" class="btn-icon-table" onclick="toggleReminderSent('${id}')" title="Mark as Sent">
+                  ${sentAt ? 'Clear' : 'Mark Sent'}
+                </button>
+                <a href="https://wa.me/${targetWa}?text=${encodeURIComponent(item.message)}" target="_blank" rel="noopener" class="btn btn-whatsapp btn-sm" onclick="markReminderSentSilent('${id}')" style="font-size:12px; padding:4px 10px; min-height:32px;">
+                  WhatsApp Nudge
+                </a>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    window.toggleReminderSent = function(id) {
+      let sentMap = {};
+      try {
+        const raw = localStorage.getItem(STORAGE_SENT_REMINDERS_KEY);
+        if (raw) sentMap = JSON.parse(raw) || {};
+      } catch (e) {}
+
+      if (sentMap[id]) {
+        delete sentMap[id];
+      } else {
+        sentMap[id] = new Date().toISOString();
+      }
+      saveStoredData(STORAGE_SENT_REMINDERS_KEY, sentMap);
+      renderCareRemindersTab();
+    };
+
+    window.markReminderSentSilent = function(id) {
+      let sentMap = {};
+      try {
+        const raw = localStorage.getItem(STORAGE_SENT_REMINDERS_KEY);
+        if (raw) sentMap = JSON.parse(raw) || {};
+      } catch (e) {}
+      sentMap[id] = new Date().toISOString();
+      saveStoredData(STORAGE_SENT_REMINDERS_KEY, sentMap);
+      setTimeout(renderCareRemindersTab, 500);
+    };
+
+    /* ---------- Close modals on Escape key or outside click ---------- */
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeStockModal();
+        closeClaimModal();
+        closeWarrantyViewModal();
+      }
+    });
+
+    [modalStock, modalClaim, modalWarrantyView].forEach(m => {
+      if (m) {
+        m.addEventListener('click', (e) => {
+          if (e.target === m) {
+            m.style.display = 'none';
+          }
+        });
+      }
+    });
+
+    /* ---------- Language Change Event Listener ---------- */
+    window.addEventListener('batteryfair:languagechange', () => {
+      renderAllTabs();
+    });
+
+    /* ---------- Initialization ---------- */
+    initQuickDealers();
+    checkExistingLogin();
+
+  })();
+  </script>
+</body>
+</html>

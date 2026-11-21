@@ -98,6 +98,7 @@
         <a href="care.html"       class="navbar__link" data-page="care.html" data-i18n="nav.care">Battery Care</a>
         <a href="calculator.html" class="navbar__link" data-page="calculator.html" data-i18n="nav.calculator">Calculator</a>
         <a href="sale.html"       class="navbar__link" data-page="sale.html" data-i18n="nav.sale">Sell / Exchange</a>
+        <a href="dealer.html"     class="navbar__link" data-page="dealer.html" data-i18n="nav.dashboard">Dealer Dashboard</a>
       </div>
 
       <!-- Language Dropdown (desktop) -->
@@ -157,6 +158,10 @@
     <a href="sale.html"       class="mobile-menu__link" data-page="sale.html" data-i18n="nav.sale">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
       Sell / Exchange
+    </a>
+    <a href="dealer.html"     class="mobile-menu__link" data-page="dealer.html" data-i18n="nav.dashboard">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+      Dealer Dashboard
     </a>
     <div class="mobile-menu__divider"></div>
     <span class="mobile-menu__label" data-i18n="nav.language">Language</span>
@@ -426,11 +431,11 @@
             <div style="background: var(--color-white); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4); margin-bottom: var(--space-5);">
               <h4 style="font-size: var(--font-size-sm); font-weight: 700; margin-bottom: var(--space-2); color: var(--color-dark);">Appointment Summary</h4>
               <div style="font-size: var(--font-size-sm); line-height: 1.7; color: var(--color-text);">
-                <div><strong>Assigned Dealer:</strong> <span id="conf-dealer-name">—</span></div>
-                <div><strong>Scheduled Time:</strong> <span id="conf-datetime">—</span></div>
-                <div><strong>Service Type:</strong> <span id="conf-service">—</span></div>
-                <div><strong>Delivery Address:</strong> <span id="conf-address">—</span></div>
-                <div><strong>Old Battery Exchange:</strong> <span id="conf-exchange">—</span></div>
+                <div><strong>Assigned Dealer:</strong> <span id="conf-dealer-name">-</span></div>
+                <div><strong>Scheduled Time:</strong> <span id="conf-datetime">-</span></div>
+                <div><strong>Service Type:</strong> <span id="conf-service">-</span></div>
+                <div><strong>Delivery Address:</strong> <span id="conf-address">-</span></div>
+                <div><strong>Old Battery Exchange:</strong> <span id="conf-exchange">-</span></div>
               </div>
             </div>
 
@@ -600,6 +605,7 @@
             <li><a href="care.html">Battery Care</a></li>
             <li><a href="calculator.html">Calculator</a></li>
             <li><a href="sale.html">Dealer Portal</a></li>
+            <li><a href="dealer.html">Dealer Dashboard</a></li>
             <li><a href="index.html#waitlist">Early Access Waitlist</a></li>
           </ul>
         </div>

@@ -42,6 +42,7 @@
         <a href="care.html"       class="navbar__link" data-page="care.html" data-i18n="nav.care">Battery Care</a>
         <a href="calculator.html" class="navbar__link" data-page="calculator.html" data-i18n="nav.calculator">Calculator</a>
         <a href="sale.html"       class="navbar__link" data-page="sale.html" data-i18n="nav.sale">Sell / Exchange</a>
+        <a href="dealer.html"     class="navbar__link" data-page="dealer.html" data-i18n="nav.dashboard">Dealer Dashboard</a>
       </div>
       <div class="lang-dropdown">
         <button class="lang-dropdown__toggle" id="lang-toggle" aria-haspopup="true" aria-expanded="false">
@@ -97,6 +98,10 @@
     <a href="sale.html"       class="mobile-menu__link" data-page="sale.html" data-i18n="nav.sale">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
       Sell / Exchange
+    </a>
+    <a href="dealer.html"     class="mobile-menu__link" data-page="dealer.html" data-i18n="nav.dashboard">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+      Dealer Dashboard
     </a>
     <div class="mobile-menu__divider"></div>
     <span class="mobile-menu__label" data-i18n="nav.language">Language</span>
@@ -278,6 +283,7 @@
             <li><a href="care.html">Battery Care</a></li>
             <li><a href="calculator.html">Calculator</a></li>
             <li><a href="sale.html">Dealer Portal</a></li>
+            <li><a href="dealer.html">Dealer Dashboard</a></li>
             <li><a href="index.html#waitlist">Early Access Waitlist</a></li>
           </ul>
         </div>
@@ -506,11 +512,92 @@
       // (1) Show the dealers visibleCount at a time (next 9 on show more)
       const visibleDealers = dealers.slice(0, visibleCount);
 
+      // Safe read of dealer stock from localStorage
+      let allStock = [];
+      try {
+        const rawStock = localStorage.getItem('dealerStock');
+        if (rawStock) {
+          const parsed = JSON.parse(rawStock);
+          if (Array.isArray(parsed)) allStock = parsed;
+        }
+      } catch (e) {}
+
       const valQueryStr = valuationData
         ? `&estimate=${Math.round((valuationData.min + valuationData.max)/2)}&min=${valuationData.min}&max=${valuationData.max}&type=${encodeURIComponent(valuationData.type)}&ah=${encodeURIComponent(valuationData.ah)}`
         : '';
 
-      gridEl.innerHTML = visibleDealers.map(d => `
+      gridEl.innerHTML = visibleDealers.map(d => {
+        // Match stock for this dealer by ID or normalized phone
+        const dealerItems = allStock.filter(item => {
+          if (!item) return false;
+          if (item.dealerId && item.dealerId === d.id) return true;
+          if (item.dealerPhone) {
+            const p1 = String(item.dealerPhone).replace(/\D/g, '');
+            const p2 = String(d.phone || '').replace(/\D/g, '');
+            if (p1 && p2 && (p1 === p2 || p1.endsWith(p2) || p2.endsWith(p1))) return true;
+          }
+          return false;
+        });
+
+        let priceMin = d.priceRange.min;
+        let priceMax = d.priceRange.max;
+        let stockBadgeHtml = `
+          <span class="badge--stock">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            In stock
+          </span>
+        `;
+        let dealerBrands = d.brands;
+
+        if (dealerItems.length > 0) {
+          const prices = dealerItems.map(i => parseInt(i.price, 10)).filter(p => !isNaN(p) && p > 0);
+          if (prices.length > 0) {
+            priceMin = Math.min(...prices);
+            priceMax = Math.max(...prices);
+          }
+          const totalQty = dealerItems.reduce((acc, i) => acc + (parseInt(i.quantity, 10) || 0), 0);
+          const uniqueStockBrands = [...new Set(dealerItems.map(i => i.brand).filter(Boolean))];
+          if (uniqueStockBrands.length > 0) {
+            dealerBrands = uniqueStockBrands;
+          }
+
+          if (totalQty === 0) {
+            stockBadgeHtml = `
+              <span class="badge--stock" style="background: #FEE2E2; color: #DC2626; border: 1px solid #FECACA;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+                </svg>
+                Out of stock
+              </span>
+            `;
+          } else if (totalQty <= 2) {
+            stockBadgeHtml = `
+              <span class="badge--stock" style="background: #FEF3C7; color: #D97706; border: 1px solid #FDE68A;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+                Low stock (${totalQty} left)
+              </span>
+            `;
+          } else {
+            stockBadgeHtml = `
+              <span class="badge--stock">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                In stock (${totalQty} units)
+              </span>
+            `;
+          }
+        }
+
+        return `
         <div class="dealer-card">
           <div class="dealer-card__header">
             <div>
@@ -524,13 +611,7 @@
                 ${d.area}, ${d.city} - ${d.pincode}
               </div>
             </div>
-            <span class="badge--stock">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
-              In stock
-            </span>
+            ${stockBadgeHtml}
           </div>
 
           <div class="dealer-card__body">
@@ -550,7 +631,7 @@
                   <line x1="7" y1="7" x2="7.01" y2="7"/>
                 </svg>
                 <div class="dealer-card__brands">
-                  ${d.brands.map(b => `<span class="brand-pill">${b}</span>`).join('')}
+                  ${dealerBrands.map(b => `<span class="brand-pill">${b}</span>`).join('')}
                 </div>
               </div>
 
@@ -563,7 +644,7 @@
                   <path d="M6 13l8.5 8"/>
                   <path d="M6 13h3a4 4 0 0 0 0-8"/>
                 </svg>
-                <span><strong>₹${fmt(d.priceRange.min)}</strong> - <strong>₹${fmt(d.priceRange.max)}</strong></span>
+                <span><strong>₹${fmt(priceMin)}</strong> - <strong>₹${fmt(priceMax)}</strong></span>
               </div>
 
               <!-- Experience -->
@@ -602,7 +683,8 @@
             </a>
           </div>
         </div>
-      `).join('');
+      `;
+      }).join('');
 
       // Toggle "Show more dealers" button
       if (loadMoreWrap) {
